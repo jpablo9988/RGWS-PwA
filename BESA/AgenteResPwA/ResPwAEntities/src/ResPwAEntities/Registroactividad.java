@@ -6,13 +6,10 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -22,36 +19,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "REGISTROACTIVIDAD")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Registroactividad.findAll", query = "SELECT r FROM Registroactividad r"),
-    @NamedQuery(name = "Registroactividad.findByFecha", query = "SELECT r FROM Registroactividad r WHERE r.registroactividadPK.fecha = :fecha"),
-    @NamedQuery(name = "Registroactividad.findByEstadoinicial", query = "SELECT r FROM Registroactividad r WHERE r.estadoinicial = :estadoinicial"),
-    @NamedQuery(name = "Registroactividad.findByEstadofinal", query = "SELECT r FROM Registroactividad r WHERE r.estadofinal = :estadofinal"),
-    @NamedQuery(name = "Registroactividad.findByPerfilpwaCedula", query = "SELECT r FROM Registroactividad r WHERE r.registroactividadPK.perfilpwaCedula = :perfilpwaCedula"),
-    @NamedQuery(name = "Registroactividad.findByTipo", query = "SELECT r FROM Registroactividad r WHERE r.registroactividadPK.tipo = :tipo"),
-    @NamedQuery(name = "Registroactividad.findByActividadpwaId", query = "SELECT r FROM Registroactividad r WHERE r.registroactividadPK.actividadpwaId = :actividadpwaId")})
+    @NamedQuery(name = "Registroactividad.findAll", query = "SELECT r FROM Registroactividad r")
+    , @NamedQuery(name = "Registroactividad.findByFecha", query = "SELECT r FROM Registroactividad r WHERE r.registroactividadPK.fecha = :fecha")
+    , @NamedQuery(name = "Registroactividad.findByEstadoinicial", query = "SELECT r FROM Registroactividad r WHERE r.estadoinicial = :estadoinicial")
+    , @NamedQuery(name = "Registroactividad.findByEstadofinal", query = "SELECT r FROM Registroactividad r WHERE r.estadofinal = :estadofinal")
+    , @NamedQuery(name = "Registroactividad.findByPerfilpwacedula", query = "SELECT r FROM Registroactividad r WHERE r.registroactividadPK.perfilpwacedula = :perfilpwacedula")
+    , @NamedQuery(name = "Registroactividad.findByTipo", query = "SELECT r FROM Registroactividad r WHERE r.registroactividadPK.tipo = :tipo")
+    , @NamedQuery(name = "Registroactividad.findByActividadpwaId", query = "SELECT r FROM Registroactividad r WHERE r.registroactividadPK.actividadpwaId = :actividadpwaId")})
 public class Registroactividad implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected RegistroactividadPK registroactividadPK;
-    @Basic(optional = false)
-    @Column(name = "ESTADOINICIAL")
+    @Column(length = 2147483647)
     private String estadoinicial;
-    @Basic(optional = false)
-    @Column(name = "ESTADOFINAL")
+    @Column(length = 2147483647)
     private String estadofinal;
-    @JoinColumn(name = "ACTIVIDADPWA_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Actividadpwa actividadpwa;
-    @JoinColumn(name = "PERFILPWA_CEDULA", referencedColumnName = "CEDULA", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Perfilpwa perfilpwa;
+    @JoinColumn(name = "perfilpwa_cedula", referencedColumnName = "cedula", nullable = false)
+    @ManyToOne(optional = false)
+    private Perfilpwa perfilpwaCedula;
 
     public Registroactividad() {
     }
@@ -60,20 +52,17 @@ public class Registroactividad implements Serializable {
         this.registroactividadPK = registroactividadPK;
     }
 
-    public Registroactividad(RegistroactividadPK registroactividadPK, String estadoinicial, String estadofinal) {
-        this.registroactividadPK = registroactividadPK;
-        this.estadoinicial = estadoinicial;
-        this.estadofinal = estadofinal;
-    }
-
-    public Registroactividad(Date fecha, String perfilpwaCedula, String tipo, BigDecimal actividadpwaId) {
-        this.registroactividadPK = new RegistroactividadPK(fecha, perfilpwaCedula, tipo, actividadpwaId);
+    public Registroactividad(Date fecha, String perfilpwacedula, String tipo, int actividadpwaId) {
+        this.registroactividadPK = new RegistroactividadPK(fecha, perfilpwacedula, tipo, actividadpwaId);
     }
 
     public RegistroactividadPK getRegistroactividadPK() {
         return registroactividadPK;
     }
-
+   
+    public Actividadpwa getActividadpwa() {
+        return null;
+    }
     public void setRegistroactividadPK(RegistroactividadPK registroactividadPK) {
         this.registroactividadPK = registroactividadPK;
     }
@@ -94,20 +83,12 @@ public class Registroactividad implements Serializable {
         this.estadofinal = estadofinal;
     }
 
-    public Actividadpwa getActividadpwa() {
-        return actividadpwa;
+    public Perfilpwa getPerfilpwaCedula() {
+        return perfilpwaCedula;
     }
 
-    public void setActividadpwa(Actividadpwa actividadpwa) {
-        this.actividadpwa = actividadpwa;
-    }
-
-    public Perfilpwa getPerfilpwa() {
-        return perfilpwa;
-    }
-
-    public void setPerfilpwa(Perfilpwa perfilpwa) {
-        this.perfilpwa = perfilpwa;
+    public void setPerfilpwaCedula(Perfilpwa perfilpwaCedula) {
+        this.perfilpwaCedula = perfilpwaCedula;
     }
 
     @Override
@@ -133,6 +114,18 @@ public class Registroactividad implements Serializable {
     @Override
     public String toString() {
         return "ResPwAEntities.Registroactividad[ registroactividadPK=" + registroactividadPK + " ]";
+    }
+
+    public Object getPerfilpwa() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setActividadpwa(Actividadpwa actividadpwa) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setPerfilpwa(Perfilpwa perfilpwa) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

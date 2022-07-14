@@ -6,53 +6,50 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import javax.persistence.Basic;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "ACTXPREFERENCIA")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Actxpreferencia.findAll", query = "SELECT a FROM Actxpreferencia a"),
-    @NamedQuery(name = "Actxpreferencia.findByActividadpwaId", query = "SELECT a FROM Actxpreferencia a WHERE a.actxpreferenciaPK.actividadpwaId = :actividadpwaId"),
-    @NamedQuery(name = "Actxpreferencia.findByPerfilPreferenciaCedula", query = "SELECT a FROM Actxpreferencia a WHERE a.actxpreferenciaPK.perfilPreferenciaCedula = :perfilPreferenciaCedula"),
-    @NamedQuery(name = "Actxpreferencia.findByActiva", query = "SELECT a FROM Actxpreferencia a WHERE a.activa = :activa"),
-    @NamedQuery(name = "Actxpreferencia.findByGusto", query = "SELECT a FROM Actxpreferencia a WHERE a.gusto = :gusto"),
-    @NamedQuery(name = "Actxpreferencia.findByEnriq", query = "SELECT a FROM Actxpreferencia a WHERE a.enriq = :enriq")})
+    @NamedQuery(name = "Actxpreferencia.findAll", query = "SELECT a FROM Actxpreferencia a")
+    , @NamedQuery(name = "Actxpreferencia.findByActividadpwaId", query = "SELECT a FROM Actxpreferencia a WHERE a.actxpreferenciaPK.actividadpwaId = :actividadpwaId")
+    , @NamedQuery(name = "Actxpreferencia.findByPerfilPreferenciaCedula", query = "SELECT a FROM Actxpreferencia a WHERE a.actxpreferenciaPK.perfilPreferenciaCedula = :perfilPreferenciaCedula")
+    , @NamedQuery(name = "Actxpreferencia.findByActiva", query = "SELECT a FROM Actxpreferencia a WHERE a.activa = :activa")
+    , @NamedQuery(name = "Actxpreferencia.findByGusto", query = "SELECT a FROM Actxpreferencia a WHERE a.gusto = :gusto")
+    , @NamedQuery(name = "Actxpreferencia.findByEnriq", query = "SELECT a FROM Actxpreferencia a WHERE a.enriq = :enriq")})
 public class Actxpreferencia implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ActxpreferenciaPK actxpreferenciaPK;
-    @Basic(optional = false)
-    @Column(name = "ACTIVA")
-    private BigDecimal activa;
-    @Basic(optional = false)
-    @Column(name = "GUSTO")
+    @Column(length = 2147483647)
+    private String activa;
+    @Column(length = 2147483647)
     private double gusto;
-    @Basic(optional = false)
-    @Column(name = "ENRIQ")
-    private BigDecimal enriq;
-    @JoinColumn(name = "ACTIVIDADPWA_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Actividadpwa actividadpwa;
-    @JoinColumn(name = "PERFIL_PREFERENCIA_CEDULA", referencedColumnName = "PERFILPWA_CEDULA", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private PerfilPreferencia perfilPreferencia;
+    @Column(length = 2147483647)
+    private String enriq;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "actxpreferencia")
+    private List<PerfilPreferencia> perfilPreferenciaList;
+    @JoinColumn(name = "actividadpwa_id2", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Actividadpwa actividadpwaId2;
 
     public Actxpreferencia() {
     }
@@ -61,14 +58,7 @@ public class Actxpreferencia implements Serializable {
         this.actxpreferenciaPK = actxpreferenciaPK;
     }
 
-    public Actxpreferencia(ActxpreferenciaPK actxpreferenciaPK, BigDecimal activa, double gusto, BigDecimal enriq) {
-        this.actxpreferenciaPK = actxpreferenciaPK;
-        this.activa = activa;
-        this.gusto = gusto;
-        this.enriq = enriq;
-    }
-
-    public Actxpreferencia(BigDecimal actividadpwaId, String perfilPreferenciaCedula) {
+    public Actxpreferencia(int actividadpwaId, String perfilPreferenciaCedula) {
         this.actxpreferenciaPK = new ActxpreferenciaPK(actividadpwaId, perfilPreferenciaCedula);
     }
 
@@ -80,11 +70,11 @@ public class Actxpreferencia implements Serializable {
         this.actxpreferenciaPK = actxpreferenciaPK;
     }
 
-    public BigDecimal getActiva() {
+    public String getActiva() {
         return activa;
     }
 
-    public void setActiva(BigDecimal activa) {
+    public void setActiva(String activa) {
         this.activa = activa;
     }
 
@@ -96,28 +86,29 @@ public class Actxpreferencia implements Serializable {
         this.gusto = gusto;
     }
 
-    public BigDecimal getEnriq() {
+    public String getEnriq() {
         return enriq;
     }
 
-    public void setEnriq(BigDecimal enriq) {
+    public void setEnriq(String enriq) {
         this.enriq = enriq;
     }
 
+    @XmlTransient
+    public List<PerfilPreferencia> getPerfilPreferenciaList() {
+        return perfilPreferenciaList;
+    }
+
+    public void setPerfilPreferenciaList(List<PerfilPreferencia> perfilPreferenciaList) {
+        this.perfilPreferenciaList = perfilPreferenciaList;
+    }
+
     public Actividadpwa getActividadpwa() {
-        return actividadpwa;
+        return actividadpwaId2;
     }
 
-    public void setActividadpwa(Actividadpwa actividadpwa) {
-        this.actividadpwa = actividadpwa;
-    }
-
-    public PerfilPreferencia getPerfilPreferencia() {
-        return perfilPreferencia;
-    }
-
-    public void setPerfilPreferencia(PerfilPreferencia perfilPreferencia) {
-        this.perfilPreferencia = perfilPreferencia;
+    public void setActividadpwa(Actividadpwa actividadpwaId2) {
+        this.actividadpwaId2 = actividadpwaId2;
     }
 
     @Override

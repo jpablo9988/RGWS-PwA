@@ -6,10 +6,8 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -19,33 +17,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
-<<<<<<< HEAD
- * @author maria.f.garces.cala
-=======
- * @author juans
->>>>>>> master
+ * @author 57305
  */
 @Entity
-@Table(name = "PREFERENCIAXCUENTO")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Preferenciaxcuento.findAll", query = "SELECT p FROM Preferenciaxcuento p"),
-    @NamedQuery(name = "Preferenciaxcuento.findByPerfilPreferenciaPerfilpwaCedula", query = "SELECT p FROM Preferenciaxcuento p WHERE p.preferenciaxcuentoPK.perfilPreferenciaPerfilpwaCedula = :perfilPreferenciaPerfilpwaCedula"),
-    @NamedQuery(name = "Preferenciaxcuento.findByCuentoNombre", query = "SELECT p FROM Preferenciaxcuento p WHERE p.preferenciaxcuentoPK.cuentoNombre = :cuentoNombre"),
-    @NamedQuery(name = "Preferenciaxcuento.findByGusto", query = "SELECT p FROM Preferenciaxcuento p WHERE p.gusto = :gusto")})
+    @NamedQuery(name = "Preferenciaxcuento.findAll", query = "SELECT p FROM Preferenciaxcuento p")
+    , @NamedQuery(name = "Preferenciaxcuento.findByGusto", query = "SELECT p FROM Preferenciaxcuento p WHERE p.preferenciaxcuentoPK.gusto = :gusto")
+    , @NamedQuery(name = "Preferenciaxcuento.findByPerfilPreferenciaNombrepreferido", query = "SELECT p FROM Preferenciaxcuento p WHERE p.preferenciaxcuentoPK.perfilPreferenciaNombrepreferido = :perfilPreferenciaNombrepreferido")})
 public class Preferenciaxcuento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PreferenciaxcuentoPK preferenciaxcuentoPK;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "GUSTO")
-    private Double gusto;
-    @JoinColumn(name = "CUENTO_NOMBRE", referencedColumnName = "NOMBRE", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private double gusto; //Cambio de BigInteger a Double
+    @JoinColumn(name = "cuento_nombre", referencedColumnName = "nombre", nullable = false)
+    @ManyToOne(optional = false)
     private Cuento cuento;
-    @JoinColumn(name = "PERFIL_PREFERENCIA_PERFILPWA_CEDULA", referencedColumnName = "PERFILPWA_CEDULA", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "perfil_preferencia_nombrepreferido", referencedColumnName = "nombrepreferido", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
     private PerfilPreferencia perfilPreferencia;
 
     public Preferenciaxcuento() {
@@ -65,14 +56,6 @@ public class Preferenciaxcuento implements Serializable {
 
     public void setPreferenciaxcuentoPK(PreferenciaxcuentoPK preferenciaxcuentoPK) {
         this.preferenciaxcuentoPK = preferenciaxcuentoPK;
-    }
-
-    public Double getGusto() {
-        return gusto;
-    }
-
-    public void setGusto(Double gusto) {
-        this.gusto = gusto;
     }
 
     public Cuento getCuento() {
@@ -96,6 +79,13 @@ public class Preferenciaxcuento implements Serializable {
         int hash = 0;
         hash += (preferenciaxcuentoPK != null ? preferenciaxcuentoPK.hashCode() : 0);
         return hash;
+    }
+    public double getGusto() {
+        return gusto;
+    }
+
+    public void setGusto(double gusto) {
+        this.gusto = gusto;
     }
 
     @Override

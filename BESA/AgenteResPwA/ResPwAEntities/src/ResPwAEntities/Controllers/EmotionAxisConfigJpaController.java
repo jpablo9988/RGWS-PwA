@@ -5,24 +5,25 @@
  */
 package ResPwAEntities.Controllers;
 
-import ResPwAEntities.Controllers.exceptions.NonexistentEntityException;
+import ResPwAEntities.Controllers.Exceptions.NonexistentEntityException;
 import ResPwAEntities.EmotionalEntities.EmotionAxisConfig;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
-public class EmotionAxisConfigJpaController implements Serializable {
-
-    public EmotionAxisConfigJpaController(EntityManagerFactory emf) {
+public class EmotionAxisConfigJpaController implements Serializable{
+    
+    
+     public EmotionAxisConfigJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -134,5 +135,4 @@ public class EmotionAxisConfigJpaController implements Serializable {
             em.close();
         }
     }
-    
 }

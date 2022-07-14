@@ -37,3 +37,4 @@ BESA/AgenteResPwA/ResPwAAgent/nbproject/private/private.properties
 */*.class
 ./Python/PythonProject/Enviroment/
 ./Python/PythonProject/venv/
+/BESA/AgenteResPwA/ResPwAEntities/nbproject/private/

@@ -6,38 +6,37 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Embeddable
 public class ActxpreferenciaPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "ACTIVIDADPWA_ID")
-    private BigDecimal actividadpwaId;
+    @Column(name = "actividadpwa_id", nullable = false)
+    private int actividadpwaId;
     @Basic(optional = false)
-    @Column(name = "PERFIL_PREFERENCIA_CEDULA")
+    @Column(name = "perfil_preferencia_cedula", nullable = false, length = 2147483647)
     private String perfilPreferenciaCedula;
 
     public ActxpreferenciaPK() {
     }
 
-    public ActxpreferenciaPK(BigDecimal actividadpwaId, String perfilPreferenciaCedula) {
+    public ActxpreferenciaPK(int actividadpwaId, String perfilPreferenciaCedula) {
         this.actividadpwaId = actividadpwaId;
         this.perfilPreferenciaCedula = perfilPreferenciaCedula;
     }
 
-    public BigDecimal getActividadpwaId() {
+    public int getActividadpwaId() {
         return actividadpwaId;
     }
 
-    public void setActividadpwaId(BigDecimal actividadpwaId) {
+    public void setActividadpwaId(int actividadpwaId) {
         this.actividadpwaId = actividadpwaId;
     }
 
@@ -52,7 +51,7 @@ public class ActxpreferenciaPK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (actividadpwaId != null ? actividadpwaId.hashCode() : 0);
+        hash += (int) actividadpwaId;
         hash += (perfilPreferenciaCedula != null ? perfilPreferenciaCedula.hashCode() : 0);
         return hash;
     }
@@ -64,7 +63,7 @@ public class ActxpreferenciaPK implements Serializable {
             return false;
         }
         ActxpreferenciaPK other = (ActxpreferenciaPK) object;
-        if ((this.actividadpwaId == null && other.actividadpwaId != null) || (this.actividadpwaId != null && !this.actividadpwaId.equals(other.actividadpwaId))) {
+        if (this.actividadpwaId != other.actividadpwaId) {
             return false;
         }
         if ((this.perfilPreferenciaCedula == null && other.perfilPreferenciaCedula != null) || (this.perfilPreferenciaCedula != null && !this.perfilPreferenciaCedula.equals(other.perfilPreferenciaCedula))) {

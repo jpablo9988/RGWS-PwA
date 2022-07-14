@@ -5,28 +5,27 @@
  */
 package ResPwAEntities.Controllers;
 
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import ResPwAEntities.Actividadpwa;
 import ResPwAEntities.Actxpreferencia;
 import ResPwAEntities.ActxpreferenciaPK;
-import ResPwAEntities.Controllers.exceptions.NonexistentEntityException;
-import ResPwAEntities.Controllers.exceptions.PreexistingEntityException;
+import ResPwAEntities.Controllers.Exceptions.NonexistentEntityException;
+import ResPwAEntities.Controllers.Exceptions.PreexistingEntityException;
 import ResPwAEntities.PerfilPreferencia;
+//import static ResPwAEntities.Preferenciaxcuento_.perfilPreferencia;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
-public class ActxpreferenciaJpaController implements Serializable {
-
-    public ActxpreferenciaJpaController(EntityManagerFactory emf) {
+public class ActxpreferenciaJpaController {
+     public ActxpreferenciaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -40,7 +39,7 @@ public class ActxpreferenciaJpaController implements Serializable {
             actxpreferencia.setActxpreferenciaPK(new ActxpreferenciaPK());
         }
         actxpreferencia.getActxpreferenciaPK().setActividadpwaId(actxpreferencia.getActividadpwa().getId());
-        actxpreferencia.getActxpreferenciaPK().setPerfilPreferenciaCedula(actxpreferencia.getPerfilPreferencia().getPerfilpwaCedula());
+        
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -50,20 +49,13 @@ public class ActxpreferenciaJpaController implements Serializable {
                 actividadpwa = em.getReference(actividadpwa.getClass(), actividadpwa.getId());
                 actxpreferencia.setActividadpwa(actividadpwa);
             }
-            PerfilPreferencia perfilPreferencia = actxpreferencia.getPerfilPreferencia();
-            if (perfilPreferencia != null) {
-                perfilPreferencia = em.getReference(perfilPreferencia.getClass(), perfilPreferencia.getPerfilpwaCedula());
-                actxpreferencia.setPerfilPreferencia(perfilPreferencia);
-            }
+           
             em.persist(actxpreferencia);
             if (actividadpwa != null) {
                 actividadpwa.getActxpreferenciaList().add(actxpreferencia);
                 actividadpwa = em.merge(actividadpwa);
             }
-            if (perfilPreferencia != null) {
-                perfilPreferencia.getActxpreferenciaList().add(actxpreferencia);
-                perfilPreferencia = em.merge(perfilPreferencia);
-            }
+           
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findActxpreferencia(actxpreferencia.getActxpreferenciaPK()) != null) {
@@ -79,7 +71,7 @@ public class ActxpreferenciaJpaController implements Serializable {
 
     public void edit(Actxpreferencia actxpreferencia) throws NonexistentEntityException, Exception {
         actxpreferencia.getActxpreferenciaPK().setActividadpwaId(actxpreferencia.getActividadpwa().getId());
-        actxpreferencia.getActxpreferenciaPK().setPerfilPreferenciaCedula(actxpreferencia.getPerfilPreferencia().getPerfilpwaCedula());
+        actxpreferencia.getActxpreferenciaPK().setPerfilPreferenciaCedula(actxpreferencia.getActxpreferenciaPK().getPerfilPreferenciaCedula());
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -87,16 +79,9 @@ public class ActxpreferenciaJpaController implements Serializable {
             Actxpreferencia persistentActxpreferencia = em.find(Actxpreferencia.class, actxpreferencia.getActxpreferenciaPK());
             Actividadpwa actividadpwaOld = persistentActxpreferencia.getActividadpwa();
             Actividadpwa actividadpwaNew = actxpreferencia.getActividadpwa();
-            PerfilPreferencia perfilPreferenciaOld = persistentActxpreferencia.getPerfilPreferencia();
-            PerfilPreferencia perfilPreferenciaNew = actxpreferencia.getPerfilPreferencia();
-            if (actividadpwaNew != null) {
-                actividadpwaNew = em.getReference(actividadpwaNew.getClass(), actividadpwaNew.getId());
-                actxpreferencia.setActividadpwa(actividadpwaNew);
-            }
-            if (perfilPreferenciaNew != null) {
-                perfilPreferenciaNew = em.getReference(perfilPreferenciaNew.getClass(), perfilPreferenciaNew.getPerfilpwaCedula());
-                actxpreferencia.setPerfilPreferencia(perfilPreferenciaNew);
-            }
+            Object perfilPreferenciaNew;
+            
+            
             actxpreferencia = em.merge(actxpreferencia);
             if (actividadpwaOld != null && !actividadpwaOld.equals(actividadpwaNew)) {
                 actividadpwaOld.getActxpreferenciaList().remove(actxpreferencia);
@@ -105,17 +90,8 @@ public class ActxpreferenciaJpaController implements Serializable {
             if (actividadpwaNew != null && !actividadpwaNew.equals(actividadpwaOld)) {
                 actividadpwaNew.getActxpreferenciaList().add(actxpreferencia);
                 actividadpwaNew = em.merge(actividadpwaNew);
-            }
-            if (perfilPreferenciaOld != null && !perfilPreferenciaOld.equals(perfilPreferenciaNew)) {
-                perfilPreferenciaOld.getActxpreferenciaList().remove(actxpreferencia);
-                perfilPreferenciaOld = em.merge(perfilPreferenciaOld);
-            }
-            if (perfilPreferenciaNew != null && !perfilPreferenciaNew.equals(perfilPreferenciaOld)) {
-                perfilPreferenciaNew.getActxpreferenciaList().add(actxpreferencia);
-                perfilPreferenciaNew = em.merge(perfilPreferenciaNew);
-            }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
+            }}
+            catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 ActxpreferenciaPK id = actxpreferencia.getActxpreferenciaPK();
@@ -148,11 +124,7 @@ public class ActxpreferenciaJpaController implements Serializable {
                 actividadpwa.getActxpreferenciaList().remove(actxpreferencia);
                 actividadpwa = em.merge(actividadpwa);
             }
-            PerfilPreferencia perfilPreferencia = actxpreferencia.getPerfilPreferencia();
-            if (perfilPreferencia != null) {
-                perfilPreferencia.getActxpreferenciaList().remove(actxpreferencia);
-                perfilPreferencia = em.merge(perfilPreferencia);
-            }
+            
             em.remove(actxpreferencia);
             em.getTransaction().commit();
         } finally {

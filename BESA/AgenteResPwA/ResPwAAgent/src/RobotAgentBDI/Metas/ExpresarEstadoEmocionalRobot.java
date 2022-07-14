@@ -51,7 +51,8 @@ public class ExpresarEstadoEmocionalRobot extends GoalBDI {
     }
 
     @Override
-    public double detectGoal(Believes believes) throws KernellAgentEventExceptionBESA {
+    public double detectGoal(Believes believes) throws KernellAgentEventExceptionBESA 
+    {
         System.out.println("Meta InteraccionSocial detectGoal");
         RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
 

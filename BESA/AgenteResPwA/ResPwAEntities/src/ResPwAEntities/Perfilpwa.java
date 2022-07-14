@@ -5,18 +5,17 @@
  */
 package ResPwAEntities;
 
+
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -25,68 +24,63 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "PERFILPWA")
+@Table(catalog = "Res-pwaDB", schema = "public", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"cuidador_nombreusuario"})})
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Perfilpwa.findAll", query = "SELECT p FROM Perfilpwa p"),
-    @NamedQuery(name = "Perfilpwa.findByNombre", query = "SELECT p FROM Perfilpwa p WHERE p.nombre = :nombre"),
-    @NamedQuery(name = "Perfilpwa.findByApellido", query = "SELECT p FROM Perfilpwa p WHERE p.apellido = :apellido"),
-    @NamedQuery(name = "Perfilpwa.findByFechanacimiento", query = "SELECT p FROM Perfilpwa p WHERE p.fechanacimiento = :fechanacimiento"),
-    @NamedQuery(name = "Perfilpwa.findByPaisnacimiento", query = "SELECT p FROM Perfilpwa p WHERE p.paisnacimiento = :paisnacimiento"),
-    @NamedQuery(name = "Perfilpwa.findByEdad", query = "SELECT p FROM Perfilpwa p WHERE p.edad = :edad"),
-    @NamedQuery(name = "Perfilpwa.findByCedula", query = "SELECT p FROM Perfilpwa p WHERE p.cedula = :cedula"),
-    @NamedQuery(name = "Perfilpwa.findByProfesion", query = "SELECT p FROM Perfilpwa p WHERE p.profesion = :profesion")})
+    @NamedQuery(name = "Perfilpwa.findAll", query = "SELECT p FROM Perfilpwa p")
+    , @NamedQuery(name = "Perfilpwa.findByNombre", query = "SELECT p FROM Perfilpwa p WHERE p.nombre = :nombre")
+    , @NamedQuery(name = "Perfilpwa.findByApellido", query = "SELECT p FROM Perfilpwa p WHERE p.apellido = :apellido")
+    , @NamedQuery(name = "Perfilpwa.findByFechanacimiento", query = "SELECT p FROM Perfilpwa p WHERE p.fechanacimiento = :fechanacimiento")
+    , @NamedQuery(name = "Perfilpwa.findByPaisnacimiento", query = "SELECT p FROM Perfilpwa p WHERE p.paisnacimiento = :paisnacimiento")
+    , @NamedQuery(name = "Perfilpwa.findByCedula", query = "SELECT p FROM Perfilpwa p WHERE p.cedula = :cedula")
+    , @NamedQuery(name = "Perfilpwa.findByProfesion", query = "SELECT p FROM Perfilpwa p WHERE p.profesion = :profesion")})
 public class Perfilpwa implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
-    @Column(name = "NOMBRE")
+    @Column(nullable = false, length = 2147483647)
     private String nombre;
-    @Basic(optional = false)
-    @Column(name = "APELLIDO")
+    @Column(length = 2147483647)
     private String apellido;
-    @Basic(optional = false)
-    @Column(name = "FECHANACIMIENTO")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechanacimiento;
-    @Basic(optional = false)
-    @Column(name = "PAISNACIMIENTO")
+    @Column(length = 2147483647)
     private String paisnacimiento;
-    @Basic(optional = false)
-    @Column(name = "EDAD")
-    private BigDecimal edad;
     @Id
     @Basic(optional = false)
-    @Column(name = "CEDULA")
+    @Column(nullable = false)
     private String cedula;
-    @Basic(optional = false)
-    @Column(name = "PROFESION")
+    @Column(length = 2147483647)
     private String profesion;
-    @ManyToMany(mappedBy = "perfilpwaList", fetch = FetchType.EAGER)
-    private List<Familiar> familiarList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilpwa", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilpwaCedula")
     private List<Registroactividad> registroactividadList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilpwa", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilpwaCedula")
+    private List<PerfilPreferencia> perfilPreferenciaList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilpwaCedula2")
     private PerfilMedico perfilMedico;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilpwa", fetch = FetchType.EAGER)
-    private PerfilPreferencia perfilPreferencia;
-    @JoinColumn(name = "CUIDADOR_NOMBREUSUARIO", referencedColumnName = "NOMBREUSUARIO")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilpwaCedula")
+    private Test test;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilpwaCedula")
+    private List<Familiares> familiaresList;
+    @JoinColumn(name = "cuidador_nombreusuario", referencedColumnName = "nombreusuario", nullable = false)
+    @OneToOne(optional = false)
     private Cuidador cuidadorNombreusuario;
-    @JoinColumn(name = "ESTADOCIVIL_TIPOEC", referencedColumnName = "TIPOEC")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "estadocivil_tipoec", referencedColumnName = "tipoec", nullable = false)
+    @ManyToOne(optional = false)
     private Estadocivil estadocivilTipoec;
-    @JoinColumn(name = "NIVEL_EDUCATIVO_TIPONE", referencedColumnName = "TIPONE")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private NivelEducativo nivelEducativoTipone;
+    @JoinColumn(name = "nivel_educativo_idnivel", referencedColumnName = "idnivel")
+    @ManyToOne(optional = false)
+    private Niveleducativo niveleducativoIdnivel;
 
     public Perfilpwa() {
     }
@@ -94,15 +88,14 @@ public class Perfilpwa implements Serializable {
     public Perfilpwa(String cedula) {
         this.cedula = cedula;
     }
+     @XmlTransient
+    public List<Familiares> getFamiliarList() {
+        return familiaresList;
+    }
 
-    public Perfilpwa(String cedula, String nombre, String apellido, Date fechanacimiento, String paisnacimiento, BigDecimal edad, String profesion) {
+    public Perfilpwa(String cedula, String nombre) {
         this.cedula = cedula;
         this.nombre = nombre;
-        this.apellido = apellido;
-        this.fechanacimiento = fechanacimiento;
-        this.paisnacimiento = paisnacimiento;
-        this.edad = edad;
-        this.profesion = profesion;
     }
 
     public String getNombre() {
@@ -137,14 +130,6 @@ public class Perfilpwa implements Serializable {
         this.paisnacimiento = paisnacimiento;
     }
 
-    public BigDecimal getEdad() {
-        return edad;
-    }
-
-    public void setEdad(BigDecimal edad) {
-        this.edad = edad;
-    }
-
     public String getCedula() {
         return cedula;
     }
@@ -162,21 +147,21 @@ public class Perfilpwa implements Serializable {
     }
 
     @XmlTransient
-    public List<Familiar> getFamiliarList() {
-        return familiarList;
-    }
-
-    public void setFamiliarList(List<Familiar> familiarList) {
-        this.familiarList = familiarList;
-    }
-
-    @XmlTransient
     public List<Registroactividad> getRegistroactividadList() {
         return registroactividadList;
     }
 
     public void setRegistroactividadList(List<Registroactividad> registroactividadList) {
         this.registroactividadList = registroactividadList;
+    }
+
+    @XmlTransient
+    public List<PerfilPreferencia> getPerfilPreferenciaList() {
+        return perfilPreferenciaList;
+    }
+
+    public void setPerfilPreferenciaList(List<PerfilPreferencia> perfilPreferenciaList) {
+        this.perfilPreferenciaList = perfilPreferenciaList;
     }
 
     public PerfilMedico getPerfilMedico() {
@@ -187,12 +172,21 @@ public class Perfilpwa implements Serializable {
         this.perfilMedico = perfilMedico;
     }
 
-    public PerfilPreferencia getPerfilPreferencia() {
-        return perfilPreferencia;
+    public Test getTest() {
+        return test;
     }
 
-    public void setPerfilPreferencia(PerfilPreferencia perfilPreferencia) {
-        this.perfilPreferencia = perfilPreferencia;
+    public void setTest(Test test) {
+        this.test = test;
+    }
+
+    @XmlTransient
+    public List<Familiares> getFamiliaresList() {
+        return familiaresList;
+    }
+
+    public void setFamiliaresList(List<Familiares> familiaresList) {
+        this.familiaresList = familiaresList;
     }
 
     public Cuidador getCuidadorNombreusuario() {
@@ -211,12 +205,12 @@ public class Perfilpwa implements Serializable {
         this.estadocivilTipoec = estadocivilTipoec;
     }
 
-    public NivelEducativo getNivelEducativoTipone() {
-        return nivelEducativoTipone;
+    public Niveleducativo getNiveleducativoIdnivel() {
+        return niveleducativoIdnivel;
     }
 
-    public void setNivelEducativoTipone(NivelEducativo nivelEducativoTipone) {
-        this.nivelEducativoTipone = nivelEducativoTipone;
+    public void setNiveleducativoIdnivel(Niveleducativo niveleducativoIdnivel) {
+        this.niveleducativoIdnivel = niveleducativoIdnivel;
     }
 
     @Override
@@ -243,5 +237,19 @@ public class Perfilpwa implements Serializable {
     public String toString() {
         return "ResPwAEntities.Perfilpwa[ cedula=" + cedula + " ]";
     }
+
+    public void setFamiliarList(ArrayList<Familiar> arrayList) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setPerfilPreferencia(PerfilPreferencia perfilPreferencia) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public PerfilPreferencia getPerfilPreferencia() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+   
     
 }

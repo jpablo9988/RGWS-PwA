@@ -6,13 +6,11 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,40 +21,39 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "ROBOT")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Robot.findAll", query = "SELECT r FROM Robot r"),
-    @NamedQuery(name = "Robot.findById", query = "SELECT r FROM Robot r WHERE r.id = :id"),
-    @NamedQuery(name = "Robot.findByNombre", query = "SELECT r FROM Robot r WHERE r.nombre = :nombre")})
+    @NamedQuery(name = "Robot.findAll", query = "SELECT r FROM Robot r")
+    , @NamedQuery(name = "Robot.findById", query = "SELECT r FROM Robot r WHERE r.id = :id")
+    , @NamedQuery(name = "Robot.findByNombre", query = "SELECT r FROM Robot r WHERE r.nombre = :nombre")})
 public class Robot implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(name = "ID")
-    private BigDecimal id;
-    @Column(name = "NOMBRE")
+    @Column(nullable = false)
+    private Integer id;
+    @Column(length = 2147483647)
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "robotId", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "robotId")
     private List<Emocion> emocionList;
 
     public Robot() {
     }
 
-    public Robot(BigDecimal id) {
+    public Robot(Integer id) {
         this.id = id;
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -45,7 +45,7 @@ public class ModeloRetroalimentacion<T> {
                     c.setGusto(c.getGusto() + reglaAplicada.getFeedback());
                 }
             }
-            System.out.println("New Gusto: " + c.getGusto());
+            System.out.println("New Gustos: " + c.getGusto());
             RESPwABDInterface.updatePrefXCancion(c);
 
         } else if (activity instanceof Preferenciaxcuento) {

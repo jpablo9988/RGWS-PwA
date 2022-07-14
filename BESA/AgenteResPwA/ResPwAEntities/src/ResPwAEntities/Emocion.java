@@ -11,7 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,62 +23,45 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "EMOCION")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Emocion.findAll", query = "SELECT e FROM Emocion e"),
-    @NamedQuery(name = "Emocion.findById", query = "SELECT e FROM Emocion e WHERE e.id = :id"),
-    @NamedQuery(name = "Emocion.findByEmotionaltag", query = "SELECT e FROM Emocion e WHERE e.emotionaltag = :emotionaltag"),
-    @NamedQuery(name = "Emocion.findByImagen", query = "SELECT e FROM Emocion e WHERE e.imagen = :imagen")})
+    @NamedQuery(name = "Emocion.findAll", query = "SELECT e FROM Emocion e")
+    , @NamedQuery(name = "Emocion.findById", query = "SELECT e FROM Emocion e WHERE e.id = :id")
+    , @NamedQuery(name = "Emocion.findByImagen", query = "SELECT e FROM Emocion e WHERE e.imagen = :imagen")
+    , @NamedQuery(name = "Emocion.findByEmotionaltag", query = "SELECT e FROM Emocion e WHERE e.emotionaltag = :emotionaltag")})
 public class Emocion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "ID")
-    private String id;
-    @Basic(optional = false)
-    @Column(name = "EMOTIONALTAG")
-    private String emotionaltag;
-    @Basic(optional = false)
-    @Column(name = "IMAGEN")
+    @Column(nullable = false)
+    private Integer id;
+    @Column(length = 2147483647)
     private String imagen;
-    @JoinColumn(name = "ROBOT_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Robot robotId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "emocionId", fetch = FetchType.EAGER)
+    private String emotionaltag;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "emocionId")
     private List<Accion> accionList;
+    @JoinColumn(name = "robot_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Robot robotId;
 
     public Emocion() {
     }
 
-    public Emocion(String id) {
+    public Emocion(Integer id) {
         this.id = id;
     }
 
-    public Emocion(String id, String emotionaltag, String imagen) {
-        this.id = id;
-        this.emotionaltag = emotionaltag;
-        this.imagen = imagen;
-    }
-
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getEmotionaltag() {
-        return emotionaltag;
-    }
-
-    public void setEmotionaltag(String emotionaltag) {
-        this.emotionaltag = emotionaltag;
     }
 
     public String getImagen() {
@@ -90,12 +72,12 @@ public class Emocion implements Serializable {
         this.imagen = imagen;
     }
 
-    public Robot getRobotId() {
-        return robotId;
+    public String getEmotionaltag() {
+        return emotionaltag;
     }
 
-    public void setRobotId(Robot robotId) {
-        this.robotId = robotId;
+    public void setEmotionaltag(String emotionaltag) {
+        this.emotionaltag = emotionaltag;
     }
 
     @XmlTransient
@@ -105,6 +87,14 @@ public class Emocion implements Serializable {
 
     public void setAccionList(List<Accion> accionList) {
         this.accionList = accionList;
+    }
+
+    public Robot getRobotId() {
+        return robotId;
+    }
+
+    public void setRobotId(Robot robotId) {
+        this.robotId = robotId;
     }
 
     @Override

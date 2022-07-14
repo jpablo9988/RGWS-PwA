@@ -5,28 +5,26 @@
  */
 package ResPwAEntities.Controllers;
 
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import ResPwAEntities.Antecedente;
-import ResPwAEntities.Controllers.exceptions.NonexistentEntityException;
-import ResPwAEntities.Controllers.exceptions.PreexistingEntityException;
+import ResPwAEntities.Controllers.Exceptions.NonexistentEntityException;
+import ResPwAEntities.Controllers.Exceptions.PreexistingEntityException;
 import ResPwAEntities.Regla;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
-public class ReglaJpaController implements Serializable {
-
-    public ReglaJpaController(EntityManagerFactory emf) {
+public class ReglaJpaController {
+     public ReglaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -35,37 +33,7 @@ public class ReglaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Regla regla) throws PreexistingEntityException, Exception {
-        if (regla.getAntecedenteList() == null) {
-            regla.setAntecedenteList(new ArrayList<Antecedente>());
-        }
-        EntityManager em = null;
-        try {
-            em = getEntityManager();
-            em.getTransaction().begin();
-            List<Antecedente> attachedAntecedenteList = new ArrayList<Antecedente>();
-            for (Antecedente antecedenteListAntecedenteToAttach : regla.getAntecedenteList()) {
-                antecedenteListAntecedenteToAttach = em.getReference(antecedenteListAntecedenteToAttach.getClass(), antecedenteListAntecedenteToAttach.getId());
-                attachedAntecedenteList.add(antecedenteListAntecedenteToAttach);
-            }
-            regla.setAntecedenteList(attachedAntecedenteList);
-            em.persist(regla);
-            for (Antecedente antecedenteListAntecedente : regla.getAntecedenteList()) {
-                antecedenteListAntecedente.getReglaList().add(regla);
-                antecedenteListAntecedente = em.merge(antecedenteListAntecedente);
-            }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findRegla(regla.getId()) != null) {
-                throw new PreexistingEntityException("Regla " + regla + " already exists.", ex);
-            }
-            throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-    }
+   
 
     public void edit(Regla regla) throws NonexistentEntityException, Exception {
         EntityManager em = null;
@@ -73,25 +41,25 @@ public class ReglaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Regla persistentRegla = em.find(Regla.class, regla.getId());
-            List<Antecedente> antecedenteListOld = persistentRegla.getAntecedenteList();
-            List<Antecedente> antecedenteListNew = regla.getAntecedenteList();
+            List<Antecedente> antecedenteListOld = (List<Antecedente>) persistentRegla.getAntecedenteList();
+            List<Antecedente> antecedenteListNew = (List<Antecedente>) regla.getAntecedenteList();
             List<Antecedente> attachedAntecedenteListNew = new ArrayList<Antecedente>();
             for (Antecedente antecedenteListNewAntecedenteToAttach : antecedenteListNew) {
                 antecedenteListNewAntecedenteToAttach = em.getReference(antecedenteListNewAntecedenteToAttach.getClass(), antecedenteListNewAntecedenteToAttach.getId());
                 attachedAntecedenteListNew.add(antecedenteListNewAntecedenteToAttach);
             }
             antecedenteListNew = attachedAntecedenteListNew;
-            regla.setAntecedenteList(antecedenteListNew);
+            regla.setAntecedenteList((ArrayList<Antecedente>) antecedenteListNew);
             regla = em.merge(regla);
             for (Antecedente antecedenteListOldAntecedente : antecedenteListOld) {
                 if (!antecedenteListNew.contains(antecedenteListOldAntecedente)) {
-                    antecedenteListOldAntecedente.getReglaList().remove(regla);
+                    //antecedenteListOldAntecedente.getReglaList().remove(regla);
                     antecedenteListOldAntecedente = em.merge(antecedenteListOldAntecedente);
                 }
             }
             for (Antecedente antecedenteListNewAntecedente : antecedenteListNew) {
                 if (!antecedenteListOld.contains(antecedenteListNewAntecedente)) {
-                    antecedenteListNewAntecedente.getReglaList().add(regla);
+                    //antecedenteListNewAntecedente.getReglaList().add(regla);
                     antecedenteListNewAntecedente = em.merge(antecedenteListNewAntecedente);
                 }
             }
@@ -124,9 +92,9 @@ public class ReglaJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The regla with id " + id + " no longer exists.", enfe);
             }
-            List<Antecedente> antecedenteList = regla.getAntecedenteList();
+            List<Antecedente> antecedenteList = (List<Antecedente>) regla.getAntecedenteList();
             for (Antecedente antecedenteListAntecedente : antecedenteList) {
-                antecedenteListAntecedente.getReglaList().remove(regla);
+              //  antecedenteListAntecedente.getReglaList().remove(regla);
                 antecedenteListAntecedente = em.merge(antecedenteListAntecedente);
             }
             em.remove(regla);
@@ -183,5 +151,4 @@ public class ReglaJpaController implements Serializable {
             em.close();
         }
     }
-    
 }

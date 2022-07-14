@@ -53,6 +53,7 @@ public class BEstadoInteraccion implements Believes {
     private boolean movError;
     private boolean modificarPreferencias = false;
     private String respuestaPreferencia = null;
+    private String respuestaResultSet[] = null;
 
     private String retroalimentacionValue;
     private String estadoEmocional = "normal";
@@ -206,9 +207,10 @@ public class BEstadoInteraccion implements Believes {
         if (infoRecibida.getDataP().containsKey("DialogInput")) {
             respuestaPreferencia = (String) infoRecibida.getDataP().get("DialogInput");
             System.out.println("Recibiiiir:  " + respuestaPreferencia);
-            String resultSet[] = respuestaPreferencia.split(" ");
-            if (resultSet.length > 1) {
-                if (resultSet[1].equals("brightness") || resultSet[1].equals("volume")) {
+            respuestaResultSet = respuestaPreferencia.split(" ");
+            if (respuestaResultSet.length > 1) {
+                if (respuestaResultSet[1].equals("brightness") ||
+                         respuestaResultSet[1].equals("volume")) {
                     modificarPreferencias = true;
                 }
             }
@@ -521,6 +523,10 @@ public class BEstadoInteraccion implements Believes {
 
     public boolean estaBailando() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    public String[] getRespuestaResultSet()
+    {
+        return respuestaResultSet;
     }
 
 }

@@ -33,7 +33,7 @@ public class ActivarSenialesVida extends Task{
 
         System.out.println("--- Check Finish ActivarSenialesVida ---");
         RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
-        if(blvs.getbEstadoRobot().isActivadoSenalesDeVida())
+        if(blvs.getbEstadoRobot().isActivadoMovHabla())
         {
             return true;
         }

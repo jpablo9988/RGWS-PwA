@@ -5,30 +5,29 @@
  */
 package ResPwAEntities.Controllers;
 
-import ResPwAEntities.Controllers.exceptions.IllegalOrphanException;
-import ResPwAEntities.Controllers.exceptions.NonexistentEntityException;
-import ResPwAEntities.Controllers.exceptions.PreexistingEntityException;
+import ResPwAEntities.Controllers.Exceptions.IllegalOrphanException;
+import ResPwAEntities.Controllers.Exceptions.NonexistentEntityException;
+import ResPwAEntities.Controllers.Exceptions.PreexistingEntityException;
 import ResPwAEntities.Cuento;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import ResPwAEntities.Frases;
 import ResPwAEntities.Genero;
 import ResPwAEntities.Preferenciaxcuento;
 import java.util.ArrayList;
 import java.util.List;
-import ResPwAEntities.Frases;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
-public class CuentoJpaController implements Serializable {
-
-    public CuentoJpaController(EntityManagerFactory emf) {
+public class CuentoJpaController {
+    
+     public CuentoJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -61,7 +60,7 @@ public class CuentoJpaController implements Serializable {
             cuento.setPreferenciaxcuentoList(attachedPreferenciaxcuentoList);
             List<Frases> attachedFrasesList = new ArrayList<Frases>();
             for (Frases frasesListFrasesToAttach : cuento.getFrasesList()) {
-                frasesListFrasesToAttach = em.getReference(frasesListFrasesToAttach.getClass(), frasesListFrasesToAttach.getFrasesPK());
+                frasesListFrasesToAttach = em.getReference(frasesListFrasesToAttach.getClass(), frasesListFrasesToAttach.getAccion());
                 attachedFrasesList.add(frasesListFrasesToAttach);
             }
             cuento.setFrasesList(attachedFrasesList);
@@ -146,7 +145,7 @@ public class CuentoJpaController implements Serializable {
             cuento.setPreferenciaxcuentoList(preferenciaxcuentoListNew);
             List<Frases> attachedFrasesListNew = new ArrayList<Frases>();
             for (Frases frasesListNewFrasesToAttach : frasesListNew) {
-                frasesListNewFrasesToAttach = em.getReference(frasesListNewFrasesToAttach.getClass(), frasesListNewFrasesToAttach.getFrasesPK());
+                //frasesListNewFrasesToAttach = em.getReference(frasesListNewFrasesToAttach.getClass(), frasesListNewFrasesToAttach.getFrasesPK());
                 attachedFrasesListNew.add(frasesListNewFrasesToAttach);
             }
             frasesListNew = attachedFrasesListNew;

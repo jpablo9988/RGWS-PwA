@@ -5,27 +5,26 @@
  */
 package ResPwAEntities.Controllers;
 
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import ResPwAEntities.Robot;
 import ResPwAEntities.Accion;
-import ResPwAEntities.Controllers.exceptions.IllegalOrphanException;
-import ResPwAEntities.Controllers.exceptions.NonexistentEntityException;
-import ResPwAEntities.Controllers.exceptions.PreexistingEntityException;
+import ResPwAEntities.Controllers.Exceptions.IllegalOrphanException;
+import ResPwAEntities.Controllers.Exceptions.NonexistentEntityException;
+import ResPwAEntities.Controllers.Exceptions.PreexistingEntityException;
 import ResPwAEntities.Emocion;
+import ResPwAEntities.Robot;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
-public class EmocionJpaController implements Serializable {
+public class EmocionJpaController {
 
     public EmocionJpaController(EntityManagerFactory emf) {
         this.emf = emf;
@@ -71,7 +70,7 @@ public class EmocionJpaController implements Serializable {
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findEmocion(emocion.getId()) != null) {
+            if (findEmocion(emocion.getId().toString()) != null) {
                 throw new PreexistingEntityException("Emocion " + emocion + " already exists.", ex);
             }
             throw ex;
@@ -139,8 +138,8 @@ public class EmocionJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = emocion.getId();
-                if (findEmocion(id) == null) {
+                Integer id = emocion.getId();
+                if (findEmocion(id.toString()) ==null) {
                     throw new NonexistentEntityException("The emocion with id " + id + " no longer exists.");
                 }
             }

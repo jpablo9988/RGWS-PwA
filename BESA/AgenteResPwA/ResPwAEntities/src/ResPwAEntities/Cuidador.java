@@ -11,7 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,38 +21,34 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "CUIDADOR")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cuidador.findAll", query = "SELECT c FROM Cuidador c"),
-    @NamedQuery(name = "Cuidador.findByNombreusuario", query = "SELECT c FROM Cuidador c WHERE c.nombreusuario = :nombreusuario"),
-    @NamedQuery(name = "Cuidador.findByContrasena", query = "SELECT c FROM Cuidador c WHERE c.contrasena = :contrasena"),
-    @NamedQuery(name = "Cuidador.findByNombre", query = "SELECT c FROM Cuidador c WHERE c.nombre = :nombre"),
-    @NamedQuery(name = "Cuidador.findByCorreo", query = "SELECT c FROM Cuidador c WHERE c.correo = :correo"),
-    @NamedQuery(name = "Cuidador.findByCelular", query = "SELECT c FROM Cuidador c WHERE c.celular = :celular")})
+    @NamedQuery(name = "Cuidador.findAll", query = "SELECT c FROM Cuidador c")
+    , @NamedQuery(name = "Cuidador.findByNombreusuario", query = "SELECT c FROM Cuidador c WHERE c.nombreusuario = :nombreusuario")
+    , @NamedQuery(name = "Cuidador.findByContrase\u00f1a", query = "SELECT c FROM Cuidador c WHERE c.contrase\u00f1a = :contrase\u00f1a")
+    , @NamedQuery(name = "Cuidador.findByNombre", query = "SELECT c FROM Cuidador c WHERE c.nombre = :nombre")
+    , @NamedQuery(name = "Cuidador.findByCorreo", query = "SELECT c FROM Cuidador c WHERE c.correo = :correo")
+    , @NamedQuery(name = "Cuidador.findByCelular", query = "SELECT c FROM Cuidador c WHERE c.celular = :celular")})
 public class Cuidador implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "NOMBREUSUARIO")
+    @Column(nullable = false, length = 2147483647)
     private String nombreusuario;
-    @Basic(optional = false)
-    @Column(name = "CONTRASENA")
+    @Column(length = 2147483647)
     private String contrasena;
-    @Basic(optional = false)
-    @Column(name = "NOMBRE")
+    @Column(length = 2147483647)
     private String nombre;
-    @Basic(optional = false)
-    @Column(name = "CORREO")
+    @Column(length = 2147483647)
     private String correo;
-    @Basic(optional = false)
-    @Column(name = "CELULAR")
+    @Column(length = 2147483647)
     private String celular;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuidadorNombreusuario", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuidadorNombreusuario")
     private List<Perfilpwa> perfilpwaList;
 
     public Cuidador() {
@@ -61,14 +56,6 @@ public class Cuidador implements Serializable {
 
     public Cuidador(String nombreusuario) {
         this.nombreusuario = nombreusuario;
-    }
-
-    public Cuidador(String nombreusuario, String contrasena, String nombre, String correo, String celular) {
-        this.nombreusuario = nombreusuario;
-        this.contrasena = contrasena;
-        this.nombre = nombre;
-        this.correo = correo;
-        this.celular = celular;
     }
 
     public String getNombreusuario() {
@@ -144,5 +131,5 @@ public class Cuidador implements Serializable {
     public String toString() {
         return "ResPwAEntities.Cuidador[ nombreusuario=" + nombreusuario + " ]";
     }
-    
+
 }

@@ -1,4 +1,4 @@
-package ResPwAEntities.Controllers.exceptions;
+package ResPwAEntities.Controllers.Exceptions;
 
 public class PreexistingEntityException extends Exception {
     public PreexistingEntityException(String message, Throwable cause) {

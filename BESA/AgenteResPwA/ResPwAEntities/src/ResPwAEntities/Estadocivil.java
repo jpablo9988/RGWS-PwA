@@ -8,9 +8,9 @@ package ResPwAEntities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -21,22 +21,22 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "ESTADOCIVIL")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Estadocivil.findAll", query = "SELECT e FROM Estadocivil e"),
-    @NamedQuery(name = "Estadocivil.findByTipoec", query = "SELECT e FROM Estadocivil e WHERE e.tipoec = :tipoec")})
+    @NamedQuery(name = "Estadocivil.findAll", query = "SELECT e FROM Estadocivil e")
+    , @NamedQuery(name = "Estadocivil.findByTipoec", query = "SELECT e FROM Estadocivil e WHERE e.tipoec = :tipoec")})
 public class Estadocivil implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "TIPOEC")
+    @Column(nullable = false, length = 2147483647)
     private String tipoec;
-    @OneToMany(mappedBy = "estadocivilTipoec", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadocivilTipoec")
     private List<Perfilpwa> perfilpwaList;
 
     public Estadocivil() {

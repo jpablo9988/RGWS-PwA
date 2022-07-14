@@ -81,7 +81,7 @@ def deleteExpiredAction( expiredAction ):
     if activities_running and (expiredAction in activities_running):
         activities_running.pop( expiredAction )
 
-"""class KeyboardThread(threading.Thread):
+class KeyboardThread(threading.Thread):
 
     def __init__(self, input_cbk = None, robot=None, name='keyboard-input-thread'):
         self.input_cbk = input_cbk
@@ -101,4 +101,3 @@ def deleteExpiredAction( expiredAction ):
         s = "Escoger: "
         while True:
             self.input_cbk(str(easygui.buttonbox(msg= s, choices=listChoices, title="Simular Evento Emocional")),self.robot)
-"""""

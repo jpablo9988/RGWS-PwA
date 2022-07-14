@@ -12,36 +12,24 @@ import javax.persistence.Embeddable;
 
 /**
  *
-<<<<<<< HEAD
- * @author maria.f.garces.cala
-=======
- * @author juans
->>>>>>> master
+ * @author 57305
  */
 @Embeddable
 public class PreferenciaxcuentoPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "PERFIL_PREFERENCIA_PERFILPWA_CEDULA")
-    private String perfilPreferenciaPerfilpwaCedula;
-    @Basic(optional = false)
     @Column(name = "CUENTO_NOMBRE")
     private String cuentoNombre;
+    @Basic(optional = false)
+    @Column(name = "perfil_preferencia_nombrepreferido", nullable = false, length = 2147483647)
+    private String perfilPreferenciaNombrepreferido;
 
     public PreferenciaxcuentoPK() {
     }
 
-    public PreferenciaxcuentoPK(String perfilPreferenciaPerfilpwaCedula, String cuentoNombre) {
-        this.perfilPreferenciaPerfilpwaCedula = perfilPreferenciaPerfilpwaCedula;
+    public PreferenciaxcuentoPK(String perfilPreferenciaNombrepreferido, String cuentoNombre) {
         this.cuentoNombre = cuentoNombre;
-    }
-
-    public String getPerfilPreferenciaPerfilpwaCedula() {
-        return perfilPreferenciaPerfilpwaCedula;
-    }
-
-    public void setPerfilPreferenciaPerfilpwaCedula(String perfilPreferenciaPerfilpwaCedula) {
-        this.perfilPreferenciaPerfilpwaCedula = perfilPreferenciaPerfilpwaCedula;
+        this.perfilPreferenciaNombrepreferido = perfilPreferenciaNombrepreferido;
     }
 
     public String getCuentoNombre() {
@@ -52,10 +40,18 @@ public class PreferenciaxcuentoPK implements Serializable {
         this.cuentoNombre = cuentoNombre;
     }
 
+    public String getPerfilPreferenciaNombrepreferido() {
+        return perfilPreferenciaNombrepreferido;
+    }
+
+    public void setPerfilPreferenciaNombrepreferido(String perfilPreferenciaNombrepreferido) {
+        this.perfilPreferenciaNombrepreferido = perfilPreferenciaNombrepreferido;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (perfilPreferenciaPerfilpwaCedula != null ? perfilPreferenciaPerfilpwaCedula.hashCode() : 0);
+        hash += (perfilPreferenciaNombrepreferido != null ? perfilPreferenciaNombrepreferido.hashCode() : 0);
         hash += (cuentoNombre != null ? cuentoNombre.hashCode() : 0);
         return hash;
     }
@@ -67,7 +63,7 @@ public class PreferenciaxcuentoPK implements Serializable {
             return false;
         }
         PreferenciaxcuentoPK other = (PreferenciaxcuentoPK) object;
-        if ((this.perfilPreferenciaPerfilpwaCedula == null && other.perfilPreferenciaPerfilpwaCedula != null) || (this.perfilPreferenciaPerfilpwaCedula != null && !this.perfilPreferenciaPerfilpwaCedula.equals(other.perfilPreferenciaPerfilpwaCedula))) {
+        if ((this.perfilPreferenciaNombrepreferido == null && other.perfilPreferenciaNombrepreferido != null) || (this.perfilPreferenciaNombrepreferido != null && !this.perfilPreferenciaNombrepreferido.equals(other.perfilPreferenciaNombrepreferido))) {
             return false;
         }
         if ((this.cuentoNombre == null && other.cuentoNombre != null) || (this.cuentoNombre != null && !this.cuentoNombre.equals(other.cuentoNombre))) {
@@ -78,7 +74,7 @@ public class PreferenciaxcuentoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.PreferenciaxcuentoPK[ perfilPreferenciaPerfilpwaCedula=" + perfilPreferenciaPerfilpwaCedula + ", cuentoNombre=" + cuentoNombre + " ]";
+        return "ResPwAEntities.PreferenciaxcuentoPK[ perfilPreferenciaNombrepreferido=" + perfilPreferenciaNombrepreferido + ", cuentoNombre=" + cuentoNombre + " ]";
     }
     
 }

@@ -11,11 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,35 +23,28 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "CANCION")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cancion.findAll", query = "SELECT c FROM Cancion c"),
-    @NamedQuery(name = "Cancion.findByNombre", query = "SELECT c FROM Cancion c WHERE c.nombre = :nombre"),
-    @NamedQuery(name = "Cancion.findByUrl", query = "SELECT c FROM Cancion c WHERE c.url = :url")})
+    @NamedQuery(name = "Cancion.findAll", query = "SELECT c FROM Cancion c")
+    , @NamedQuery(name = "Cancion.findByNombre", query = "SELECT c FROM Cancion c WHERE c.nombre = :nombre")
+    , @NamedQuery(name = "Cancion.findByUrl", query = "SELECT c FROM Cancion c WHERE c.url = :url")})
 public class Cancion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "NOMBRE")
+    @Column(nullable = false, length = 2147483647)
     private String nombre;
-    @Column(name = "URL")
+    @Column(length = 2147483647)
     private String url;
-    @JoinTable(name = "LISTATAGS", joinColumns = {
-        @JoinColumn(name = "CANCION_NOMBRE", referencedColumnName = "NOMBRE")}, inverseJoinColumns = {
-        @JoinColumn(name = "TAGS_ID", referencedColumnName = "ID")})
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Tags> tagsList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancionNombre", fetch = FetchType.EAGER)
-    private List<Enriq> enriqList;
-    @JoinColumn(name = "GENERO_GENERO", referencedColumnName = "GENERO")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "genero_genero", referencedColumnName = "genero", nullable = false)
+    @ManyToOne(optional = false)
     private Genero generoGenero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancion", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancion")
     private List<Preferenciaxcancion> preferenciaxcancionList;
 
     public Cancion() {
@@ -78,24 +68,6 @@ public class Cancion implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    @XmlTransient
-    public List<Tags> getTagsList() {
-        return tagsList;
-    }
-
-    public void setTagsList(List<Tags> tagsList) {
-        this.tagsList = tagsList;
-    }
-
-    @XmlTransient
-    public List<Enriq> getEnriqList() {
-        return enriqList;
-    }
-
-    public void setEnriqList(List<Enriq> enriqList) {
-        this.enriqList = enriqList;
     }
 
     public Genero getGeneroGenero() {
@@ -138,6 +110,10 @@ public class Cancion implements Serializable {
     @Override
     public String toString() {
         return "ResPwAEntities.Cancion[ nombre=" + nombre + " ]";
+    }
+
+    public List<Enriq> getEnriqList() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

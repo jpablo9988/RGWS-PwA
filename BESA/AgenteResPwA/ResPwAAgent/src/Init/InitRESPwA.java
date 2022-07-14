@@ -62,8 +62,10 @@ public class InitRESPwA {
     public static String emf = "ResPwAEntitiesPU";
     private static int PLANID = 0;
 
-    public static void main(String[] args) {
-        try {
+    public static void main(String[] args) 
+    {
+        try 
+        {
             String cedula = obtenerUsuario();
             //Empieza y Crea Contenedor
             AdmBESA.getInstance();
@@ -76,13 +78,17 @@ public class InitRESPwA {
             ServiceAgentRESPwA SPA = ServiceAgentRESPwA.buildRobotSPAgent(aliasSPAgent, p);
             startAllAgents(RABDI, EAA, SHA, SPA);
             startConfig(p);
-//            HashMap<String, Object> hm1 = new HashMap<>();
-//            hm1.put("TAGSDANCE", "MACARENA");
-//            ServiceDataRequest data = ServiceRequestBuilder.buildRequest(ActivityServiceRequestType.RUNANIMATION, hm1);
-//            p.sendRequest(data);
-        } catch (ExceptionBESA ex) {
+            // -------------| PRUEBA - Dance, Macarena |-----------------
+            HashMap<String, Object> hm1 = new HashMap<>();
+            hm1.put("TAGSDANCE", "MACARENA");
+            ServiceDataRequest data = ServiceRequestBuilder.buildRequest(ActivityServiceRequestType.RUNANIMATION, hm1);
+            p.sendRequest(data);
+            // -------------| END - PRUEBA |-----------------------------
+        } catch (ExceptionBESA ex) 
+        {
             Logger.getLogger(InitRESPwA.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
+        } catch (Exception ex) 
+        {
             Logger.getLogger(InitRESPwA.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -92,19 +98,26 @@ public class InitRESPwA {
         boolean login = false;
         Scanner scan = new Scanner(System.in);
         Cuidador c = null;
-
+        
+        // ---| CONECTAR SIN BASE DE DATOS |---
+            System.out.println("Ingrese su nombre de usuario: ");
+            user=scan.nextLine();
+            System.out.println("Ingrese su contrasena: ");
+            pwd= scan.nextLine();
+            return pwd;
+            
+        // ---| CONECTAR CON BASE DE DATOS |---
+           /* 
         do {
-//            System.out.println("Ingrese su nombre de usuario: ");
-            //user=scan.nextLine();
-//            System.out.println("Ingrese su contrasena: ");
-//          pwd= scan.nextLine();
+            
             c = RESPwABDInterface.getCarer(user);
-            if (c == null) {
-//                System.out.println("Usuario Inexistente");
+            if (user == null) {
+                System.out.println("Usuario Inexistente");
             } else {
                 login = c.getContrasena().equals(pwd);
+                //login = true;
                 if (!login) {
-//                    System.out.println("Contrasena no coincide");
+                System.out.println("Contrasena no coincide");
                 }
             }
 
@@ -112,11 +125,13 @@ public class InitRESPwA {
         List<Perfilpwa> pwalist = c.getPerfilpwaList();
 
         for (int i = 0; i < pwalist.size(); i++) {
-//            System.out.println(i + " Paciente: " + pwalist.get(i).getCedula());
+           System.out.println(i + " Paciente: " + pwalist.get(i).getCedula());
         }
-//        System.out.println("Ingrese el numero del paciente que utilizara ResPwa");
+        System.out.println("Ingrese el numero del paciente que utilizara ResPwa");
         int selec = 0; //scan.nextInt();
         return pwalist.get(selec).getCedula();
+        
+        */
     }
 
     public static int getPlanID() {
@@ -190,7 +205,8 @@ public class InitRESPwA {
                 params.put(e.getEmotionaltag(), new HashMap<String, Object>());
             }
             accion = new HashMap<>();
-            for (Accion a : e.getAccionList()) {
+            for (Accion a : e.getAccionList()) 
+            {
                 joints = new HashMap<>();
                 for (Joint j : a.getJointList()) {
                     if (!joints.containsKey(j.getNombre())) {

@@ -11,7 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,31 +23,30 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "CUENTO")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cuento.findAll", query = "SELECT c FROM Cuento c"),
-    @NamedQuery(name = "Cuento.findByAutor", query = "SELECT c FROM Cuento c WHERE c.autor = :autor"),
-    @NamedQuery(name = "Cuento.findByNombre", query = "SELECT c FROM Cuento c WHERE c.nombre = :nombre")})
+    @NamedQuery(name = "Cuento.findAll", query = "SELECT c FROM Cuento c")
+    , @NamedQuery(name = "Cuento.findByNombre", query = "SELECT c FROM Cuento c WHERE c.nombre = :nombre")
+    , @NamedQuery(name = "Cuento.findByAutor", query = "SELECT c FROM Cuento c WHERE c.autor = :autor")})
 public class Cuento implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @Column(name = "AUTOR")
-    private String autor;
     @Id
     @Basic(optional = false)
-    @Column(name = "NOMBRE")
+    @Column(nullable = false, length = 2147483647)
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuento", fetch = FetchType.EAGER)
-    private List<Preferenciaxcuento> preferenciaxcuentoList;
-    @JoinColumn(name = "GENERO_GENERO", referencedColumnName = "GENERO")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @Column(length = 2147483647)
+    private String autor;
+    @JoinColumn(name = "genero_genero", referencedColumnName = "genero", nullable = false)
+    @ManyToOne(optional = false)
     private Genero generoGenero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuento", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentoNombre")
+    private List<Preferenciaxcuento> preferenciaxcuentoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentoNombre")
     private List<Frases> frasesList;
 
     public Cuento() {
@@ -56,19 +54,6 @@ public class Cuento implements Serializable {
 
     public Cuento(String nombre) {
         this.nombre = nombre;
-    }
-
-    public Cuento(String nombre, String autor) {
-        this.nombre = nombre;
-        this.autor = autor;
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
     }
 
     public String getNombre() {
@@ -79,13 +64,12 @@ public class Cuento implements Serializable {
         this.nombre = nombre;
     }
 
-    @XmlTransient
-    public List<Preferenciaxcuento> getPreferenciaxcuentoList() {
-        return preferenciaxcuentoList;
+    public String getAutor() {
+        return autor;
     }
 
-    public void setPreferenciaxcuentoList(List<Preferenciaxcuento> preferenciaxcuentoList) {
-        this.preferenciaxcuentoList = preferenciaxcuentoList;
+    public void setAutor(String autor) {
+        this.autor = autor;
     }
 
     public Genero getGeneroGenero() {
@@ -94,6 +78,15 @@ public class Cuento implements Serializable {
 
     public void setGeneroGenero(Genero generoGenero) {
         this.generoGenero = generoGenero;
+    }
+
+    @XmlTransient
+    public List<Preferenciaxcuento> getPreferenciaxcuentoList() {
+        return preferenciaxcuentoList;
+    }
+
+    public void setPreferenciaxcuentoList(List<Preferenciaxcuento> preferenciaxcuentoList) {
+        this.preferenciaxcuentoList = preferenciaxcuentoList;
     }
 
     @XmlTransient

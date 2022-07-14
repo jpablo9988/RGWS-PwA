@@ -6,12 +6,10 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -25,57 +23,48 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "ACCION")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Accion.findAll", query = "SELECT a FROM Accion a"),
-    @NamedQuery(name = "Accion.findById", query = "SELECT a FROM Accion a WHERE a.id = :id"),
-    @NamedQuery(name = "Accion.findByNombre", query = "SELECT a FROM Accion a WHERE a.nombre = :nombre"),
-    @NamedQuery(name = "Accion.findByTipo", query = "SELECT a FROM Accion a WHERE a.tipo = :tipo")})
+    @NamedQuery(name = "Accion.findAll", query = "SELECT a FROM Accion a")
+    , @NamedQuery(name = "Accion.findById", query = "SELECT a FROM Accion a WHERE a.id = :id")
+    , @NamedQuery(name = "Accion.findByNombre", query = "SELECT a FROM Accion a WHERE a.nombre = :nombre")
+    , @NamedQuery(name = "Accion.findByTipo", query = "SELECT a FROM Accion a WHERE a.tipo = :tipo")})
 public class Accion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(name = "ID")
-    private BigDecimal id;
-    @Basic(optional = false)
-    @Column(name = "NOMBRE")
+    @Column(nullable = false)
+    private Integer id;
+    @Column(length = 2147483647)
     private String nombre;
-    @Basic(optional = false)
-    @Column(name = "TIPO")
+    @Column(length = 2147483647)
     private String tipo;
-    @JoinTable(name = "ACCIONXJOINT", joinColumns = {
-        @JoinColumn(name = "ACCION_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "JOINT_ID", referencedColumnName = "ID")})
-    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "accionxjoint", joinColumns = {
+        @JoinColumn(name = "accion_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "joint_id", referencedColumnName = "id", nullable = false)})
+    @ManyToMany
     private List<Joint> jointList;
-    @JoinColumn(name = "EMOCION_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "emocion_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
     private Emocion emocionId;
 
     public Accion() {
     }
 
-    public Accion(BigDecimal id) {
+    public Accion(Integer id) {
         this.id = id;
     }
 
-    public Accion(BigDecimal id, String nombre, String tipo) {
-        this.id = id;
-        this.nombre = nombre;
-        this.tipo = tipo;
-    }
-
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

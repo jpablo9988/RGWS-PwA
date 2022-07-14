@@ -1,4 +1,4 @@
-package ResPwAEntities.Controllers.exceptions;
+package ResPwAEntities.Controllers.Exceptions;
 
 import java.util.ArrayList;
 import java.util.List;

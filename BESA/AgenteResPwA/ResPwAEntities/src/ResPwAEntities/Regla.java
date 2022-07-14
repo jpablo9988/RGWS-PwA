@@ -7,46 +7,45 @@ package ResPwAEntities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "REGLA")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Regla.findAll", query = "SELECT r FROM Regla r"),
-    @NamedQuery(name = "Regla.findById", query = "SELECT r FROM Regla r WHERE r.id = :id"),
-    @NamedQuery(name = "Regla.findByFeedback", query = "SELECT r FROM Regla r WHERE r.feedback = :feedback"),
-    @NamedQuery(name = "Regla.findByEtiqueta", query = "SELECT r FROM Regla r WHERE r.etiqueta = :etiqueta")})
+    @NamedQuery(name = "Regla.findAll", query = "SELECT r FROM Regla r")
+    , @NamedQuery(name = "Regla.findById", query = "SELECT r FROM Regla r WHERE r.id = :id")
+    , @NamedQuery(name = "Regla.findByFeedback", query = "SELECT r FROM Regla r WHERE r.feedback = :feedback")
+    , @NamedQuery(name = "Regla.findByEtiqueta", query = "SELECT r FROM Regla r WHERE r.etiqueta = :etiqueta")})
 public class Regla implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(name = "ID")
+    @Column(nullable = false, precision = 131089)
     private BigDecimal id;
-    @Basic(optional = false)
-    @Column(name = "FEEDBACK")
-    private double feedback;
-    @Basic(optional = false)
-    @Column(name = "ETIQUETA")
+    @Column(precision = 17, scale = 17)
+    private Double feedback;
+    @Column(length = 2147483647)
     private String etiqueta;
-    @ManyToMany(mappedBy = "reglaList", fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "id")
     private List<Antecedente> antecedenteList;
 
     public Regla() {
@@ -54,12 +53,6 @@ public class Regla implements Serializable {
 
     public Regla(BigDecimal id) {
         this.id = id;
-    }
-
-    public Regla(BigDecimal id, double feedback, String etiqueta) {
-        this.id = id;
-        this.feedback = feedback;
-        this.etiqueta = etiqueta;
     }
 
     public BigDecimal getId() {
@@ -70,11 +63,11 @@ public class Regla implements Serializable {
         this.id = id;
     }
 
-    public double getFeedback() {
+    public Double getFeedback() {
         return feedback;
     }
 
-    public void setFeedback(double feedback) {
+    public void setFeedback(Double feedback) {
         this.feedback = feedback;
     }
 
@@ -91,8 +84,8 @@ public class Regla implements Serializable {
         return antecedenteList;
     }
 
-    public void setAntecedenteList(List<Antecedente> antecedenteList) {
-        this.antecedenteList = antecedenteList;
+    public void setAntecedenteList(List<Antecedente> listaAntecedente) {
+        this.antecedenteList = listaAntecedente;
     }
 
     @Override

@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -25,61 +23,55 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "FRASES")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Frases.findAll", query = "SELECT f FROM Frases f"),
-    @NamedQuery(name = "Frases.findByOrden", query = "SELECT f FROM Frases f WHERE f.frasesPK.orden = :orden"),
-    @NamedQuery(name = "Frases.findByContenido", query = "SELECT f FROM Frases f WHERE f.contenido = :contenido"),
-    @NamedQuery(name = "Frases.findByCuentoNombre", query = "SELECT f FROM Frases f WHERE f.frasesPK.cuentoNombre = :cuentoNombre"),
-    @NamedQuery(name = "Frases.findByEmotionalevent", query = "SELECT f FROM Frases f WHERE f.emotionalevent = :emotionalevent"),
-    @NamedQuery(name = "Frases.findByAccion", query = "SELECT f FROM Frases f WHERE f.accion = :accion"),
-    @NamedQuery(name = "Frases.findByUrlimagen", query = "SELECT f FROM Frases f WHERE f.urlimagen = :urlimagen")})
+    @NamedQuery(name = "Frases.findAll", query = "SELECT f FROM Frases f")
+    , @NamedQuery(name = "Frases.findByOrden", query = "SELECT f FROM Frases f WHERE f.orden = :orden")
+    , @NamedQuery(name = "Frases.findByContenido", query = "SELECT f FROM Frases f WHERE f.contenido = :contenido")
+    , @NamedQuery(name = "Frases.findByEmotionalevent", query = "SELECT f FROM Frases f WHERE f.emotionalevent = :emotionalevent")
+    , @NamedQuery(name = "Frases.findByAccion", query = "SELECT f FROM Frases f WHERE f.accion = :accion")
+    , @NamedQuery(name = "Frases.findByUrlimagen", query = "SELECT f FROM Frases f WHERE f.urlimagen = :urlimagen")})
 public class Frases implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected FrasesPK frasesPK;
+    @Id
     @Basic(optional = false)
-    @Column(name = "CONTENIDO")
+    @Column(nullable = false)
+    private Integer orden;
+    @Column(length = 2147483647)
     private String contenido;
-    @Column(name = "EMOTIONALEVENT")
+    @Column(length = 2147483647)
     private String emotionalevent;
-    @Column(name = "ACCION")
+    @Column(length = 2147483647)
     private String accion;
-    @Column(name = "URLIMAGEN")
+    @Column(length = 2147483647)
     private String urlimagen;
-    @OneToMany(mappedBy = "frases", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frases")
     private List<Enriq> enriqList;
-    @JoinColumn(name = "CUENTO_NOMBRE", referencedColumnName = "NOMBRE", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "cuento_nombre", referencedColumnName = "nombre", nullable = false)
+    @ManyToOne(optional = false)
     private Cuento cuento;
+    @JoinColumn(name = "rutinas_id_1", referencedColumnName = "id_1", nullable = false)
+    @ManyToOne(optional = false)
+    private Rutinas rutinasId1;
 
     public Frases() {
     }
 
-    public Frases(FrasesPK frasesPK) {
-        this.frasesPK = frasesPK;
+    public Frases(Integer orden) {
+        this.orden = orden;
     }
 
-    public Frases(FrasesPK frasesPK, String contenido) {
-        this.frasesPK = frasesPK;
-        this.contenido = contenido;
+    public Integer getOrden() {
+        return orden;
     }
 
-    public Frases(BigDecimal orden, String cuentoNombre) {
-        this.frasesPK = new FrasesPK(orden, cuentoNombre);
-    }
-
-    public FrasesPK getFrasesPK() {
-        return frasesPK;
-    }
-
-    public void setFrasesPK(FrasesPK frasesPK) {
-        this.frasesPK = frasesPK;
+    public void setOrden(Integer orden) {
+        this.orden = orden;
     }
 
     public String getContenido() {
@@ -131,10 +123,18 @@ public class Frases implements Serializable {
         this.cuento = cuento;
     }
 
+    public Rutinas getRutinasId1() {
+        return rutinasId1;
+    }
+
+    public void setRutinasId1(Rutinas rutinasId1) {
+        this.rutinasId1 = rutinasId1;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (frasesPK != null ? frasesPK.hashCode() : 0);
+        hash += (orden != null ? orden.hashCode() : 0);
         return hash;
     }
 
@@ -145,7 +145,7 @@ public class Frases implements Serializable {
             return false;
         }
         Frases other = (Frases) object;
-        if ((this.frasesPK == null && other.frasesPK != null) || (this.frasesPK != null && !this.frasesPK.equals(other.frasesPK))) {
+        if ((this.orden == null && other.orden != null) || (this.orden != null && !this.orden.equals(other.orden))) {
             return false;
         }
         return true;
@@ -153,7 +153,7 @@ public class Frases implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.Frases[ frasesPK=" + frasesPK + " ]";
+        return "ResPwAEntities.Frases[ orden=" + orden + " ]";
     }
-
+    
 }

@@ -6,13 +6,11 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -23,56 +21,45 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "JOINT")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Joint.findAll", query = "SELECT j FROM Joint j"),
-    @NamedQuery(name = "Joint.findById", query = "SELECT j FROM Joint j WHERE j.id = :id"),
-    @NamedQuery(name = "Joint.findByNombre", query = "SELECT j FROM Joint j WHERE j.nombre = :nombre"),
-    @NamedQuery(name = "Joint.findByAngulo", query = "SELECT j FROM Joint j WHERE j.angulo = :angulo"),
-    @NamedQuery(name = "Joint.findByTiempo", query = "SELECT j FROM Joint j WHERE j.tiempo = :tiempo")})
+    @NamedQuery(name = "Joint.findAll", query = "SELECT j FROM Joint j")
+    , @NamedQuery(name = "Joint.findById", query = "SELECT j FROM Joint j WHERE j.id = :id")
+    , @NamedQuery(name = "Joint.findByNombre", query = "SELECT j FROM Joint j WHERE j.nombre = :nombre")
+    , @NamedQuery(name = "Joint.findByAngulo", query = "SELECT j FROM Joint j WHERE j.angulo = :angulo")
+    , @NamedQuery(name = "Joint.findByTiempo", query = "SELECT j FROM Joint j WHERE j.tiempo = :tiempo")})
 public class Joint implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(name = "ID")
-    private BigDecimal id;
-    @Basic(optional = false)
-    @Column(name = "NOMBRE")
+    @Column(nullable = false)
+    private Integer id;
+    @Column(length = 2147483647)
     private String nombre;
-    @Basic(optional = false)
-    @Column(name = "ANGULO")
-    private double angulo;
-    @Basic(optional = false)
-    @Column(name = "TIEMPO")
-    private BigDecimal tiempo;
-    @ManyToMany(mappedBy = "jointList", fetch = FetchType.EAGER)
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(precision = 17, scale = 17)
+    private Double angulo;
+    private BigInteger tiempo;
+    @ManyToMany(mappedBy = "jointList")
     private List<Accion> accionList;
 
     public Joint() {
     }
 
-    public Joint(BigDecimal id) {
+    public Joint(Integer id) {
         this.id = id;
     }
 
-    public Joint(BigDecimal id, String nombre, double angulo, BigDecimal tiempo) {
-        this.id = id;
-        this.nombre = nombre;
-        this.angulo = angulo;
-        this.tiempo = tiempo;
-    }
-
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -84,19 +71,19 @@ public class Joint implements Serializable {
         this.nombre = nombre;
     }
 
-    public double getAngulo() {
+    public Double getAngulo() {
         return angulo;
     }
 
-    public void setAngulo(double angulo) {
+    public void setAngulo(Double angulo) {
         this.angulo = angulo;
     }
 
-    public BigDecimal getTiempo() {
+    public BigInteger getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(BigDecimal tiempo) {
+    public void setTiempo(BigInteger tiempo) {
         this.tiempo = tiempo;
     }
 

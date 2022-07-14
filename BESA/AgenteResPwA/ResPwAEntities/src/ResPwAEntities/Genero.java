@@ -11,8 +11,9 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -22,27 +23,28 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author maria.f.garces.cala
+ * @author 57305
  */
 @Entity
-@Table(name = "GENERO")
+@Table(catalog = "Res-pwaDB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Genero.findAll", query = "SELECT g FROM Genero g"),
-    @NamedQuery(name = "Genero.findByGenero", query = "SELECT g FROM Genero g WHERE g.genero = :genero")})
+    @NamedQuery(name = "Genero.findAll", query = "SELECT g FROM Genero g")
+    , @NamedQuery(name = "Genero.findByGenero", query = "SELECT g FROM Genero g WHERE g.genero = :genero")})
 public class Genero implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "GENERO")
+    @Column(nullable = false, length = 2147483647)
     private String genero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "generoGenero", fetch = FetchType.EAGER)
-    private List<Cancion> cancionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "generoGenero", fetch = FetchType.EAGER)
-    private List<Baile> baileList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "generoGenero", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "generoGenero")
     private List<Cuento> cuentoList;
+    @JoinColumn(name = "baile_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Baile baileId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "generoGenero")
+    private List<Cancion> cancionList;
 
     public Genero() {
     }
@@ -60,30 +62,29 @@ public class Genero implements Serializable {
     }
 
     @XmlTransient
-    public List<Cancion> getCancionList() {
-        return cancionList;
-    }
-
-    public void setCancionList(List<Cancion> cancionList) {
-        this.cancionList = cancionList;
-    }
-
-    @XmlTransient
-    public List<Baile> getBaileList() {
-        return baileList;
-    }
-
-    public void setBaileList(List<Baile> baileList) {
-        this.baileList = baileList;
-    }
-
-    @XmlTransient
     public List<Cuento> getCuentoList() {
         return cuentoList;
     }
 
     public void setCuentoList(List<Cuento> cuentoList) {
         this.cuentoList = cuentoList;
+    }
+
+    public Baile getBaileId() {
+        return baileId;
+    }
+
+    public void setBaileId(Baile baileId) {
+        this.baileId = baileId;
+    }
+
+    @XmlTransient
+    public List<Cancion> getCancionList() {
+        return cancionList;
+    }
+
+    public void setCancionList(List<Cancion> cancionList) {
+        this.cancionList = cancionList;
     }
 
     @Override
