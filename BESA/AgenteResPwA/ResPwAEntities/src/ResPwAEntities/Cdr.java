@@ -6,6 +6,7 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,109 +16,138 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"perfil_medico_perfil_medico_id"})})
+@Table(name = "cdr", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cdr.findAll", query = "SELECT c FROM Cdr c")
-    , @NamedQuery(name = "Cdr.findByMemoria", query = "SELECT c FROM Cdr c WHERE c.memoria = :memoria")
-    , @NamedQuery(name = "Cdr.findByOrientacion", query = "SELECT c FROM Cdr c WHERE c.orientacion = :orientacion")
-    , @NamedQuery(name = "Cdr.findByJuicio", query = "SELECT c FROM Cdr c WHERE c.juicio = :juicio")
-    , @NamedQuery(name = "Cdr.findByVidaSocial", query = "SELECT c FROM Cdr c WHERE c.vidaSocial = :vidaSocial")
-    , @NamedQuery(name = "Cdr.findByHogar", query = "SELECT c FROM Cdr c WHERE c.hogar = :hogar")
-    , @NamedQuery(name = "Cdr.findByCuidadopersonal", query = "SELECT c FROM Cdr c WHERE c.cuidadopersonal = :cuidadopersonal")})
+    @NamedQuery(name = "Cdr.findAll", query = "SELECT c FROM Cdr c"),
+    @NamedQuery(name = "Cdr.findByMemoria", query = "SELECT c FROM Cdr c WHERE c.memoria = :memoria"),
+    @NamedQuery(name = "Cdr.findByOrientacion", query = "SELECT c FROM Cdr c WHERE c.orientacion = :orientacion"),
+    @NamedQuery(name = "Cdr.findByJuicio", query = "SELECT c FROM Cdr c WHERE c.juicio = :juicio"),
+    @NamedQuery(name = "Cdr.findByVidaSocial", query = "SELECT c FROM Cdr c WHERE c.vidaSocial = :vidaSocial"),
+    @NamedQuery(name = "Cdr.findByHogar", query = "SELECT c FROM Cdr c WHERE c.hogar = :hogar"),
+    @NamedQuery(name = "Cdr.findByCuidadopersonal", query = "SELECT c FROM Cdr c WHERE c.cuidadopersonal = :cuidadopersonal"),
+    @NamedQuery(name = "Cdr.findByMedicoPwaCedula", query = "SELECT c FROM Cdr c WHERE c.medicoPwaCedula = :medicoPwaCedula")})
 public class Cdr implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @Column(name = "memoria")
+    private BigDecimal memoria;
+    @Basic(optional = false)
+    @Column(name = "orientacion")
+    private BigDecimal orientacion;
+    @Basic(optional = false)
+    @Column(name = "juicio")
+    private BigDecimal juicio;
+    @Basic(optional = false)
+    @Column(name = "vida_social")
+    private BigDecimal vidaSocial;
+    @Basic(optional = false)
+    @Column(name = "hogar")
+    private BigDecimal hogar;
+    @Basic(optional = false)
+    @Column(name = "cuidadopersonal")
+    private BigDecimal cuidadopersonal;
     @Id
     @Basic(optional = false)
-    @Column(nullable = false)
-    private Integer memoria;
-    private Integer orientacion;
-    private Integer juicio;
-    @Column(name = "vida_social")
-    private Integer vidaSocial;
-    private Integer hogar;
-    private Integer cuidadopersonal;
-    @JoinColumn(name = "perfil_medico_perfil_medico_id", referencedColumnName = "perfil_medico_id", nullable = false)
+    @Column(name = "medico_pwa_cedula")
+    private String medicoPwaCedula;
+    @JoinColumn(name = "medico_pwa_cedula", referencedColumnName = "perfil_pwa_cedula", insertable = false, updatable = false)
     @OneToOne(optional = false)
-    private PerfilMedico perfilMedicoPerfilMedicoId;
+    private PerfilMedico perfilMedico;
 
     public Cdr() {
     }
 
-    public Cdr(Integer memoria) {
+    public Cdr(String medicoPwaCedula) {
+        this.medicoPwaCedula = medicoPwaCedula;
+    }
+
+    public Cdr(String medicoPwaCedula, BigDecimal memoria, BigDecimal orientacion, BigDecimal juicio, BigDecimal vidaSocial, BigDecimal hogar, BigDecimal cuidadopersonal) {
+        this.medicoPwaCedula = medicoPwaCedula;
         this.memoria = memoria;
-    }
-
-    public Integer getMemoria() {
-        return memoria;
-    }
-
-    public void setMemoria(Integer memoria) {
-        this.memoria = memoria;
-    }
-
-    public Integer getOrientacion() {
-        return orientacion;
-    }
-
-    public void setOrientacion(Integer orientacion) {
         this.orientacion = orientacion;
-    }
-
-    public Integer getJuicio() {
-        return juicio;
-    }
-
-    public void setJuicio(Integer juicio) {
         this.juicio = juicio;
-    }
-
-    public Integer getVidaSocial() {
-        return vidaSocial;
-    }
-
-    public void setVidaSocial(Integer vidaSocial) {
         this.vidaSocial = vidaSocial;
-    }
-
-    public Integer getHogar() {
-        return hogar;
-    }
-
-    public void setHogar(Integer hogar) {
         this.hogar = hogar;
-    }
-
-    public Integer getCuidadopersonal() {
-        return cuidadopersonal;
-    }
-
-    public void setCuidadopersonal(Integer cuidadopersonal) {
         this.cuidadopersonal = cuidadopersonal;
     }
 
-    public PerfilMedico getPerfilMedicoPerfilMedicoId() {
-        return perfilMedicoPerfilMedicoId;
+    public BigDecimal getMemoria() {
+        return memoria;
     }
 
-    public void setPerfilMedicoPerfilMedicoId(PerfilMedico perfilMedicoPerfilMedicoId) {
-        this.perfilMedicoPerfilMedicoId = perfilMedicoPerfilMedicoId;
+    public void setMemoria(BigDecimal memoria) {
+        this.memoria = memoria;
+    }
+
+    public BigDecimal getOrientacion() {
+        return orientacion;
+    }
+
+    public void setOrientacion(BigDecimal orientacion) {
+        this.orientacion = orientacion;
+    }
+
+    public BigDecimal getJuicio() {
+        return juicio;
+    }
+
+    public void setJuicio(BigDecimal juicio) {
+        this.juicio = juicio;
+    }
+
+    public BigDecimal getVidaSocial() {
+        return vidaSocial;
+    }
+
+    public void setVidaSocial(BigDecimal vidaSocial) {
+        this.vidaSocial = vidaSocial;
+    }
+
+    public BigDecimal getHogar() {
+        return hogar;
+    }
+
+    public void setHogar(BigDecimal hogar) {
+        this.hogar = hogar;
+    }
+
+    public BigDecimal getCuidadopersonal() {
+        return cuidadopersonal;
+    }
+
+    public void setCuidadopersonal(BigDecimal cuidadopersonal) {
+        this.cuidadopersonal = cuidadopersonal;
+    }
+
+    public String getMedicoPwaCedula() {
+        return medicoPwaCedula;
+    }
+
+    public void setMedicoPwaCedula(String medicoPwaCedula) {
+        this.medicoPwaCedula = medicoPwaCedula;
+    }
+
+    public PerfilMedico getPerfilMedico() {
+        return perfilMedico;
+    }
+
+    public void setPerfilMedico(PerfilMedico perfilMedico) {
+        this.perfilMedico = perfilMedico;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (memoria != null ? memoria.hashCode() : 0);
+        hash += (medicoPwaCedula != null ? medicoPwaCedula.hashCode() : 0);
         return hash;
     }
 
@@ -128,7 +158,7 @@ public class Cdr implements Serializable {
             return false;
         }
         Cdr other = (Cdr) object;
-        if ((this.memoria == null && other.memoria != null) || (this.memoria != null && !this.memoria.equals(other.memoria))) {
+        if ((this.medicoPwaCedula == null && other.medicoPwaCedula != null) || (this.medicoPwaCedula != null && !this.medicoPwaCedula.equals(other.medicoPwaCedula))) {
             return false;
         }
         return true;
@@ -136,7 +166,7 @@ public class Cdr implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.Cdr[ memoria=" + memoria + " ]";
+        return "ResPwAEntities.Cdr[ medicoPwaCedula=" + medicoPwaCedula + " ]";
     }
     
 }

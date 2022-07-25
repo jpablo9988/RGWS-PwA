@@ -3,12 +3,12 @@ package RobotAgentBDI.Believes;
 import BDInterface.RESPwABDInterface;
 import Personalizacion.Modelo.CromosomaCancion;
 import Personalizacion.Modelo.ModeloSeleccion;
-import ResPwAEntities.Actividadpwa;
-import ResPwAEntities.Actxpreferencia;
+import ResPwAEntities.ActividadPwa;
+import ResPwAEntities.ActXPreferencia;
 import ResPwAEntities.Cancion;
 import ResPwAEntities.Cuento;
-import ResPwAEntities.Perfilpwa;
-import ResPwAEntities.Preferenciaxcancion;
+import ResPwAEntities.PerfilPwa;
+import ResPwAEntities.PreferenciaXCancion;
 import RobotAgentBDI.Utils.ResPwAActivity;
 import SensorHandlerAgent.Guards.SensorData;
 import Tareas.AnimarElogiarPwA.OpcionesAnimar;
@@ -21,18 +21,18 @@ import rational.mapping.Believes;
 
 public class BPerfilPwA implements Believes {
 
-    private Perfilpwa perfil;
+    private PerfilPwa perfil;
     private RobotAgentBelieves blvs;
 
     public BPerfilPwA(RobotAgentBelieves blvs) {
         this.blvs = blvs;
     }
 
-    public Perfilpwa getPerfil() {
+    public PerfilPwa getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(Perfilpwa perfil) {
+    public void setPerfil(PerfilPwa perfil) {
         this.perfil = perfil;
     }
 
@@ -57,19 +57,19 @@ public class BPerfilPwA implements Believes {
 //        }
 //        if (infoRecibida.getDataP().containsKey("retroalimActividad")) {
 //            ResPwAActivity act = blvs.getbEstadoActividad().getActividadActual();
-//            List<Actividadpwa> acts = RESPwABDInterface.getActivities();
+//            List<ActividadPwa> acts = RESPwABDInterface.getActivities();
 //            BigInteger bi = null;
-//            for (Actividadpwa a : acts) {
+//            for (ActividadPwa a : acts) {
 //                if (a.getNombre().equalsIgnoreCase(act.toString())) {
 //                    bi = a.getId();
 //                    break;
 //                }
 //
 //            }
-//            List<Actxpreferencia> listap = perfil.getPerfilPreferencia().getActxpreferenciaList();
-//            Actxpreferencia pref = null;
-//            for (Actxpreferencia axp : listap) {
-//                if (axp.getActxpreferenciaPK().getActividadpwaId().equals(bi)) {
+//            List<ActXPreferencia> listap = perfil.getPerfilPreferencia().getActXPreferenciaList();
+//            ActXPreferencia pref = null;
+//            for (ActXPreferencia axp : listap) {
+//                if (axp.getActXPreferenciaPK().getActividadPwaId().equals(bi)) {
 //                    pref = axp;
 //                    break;
 //                }
@@ -90,7 +90,7 @@ public class BPerfilPwA implements Believes {
         
 //        si la emocion es placentera, la cancion se escoge por un factor
         
-        List<Preferenciaxcancion> canciones = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getPreferenciaxcancionList();
+        List<PreferenciaXCancion> canciones = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getPreferenciaXCancionList();
         ModeloSeleccion modeloSeleccionCancion = new ModeloSeleccion(canciones);
         
         CromosomaCancion cromCancion = (CromosomaCancion) modeloSeleccionCancion.selectCromosoma();

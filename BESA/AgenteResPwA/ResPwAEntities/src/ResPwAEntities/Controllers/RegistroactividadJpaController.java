@@ -5,26 +5,27 @@
  */
 package ResPwAEntities.Controllers;
 
-import ResPwAEntities.Actividadpwa;
-import ResPwAEntities.Controllers.Exceptions.NonexistentEntityException;
-import ResPwAEntities.Controllers.Exceptions.PreexistingEntityException;
-import ResPwAEntities.Perfilpwa;
-import ResPwAEntities.Registroactividad;
-import ResPwAEntities.RegistroactividadPK;
+import java.io.Serializable;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import ResPwAEntities.ActividadPwa;
+import ResPwAEntities.Controllers.exceptions.NonexistentEntityException;
+import ResPwAEntities.Controllers.exceptions.PreexistingEntityException;
+import ResPwAEntities.RegistroActividad;
+import ResPwAEntities.RegistroActividadPK;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
-public class RegistroactividadJpaController {
-    public RegistroactividadJpaController(EntityManagerFactory emf) {
+public class RegistroActividadJpaController implements Serializable {
+
+    public RegistroActividadJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -33,39 +34,30 @@ public class RegistroactividadJpaController {
         return emf.createEntityManager();
     }
 
-    public void create(Registroactividad registroactividad) throws PreexistingEntityException, Exception {
-        if (registroactividad.getRegistroactividadPK() == null) {
-            registroactividad.setRegistroactividadPK(new RegistroactividadPK());
+    public void create(RegistroActividad registroActividad) throws PreexistingEntityException, Exception {
+        if (registroActividad.getRegistroActividadPK() == null) {
+            registroActividad.setRegistroActividadPK(new RegistroActividadPK());
         }
-        registroactividad.getRegistroactividadPK().setActividadpwaId(registroactividad.getActividadpwa().getId());
-        registroactividad.getRegistroactividadPK().setPerfilpwaCedula(registroactividad.getPerfilpwa());
+        registroActividad.getRegistroActividadPK().setPerfilPwaCedula(registroActividad.getPerfilPwa().getCedula());
+        registroActividad.getRegistroActividadPK().setActividadPwaId(registroActividad.getActividadPwa().getId());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Actividadpwa actividadpwa = registroactividad.getActividadpwa();
-            if (actividadpwa != null) {
-                actividadpwa = em.getReference(actividadpwa.getClass(), actividadpwa.getId());
-                registroactividad.setActividadpwa(actividadpwa);
+            ActividadPwa actividadPwa = registroActividad.getActividadPwa();
+            if (actividadPwa != null) {
+                actividadPwa = em.getReference(actividadPwa.getClass(), actividadPwa.getId());
+                registroActividad.setActividadPwa(actividadPwa);
             }
-            Perfilpwa perfilpwa = (Perfilpwa) registroactividad.getPerfilpwa();
-            if (perfilpwa != null) {
-                perfilpwa = em.getReference(perfilpwa.getClass(), perfilpwa.getCedula());
-                registroactividad.setPerfilpwa(perfilpwa);
-            }
-            em.persist(registroactividad);
-            if (actividadpwa != null) {
-                
-                actividadpwa = em.merge(actividadpwa);
-            }
-            if (perfilpwa != null) {
-                perfilpwa.getRegistroactividadList().add(registroactividad);
-                perfilpwa = em.merge(perfilpwa);
+            em.persist(registroActividad);
+            if (actividadPwa != null) {
+                actividadPwa.getRegistroActividadList().add(registroActividad);
+                actividadPwa = em.merge(actividadPwa);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findRegistroactividad(registroactividad.getRegistroactividadPK()) != null) {
-                throw new PreexistingEntityException("Registroactividad " + registroactividad + " already exists.", ex);
+            if (findRegistroActividad(registroActividad.getRegistroActividadPK()) != null) {
+                throw new PreexistingEntityException("RegistroActividad " + registroActividad + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -75,50 +67,36 @@ public class RegistroactividadJpaController {
         }
     }
 
-    public void edit(Registroactividad registroactividad) throws NonexistentEntityException, Exception {
-        registroactividad.getRegistroactividadPK().setActividadpwaId(registroactividad.getActividadpwa().getId());
-       
+    public void edit(RegistroActividad registroActividad) throws NonexistentEntityException, Exception {
+        registroActividad.getRegistroActividadPK().setPerfilPwaCedula(registroActividad.getPerfilPwa().getCedula());
+        registroActividad.getRegistroActividadPK().setActividadPwaId(registroActividad.getActividadPwa().getId());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Registroactividad persistentRegistroactividad = em.find(Registroactividad.class, registroactividad.getRegistroactividadPK());
-            Actividadpwa actividadpwaOld = persistentRegistroactividad.getActividadpwa();
-            Actividadpwa actividadpwaNew = registroactividad.getActividadpwa();
-            Perfilpwa perfilpwaOld = (Perfilpwa) persistentRegistroactividad.getPerfilpwa();
-            Perfilpwa perfilpwaNew = (Perfilpwa) registroactividad.getPerfilpwa();
-            if (actividadpwaNew != null) {
-                actividadpwaNew = em.getReference(actividadpwaNew.getClass(), actividadpwaNew.getId());
-                registroactividad.setActividadpwa(actividadpwaNew);
+            RegistroActividad persistentRegistroActividad = em.find(RegistroActividad.class, registroActividad.getRegistroActividadPK());
+            ActividadPwa actividadPwaOld = persistentRegistroActividad.getActividadPwa();
+            ActividadPwa actividadPwaNew = registroActividad.getActividadPwa();
+            if (actividadPwaNew != null) {
+                actividadPwaNew = em.getReference(actividadPwaNew.getClass(), actividadPwaNew.getId());
+                registroActividad.setActividadPwa(actividadPwaNew);
             }
-            if (perfilpwaNew != null) {
-                perfilpwaNew = em.getReference(perfilpwaNew.getClass(), perfilpwaNew.getCedula());
-                registroactividad.setPerfilpwa(perfilpwaNew);
+            registroActividad = em.merge(registroActividad);
+            if (actividadPwaOld != null && !actividadPwaOld.equals(actividadPwaNew)) {
+                actividadPwaOld.getRegistroActividadList().remove(registroActividad);
+                actividadPwaOld = em.merge(actividadPwaOld);
             }
-            registroactividad = em.merge(registroactividad);
-            if (actividadpwaOld != null && !actividadpwaOld.equals(actividadpwaNew)) {
-                
-                actividadpwaOld = em.merge(actividadpwaOld);
-            }
-            if (actividadpwaNew != null && !actividadpwaNew.equals(actividadpwaOld)) {
-                
-                actividadpwaNew = em.merge(actividadpwaNew);
-            }
-            if (perfilpwaOld != null && !perfilpwaOld.equals(perfilpwaNew)) {
-                perfilpwaOld.getRegistroactividadList().remove(registroactividad);
-                perfilpwaOld = em.merge(perfilpwaOld);
-            }
-            if (perfilpwaNew != null && !perfilpwaNew.equals(perfilpwaOld)) {
-                perfilpwaNew.getRegistroactividadList().add(registroactividad);
-                perfilpwaNew = em.merge(perfilpwaNew);
+            if (actividadPwaNew != null && !actividadPwaNew.equals(actividadPwaOld)) {
+                actividadPwaNew.getRegistroActividadList().add(registroActividad);
+                actividadPwaNew = em.merge(actividadPwaNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                RegistroactividadPK id = registroactividad.getRegistroactividadPK();
-                if (findRegistroactividad(id) == null) {
-                    throw new NonexistentEntityException("The registroactividad with id " + id + " no longer exists.");
+                RegistroActividadPK id = registroActividad.getRegistroActividadPK();
+                if (findRegistroActividad(id) == null) {
+                    throw new NonexistentEntityException("The registroActividad with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -129,29 +107,24 @@ public class RegistroactividadJpaController {
         }
     }
 
-    public void destroy(RegistroactividadPK id) throws NonexistentEntityException {
+    public void destroy(RegistroActividadPK id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Registroactividad registroactividad;
+            RegistroActividad registroActividad;
             try {
-                registroactividad = em.getReference(Registroactividad.class, id);
-                registroactividad.getRegistroactividadPK();
+                registroActividad = em.getReference(RegistroActividad.class, id);
+                registroActividad.getRegistroActividadPK();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The registroactividad with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The registroActividad with id " + id + " no longer exists.", enfe);
             }
-            Actividadpwa actividadpwa = registroactividad.getActividadpwa();
-            if (actividadpwa != null) {
-                
-                actividadpwa = em.merge(actividadpwa);
+            ActividadPwa actividadPwa = registroActividad.getActividadPwa();
+            if (actividadPwa != null) {
+                actividadPwa.getRegistroActividadList().remove(registroActividad);
+                actividadPwa = em.merge(actividadPwa);
             }
-            Perfilpwa perfilpwa = (Perfilpwa) registroactividad.getPerfilpwa();
-            if (perfilpwa != null) {
-                perfilpwa.getRegistroactividadList().remove(registroactividad);
-                perfilpwa = em.merge(perfilpwa);
-            }
-            em.remove(registroactividad);
+            em.remove(registroActividad);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -160,19 +133,19 @@ public class RegistroactividadJpaController {
         }
     }
 
-    public List<Registroactividad> findRegistroactividadEntities() {
-        return findRegistroactividadEntities(true, -1, -1);
+    public List<RegistroActividad> findRegistroActividadEntities() {
+        return findRegistroActividadEntities(true, -1, -1);
     }
 
-    public List<Registroactividad> findRegistroactividadEntities(int maxResults, int firstResult) {
-        return findRegistroactividadEntities(false, maxResults, firstResult);
+    public List<RegistroActividad> findRegistroActividadEntities(int maxResults, int firstResult) {
+        return findRegistroActividadEntities(false, maxResults, firstResult);
     }
 
-    private List<Registroactividad> findRegistroactividadEntities(boolean all, int maxResults, int firstResult) {
+    private List<RegistroActividad> findRegistroActividadEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Registroactividad.class));
+            cq.select(cq.from(RegistroActividad.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -184,20 +157,20 @@ public class RegistroactividadJpaController {
         }
     }
 
-    public Registroactividad findRegistroactividad(RegistroactividadPK id) {
+    public RegistroActividad findRegistroActividad(RegistroActividadPK id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Registroactividad.class, id);
+            return em.find(RegistroActividad.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getRegistroactividadCount() {
+    public int getRegistroActividadCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Registroactividad> rt = cq.from(Registroactividad.class);
+            Root<RegistroActividad> rt = cq.from(RegistroActividad.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
@@ -205,4 +178,5 @@ public class RegistroactividadJpaController {
             em.close();
         }
     }
+    
 }

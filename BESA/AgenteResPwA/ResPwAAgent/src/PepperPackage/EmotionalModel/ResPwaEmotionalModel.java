@@ -6,16 +6,10 @@
 package PepperPackage.EmotionalModel;
 
 import BDInterface.RESPwABDInterface;
-import BESA.ExceptionBESA;
-import BESA.Kernel.Agent.Event.EventBESA;
-import BESA.Kernel.System.AdmBESA;
-import BESA.Kernel.System.Directory.AgHandlerBESA;
 import EmotionalAnalyzerAgent.Utils.EmotionalEventType;
 import EmotionalAnalyzerAgent.Utils.EmotionalObjectType;
 import EmotionalAnalyzerAgent.Utils.EmotionalSubjectType;
-
-import Init.InitRESPwA;
-import ResPwAEntities.EmotionalEntities.EmotionAxisConfig;
+import ResPwAEntities.EmotionalEntities.EmotionAxisConf;
 import ResPwAEntities.EmotionalEntities.EventInfluence;
 import RobotAgentBDI.Believes.ModeloEmocional.EmotionAxis;
 import RobotAgentBDI.Believes.ModeloEmocional.EmotionalConfig;
@@ -23,13 +17,7 @@ import RobotAgentBDI.Believes.ModeloEmocional.EmotionalModel;
 import RobotAgentBDI.Believes.ModeloEmocional.Personality;
 import RobotAgentBDI.Believes.ModeloEmocional.SemanticDictionary;
 import RobotAgentBDI.Believes.ModeloEmocional.SemanticValue;
-import Utils.ResPwaUtils;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import rational.guards.InformationFlowGuard;
-import rational.services.ActivateAsynchronousServiceGuard;
 
 /**
  *
@@ -81,13 +69,13 @@ public abstract class ResPwaEmotionalModel extends EmotionalModel {
 
     @Override
     public void loadEmotionalAxes() {
-        List<EmotionAxis> emoax = new ArrayList<>();
+        //List<EmotionAxis> emoax = new ArrayList<>();
         EmotionAxis emoAxis;
-        List<EmotionAxisConfig> aux = RESPwABDInterface.getEmotionalAxisConfig();
+        List<EmotionAxisConf> aux = RESPwABDInterface.getEmotionalAxisConfig();
         List<EventInfluence> evtinf;
-        for (EmotionAxisConfig emotionAxisConfig : aux) {
-            emoAxis = new EmotionAxis(emotionAxisConfig.getPositiveName(), emotionAxisConfig.getNegativeName(), emotionAxisConfig.getBaseValue(), emotionAxisConfig.getBaseValue(), emotionAxisConfig.getForgetFactor());
-            evtinf = emotionAxisConfig.getEventInfluence();
+        for (EmotionAxisConf EmotionAxisConf : aux) {
+            emoAxis = new EmotionAxis(EmotionAxisConf.getPositiveName(), EmotionAxisConf.getNegativeName(), EmotionAxisConf.getBaseValue(), EmotionAxisConf.getBaseValue(), EmotionAxisConf.getForgetFactor());
+            evtinf = EmotionAxisConf.getEventInfluenceList();
             for (EventInfluence eventInfluence : evtinf) {
                 emoAxis.setEventInfluence(eventInfluence.getEventName(), (float) eventInfluence.getEventInfluence());
             }

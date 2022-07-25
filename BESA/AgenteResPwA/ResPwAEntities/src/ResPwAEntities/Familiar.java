@@ -10,13 +10,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,44 +26,57 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "familiar", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Familiar.findAll", query = "SELECT f FROM Familiar f")
-    , @NamedQuery(name = "Familiar.findById", query = "SELECT f FROM Familiar f WHERE f.id = :id")
-    , @NamedQuery(name = "Familiar.findByNombre", query = "SELECT f FROM Familiar f WHERE f.nombre = :nombre")
-    , @NamedQuery(name = "Familiar.findByParentesco", query = "SELECT f FROM Familiar f WHERE f.parentesco = :parentesco")
-    , @NamedQuery(name = "Familiar.findByNteres", query = "SELECT f FROM Familiar f WHERE f.nteres = :nteres")
-    , @NamedQuery(name = "Familiar.findByNacimiento", query = "SELECT f FROM Familiar f WHERE f.nacimiento = :nacimiento")
-    , @NamedQuery(name = "Familiar.findByEstavivo", query = "SELECT f FROM Familiar f WHERE f.estavivo = :estavivo")})
+    @NamedQuery(name = "Familiar.findAll", query = "SELECT f FROM Familiar f"),
+    @NamedQuery(name = "Familiar.findById", query = "SELECT f FROM Familiar f WHERE f.id = :id"),
+    @NamedQuery(name = "Familiar.findByNombre", query = "SELECT f FROM Familiar f WHERE f.nombre = :nombre"),
+    @NamedQuery(name = "Familiar.findByParentesco", query = "SELECT f FROM Familiar f WHERE f.parentesco = :parentesco"),
+    @NamedQuery(name = "Familiar.findByInteres", query = "SELECT f FROM Familiar f WHERE f.interes = :interes"),
+    @NamedQuery(name = "Familiar.findByEstaVivo", query = "SELECT f FROM Familiar f WHERE f.estaVivo = :estaVivo"),
+    @NamedQuery(name = "Familiar.findByNacimiento", query = "SELECT f FROM Familiar f WHERE f.nacimiento = :nacimiento")})
 public class Familiar implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(nullable = false, precision = 131089)
+    @Column(name = "id")
     private BigDecimal id;
-    @Column(length = 2147483647)
+    @Basic(optional = false)
+    @Column(name = "nombre")
     private String nombre;
-    @Column(length = 2147483647)
+    @Basic(optional = false)
+    @Column(name = "parentesco")
     private String parentesco;
-    @Column(precision = 17, scale = 17)
-    private Double nteres;
+    @Column(name = "interes")
+    private Double interes;
+    @Column(name = "esta_vivo")
+    private Boolean estaVivo;
+    @Column(name = "nacimiento")
     @Temporal(TemporalType.DATE)
     private Date nacimiento;
-    private Character estavivo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "familiarId2")
-    private List<Familiares> familiaresList;
+    @JoinTable(name = "familiares", joinColumns = {
+        @JoinColumn(name = "familiar_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "perfil_pwa_cedula", referencedColumnName = "cedula")})
+    @ManyToMany
+    private List<PerfilPwa> perfilPwaList;
 
     public Familiar() {
     }
 
     public Familiar(BigDecimal id) {
         this.id = id;
+    }
+
+    public Familiar(BigDecimal id, String nombre, String parentesco) {
+        this.id = id;
+        this.nombre = nombre;
+        this.parentesco = parentesco;
     }
 
     public BigDecimal getId() {
@@ -89,12 +103,20 @@ public class Familiar implements Serializable {
         this.parentesco = parentesco;
     }
 
-    public Double getNteres() {
-        return nteres;
+    public Double getInteres() {
+        return interes;
     }
 
-    public void setNteres(Double nteres) {
-        this.nteres = nteres;
+    public void setInteres(Double interes) {
+        this.interes = interes;
+    }
+
+    public Boolean getEstaVivo() {
+        return estaVivo;
+    }
+
+    public void setEstaVivo(Boolean estaVivo) {
+        this.estaVivo = estaVivo;
     }
 
     public Date getNacimiento() {
@@ -105,21 +127,13 @@ public class Familiar implements Serializable {
         this.nacimiento = nacimiento;
     }
 
-    public Character getEstavivo() {
-        return estavivo;
-    }
-
-    public void setEstavivo(Character estavivo) {
-        this.estavivo = estavivo;
-    }
-
     @XmlTransient
-    public List<Familiares> getFamiliaresList() {
-        return familiaresList;
+    public List<PerfilPwa> getPerfilPwaList() {
+        return perfilPwaList;
     }
 
-    public void setFamiliaresList(List<Familiares> familiaresList) {
-        this.familiaresList = familiaresList;
+    public void setPerfilPwaList(List<PerfilPwa> perfilPwaList) {
+        this.perfilPwaList = perfilPwaList;
     }
 
     @Override

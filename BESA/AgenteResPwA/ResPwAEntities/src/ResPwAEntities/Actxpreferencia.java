@@ -6,8 +6,8 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.CascadeType;
+import java.math.BigDecimal;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -15,66 +15,73 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "act_x_preferencia", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Actxpreferencia.findAll", query = "SELECT a FROM Actxpreferencia a")
-    , @NamedQuery(name = "Actxpreferencia.findByActividadpwaId", query = "SELECT a FROM Actxpreferencia a WHERE a.actxpreferenciaPK.actividadpwaId = :actividadpwaId")
-    , @NamedQuery(name = "Actxpreferencia.findByPerfilPreferenciaCedula", query = "SELECT a FROM Actxpreferencia a WHERE a.actxpreferenciaPK.perfilPreferenciaCedula = :perfilPreferenciaCedula")
-    , @NamedQuery(name = "Actxpreferencia.findByActiva", query = "SELECT a FROM Actxpreferencia a WHERE a.activa = :activa")
-    , @NamedQuery(name = "Actxpreferencia.findByGusto", query = "SELECT a FROM Actxpreferencia a WHERE a.gusto = :gusto")
-    , @NamedQuery(name = "Actxpreferencia.findByEnriq", query = "SELECT a FROM Actxpreferencia a WHERE a.enriq = :enriq")})
-public class Actxpreferencia implements Serializable {
+    @NamedQuery(name = "ActXPreferencia.findAll", query = "SELECT a FROM ActXPreferencia a"),
+    @NamedQuery(name = "ActXPreferencia.findByActividadPwaId", query = "SELECT a FROM ActXPreferencia a WHERE a.actXPreferenciaPK.actividadPwaId = :actividadPwaId"),
+    @NamedQuery(name = "ActXPreferencia.findByPreferenciaPwaCedula", query = "SELECT a FROM ActXPreferencia a WHERE a.actXPreferenciaPK.preferenciaPwaCedula = :preferenciaPwaCedula"),
+    @NamedQuery(name = "ActXPreferencia.findByActiva", query = "SELECT a FROM ActXPreferencia a WHERE a.activa = :activa"),
+    @NamedQuery(name = "ActXPreferencia.findByGusto", query = "SELECT a FROM ActXPreferencia a WHERE a.gusto = :gusto"),
+    @NamedQuery(name = "ActXPreferencia.findByEnriq", query = "SELECT a FROM ActXPreferencia a WHERE a.enriq = :enriq")})
+public class ActXPreferencia implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected ActxpreferenciaPK actxpreferenciaPK;
-    @Column(length = 2147483647)
-    private String activa;
-    @Column(length = 2147483647)
+    protected ActXPreferenciaPK actXPreferenciaPK;
+    @Basic(optional = false)
+    @Column(name = "activa")
+    private BigDecimal activa;
+    @Basic(optional = false)
+    @Column(name = "gusto")
     private double gusto;
-    @Column(length = 2147483647)
+    @Column(name = "enriq")
     private String enriq;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "actxpreferencia")
-    private List<PerfilPreferencia> perfilPreferenciaList;
-    @JoinColumn(name = "actividadpwa_id2", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "actividad_pwa_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Actividadpwa actividadpwaId2;
+    private ActividadPwa actividadPwa;
+    @JoinColumn(name = "preferencia_pwa_cedula", referencedColumnName = "perfil_pwa_cedula", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private PerfilPreferencia perfilPreferencia;
 
-    public Actxpreferencia() {
+    public ActXPreferencia() {
     }
 
-    public Actxpreferencia(ActxpreferenciaPK actxpreferenciaPK) {
-        this.actxpreferenciaPK = actxpreferenciaPK;
+    public ActXPreferencia(ActXPreferenciaPK actXPreferenciaPK) {
+        this.actXPreferenciaPK = actXPreferenciaPK;
     }
 
-    public Actxpreferencia(int actividadpwaId, String perfilPreferenciaCedula) {
-        this.actxpreferenciaPK = new ActxpreferenciaPK(actividadpwaId, perfilPreferenciaCedula);
+    public ActXPreferencia(ActXPreferenciaPK actXPreferenciaPK, BigDecimal activa, double gusto) {
+        this.actXPreferenciaPK = actXPreferenciaPK;
+        this.activa = activa;
+        this.gusto = gusto;
     }
 
-    public ActxpreferenciaPK getActxpreferenciaPK() {
-        return actxpreferenciaPK;
+    public ActXPreferencia(BigDecimal actividadPwaId, String preferenciaPwaCedula) {
+        this.actXPreferenciaPK = new ActXPreferenciaPK(actividadPwaId, preferenciaPwaCedula);
     }
 
-    public void setActxpreferenciaPK(ActxpreferenciaPK actxpreferenciaPK) {
-        this.actxpreferenciaPK = actxpreferenciaPK;
+    public ActXPreferenciaPK getActXPreferenciaPK() {
+        return actXPreferenciaPK;
     }
 
-    public String getActiva() {
+    public void setActXPreferenciaPK(ActXPreferenciaPK actXPreferenciaPK) {
+        this.actXPreferenciaPK = actXPreferenciaPK;
+    }
+
+    public BigDecimal getActiva() {
         return activa;
     }
 
-    public void setActiva(String activa) {
+    public void setActiva(BigDecimal activa) {
         this.activa = activa;
     }
 
@@ -94,38 +101,37 @@ public class Actxpreferencia implements Serializable {
         this.enriq = enriq;
     }
 
-    @XmlTransient
-    public List<PerfilPreferencia> getPerfilPreferenciaList() {
-        return perfilPreferenciaList;
+    public ActividadPwa getActividadPwa() {
+        return actividadPwa;
     }
 
-    public void setPerfilPreferenciaList(List<PerfilPreferencia> perfilPreferenciaList) {
-        this.perfilPreferenciaList = perfilPreferenciaList;
+    public void setActividadPwa(ActividadPwa actividadPwa) {
+        this.actividadPwa = actividadPwa;
     }
 
-    public Actividadpwa getActividadpwa() {
-        return actividadpwaId2;
+    public PerfilPreferencia getPerfilPreferencia() {
+        return perfilPreferencia;
     }
 
-    public void setActividadpwa(Actividadpwa actividadpwaId2) {
-        this.actividadpwaId2 = actividadpwaId2;
+    public void setPerfilPreferencia(PerfilPreferencia perfilPreferencia) {
+        this.perfilPreferencia = perfilPreferencia;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (actxpreferenciaPK != null ? actxpreferenciaPK.hashCode() : 0);
+        hash += (actXPreferenciaPK != null ? actXPreferenciaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Actxpreferencia)) {
+        if (!(object instanceof ActXPreferencia)) {
             return false;
         }
-        Actxpreferencia other = (Actxpreferencia) object;
-        if ((this.actxpreferenciaPK == null && other.actxpreferenciaPK != null) || (this.actxpreferenciaPK != null && !this.actxpreferenciaPK.equals(other.actxpreferenciaPK))) {
+        ActXPreferencia other = (ActXPreferencia) object;
+        if ((this.actXPreferenciaPK == null && other.actXPreferenciaPK != null) || (this.actXPreferenciaPK != null && !this.actXPreferenciaPK.equals(other.actXPreferenciaPK))) {
             return false;
         }
         return true;
@@ -133,7 +139,7 @@ public class Actxpreferencia implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.Actxpreferencia[ actxpreferenciaPK=" + actxpreferenciaPK + " ]";
+        return "ResPwAEntities.ActXPreferencia[ actXPreferenciaPK=" + actXPreferenciaPK + " ]";
     }
     
 }

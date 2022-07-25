@@ -1,6 +1,5 @@
 package RobotAgentBDI.Believes.ModeloEmocional;
 
-import ResPwAEntities.EmotionalEntities.EmotionAxisConfig;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

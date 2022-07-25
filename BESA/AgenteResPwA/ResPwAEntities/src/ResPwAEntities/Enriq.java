@@ -6,10 +6,12 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,44 +20,52 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "enriq", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Enriq.findAll", query = "SELECT e FROM Enriq e")
-    , @NamedQuery(name = "Enriq.findByParams", query = "SELECT e FROM Enriq e WHERE e.enriqPK.params = :params")
-    , @NamedQuery(name = "Enriq.findByValor", query = "SELECT e FROM Enriq e WHERE e.valor = :valor")
-    , @NamedQuery(name = "Enriq.findByFrasesOrden", query = "SELECT e FROM Enriq e WHERE e.enriqPK.frasesOrden = :frasesOrden")})
+    @NamedQuery(name = "Enriq.findAll", query = "SELECT e FROM Enriq e"),
+    @NamedQuery(name = "Enriq.findByParams", query = "SELECT e FROM Enriq e WHERE e.params = :params"),
+    @NamedQuery(name = "Enriq.findByValor", query = "SELECT e FROM Enriq e WHERE e.valor = :valor")})
 public class Enriq implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected EnriqPK enriqPK;
-    @Column(length = 2147483647)
+    @Id
+    @Basic(optional = false)
+    @Column(name = "params")
+    private String params;
+    @Basic(optional = false)
+    @Column(name = "valor")
     private String valor;
-    @JoinColumn(name = "frases_orden", referencedColumnName = "orden", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "cancion_nombre", referencedColumnName = "nombre")
     @ManyToOne(optional = false)
-    private Frases frases;
+    private Cancion cancionNombre;
+    @JoinColumns({
+        @JoinColumn(name = "frase_orden", referencedColumnName = "orden"),
+        @JoinColumn(name = "frase_nombre", referencedColumnName = "cuento_nombre")})
+    @ManyToOne(optional = false)
+    private Frase frase;
 
     public Enriq() {
     }
 
-    public Enriq(EnriqPK enriqPK) {
-        this.enriqPK = enriqPK;
+    public Enriq(String params) {
+        this.params = params;
     }
 
-    public Enriq(String params, int frasesOrden) {
-        this.enriqPK = new EnriqPK(params, frasesOrden);
+    public Enriq(String params, String valor) {
+        this.params = params;
+        this.valor = valor;
     }
 
-    public EnriqPK getEnriqPK() {
-        return enriqPK;
+    public String getParams() {
+        return params;
     }
 
-    public void setEnriqPK(EnriqPK enriqPK) {
-        this.enriqPK = enriqPK;
+    public void setParams(String params) {
+        this.params = params;
     }
 
     public String getValor() {
@@ -66,18 +76,26 @@ public class Enriq implements Serializable {
         this.valor = valor;
     }
 
-    public Frases getFrases() {
-        return frases;
+    public Cancion getCancionNombre() {
+        return cancionNombre;
     }
 
-    public void setFrases(Frases frases) {
-        this.frases = frases;
+    public void setCancionNombre(Cancion cancionNombre) {
+        this.cancionNombre = cancionNombre;
+    }
+
+    public Frase getFrase() {
+        return frase;
+    }
+
+    public void setFrase(Frase frase) {
+        this.frase = frase;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (enriqPK != null ? enriqPK.hashCode() : 0);
+        hash += (params != null ? params.hashCode() : 0);
         return hash;
     }
 
@@ -88,7 +106,7 @@ public class Enriq implements Serializable {
             return false;
         }
         Enriq other = (Enriq) object;
-        if ((this.enriqPK == null && other.enriqPK != null) || (this.enriqPK != null && !this.enriqPK.equals(other.enriqPK))) {
+        if ((this.params == null && other.params != null) || (this.params != null && !this.params.equals(other.params))) {
             return false;
         }
         return true;
@@ -96,7 +114,7 @@ public class Enriq implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.Enriq[ enriqPK=" + enriqPK + " ]";
+        return "ResPwAEntities.Enriq[ params=" + params + " ]";
     }
     
 }

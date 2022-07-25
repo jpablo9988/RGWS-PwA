@@ -7,7 +7,7 @@ package Tareas.MusicoTerapia;
 
 import Personalizacion.Modelo.CromosomaBaile;
 import Personalizacion.Modelo.ModeloSeleccion;
-import ResPwAEntities.Preferenciaxbaile;
+import ResPwAEntities.PreferenciaXBaile;
 import RobotAgentBDI.Believes.RobotAgentBelieves;
 import rational.mapping.Believes;
 import Utils.ResPwaUtils;
@@ -41,7 +41,7 @@ public class ReproduccionCancion extends Task {
     public void executeTask(Believes parameters) {
         System.out.println("--- Execute Task Reproducir Cancion ---");
         RobotAgentBelieves blvs = (RobotAgentBelieves) parameters;
-        List<Preferenciaxbaile> bailes = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getPreferenciaxbaileList();
+        List<PreferenciaXBaile> bailes = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getPreferenciaXBaileList();
         long now = System.currentTimeMillis();
 
 //        ServiceDataRequest srb = ServiceRequestBuilder.buildRequest(ActivityServiceRequestType.CHECKANIMATIONFINISH, infoServicio);
@@ -50,8 +50,8 @@ public class ReproduccionCancion extends Task {
             start = now;
 
             infoServicio = new HashMap<>();
-            ModeloSeleccion<Preferenciaxbaile> modeloBaile = new ModeloSeleccion<Preferenciaxbaile>(bailes);
-            Preferenciaxbaile baileSelected = null;
+            ModeloSeleccion<PreferenciaXBaile> modeloBaile = new ModeloSeleccion<PreferenciaXBaile>(bailes);
+            PreferenciaXBaile baileSelected = null;
             CromosomaBaile cromosoma = null;
             cromosoma = (CromosomaBaile) modeloBaile.selectCromosoma();
             if (cromosoma != null && !blvs.getbEstadoActividad().isEstaBailando()) {

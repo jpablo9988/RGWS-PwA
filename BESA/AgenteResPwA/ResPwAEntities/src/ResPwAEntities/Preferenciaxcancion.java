@@ -6,7 +6,9 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,48 +20,58 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "preferencia_x_cancion", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Preferenciaxcancion.findAll", query = "SELECT p FROM Preferenciaxcancion p")
-    , @NamedQuery(name = "Preferenciaxcancion.findByCancionNombre", query = "SELECT p FROM Preferenciaxcancion p WHERE p.preferenciaxcancionPK.cancionNombre = :cancionNombre")
-    , @NamedQuery(name = "Preferenciaxcancion.findByPerfilPreferenciaNombrepreferido", query = "SELECT p FROM Preferenciaxcancion p WHERE p.preferenciaxcancionPK.perfilPreferenciaNombrepreferido = :perfilPreferenciaNombrepreferido")
-    , @NamedQuery(name = "Preferenciaxcancion.findByGustos", query = "SELECT p FROM Preferenciaxcancion p WHERE p.gustos = :gustos")
-    , @NamedQuery(name = "Preferenciaxcancion.findByReminiscencia", query = "SELECT p FROM Preferenciaxcancion p WHERE p.reminiscencia = :reminiscencia")})
-public class Preferenciaxcancion implements Serializable {
+    @NamedQuery(name = "PreferenciaXCancion.findAll", query = "SELECT p FROM PreferenciaXCancion p"),
+    @NamedQuery(name = "PreferenciaXCancion.findByCancionNombre", query = "SELECT p FROM PreferenciaXCancion p WHERE p.preferenciaXCancionPK.cancionNombre = :cancionNombre"),
+    @NamedQuery(name = "PreferenciaXCancion.findByPreferenciaPwaCedula", query = "SELECT p FROM PreferenciaXCancion p WHERE p.preferenciaXCancionPK.preferenciaPwaCedula = :preferenciaPwaCedula"),
+    @NamedQuery(name = "PreferenciaXCancion.findByGusto", query = "SELECT p FROM PreferenciaXCancion p WHERE p.gusto = :gusto"),
+    @NamedQuery(name = "PreferenciaXCancion.findByReminiscencia", query = "SELECT p FROM PreferenciaXCancion p WHERE p.reminiscencia = :reminiscencia")})
+public class PreferenciaXCancion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected PreferenciaxcancionPK preferenciaxcancionPK;
-    private double gusto; //Cambiar de BigInteger a double.
-    private BigInteger reminiscencia;
-    @JoinColumn(name = "cancion_nombre", referencedColumnName = "nombre", nullable = false, insertable = false, updatable = false)
+    protected PreferenciaXCancionPK preferenciaXCancionPK;
+    @Basic(optional = false)
+    @Column(name = "gusto")
+    private double gusto;
+    @Basic(optional = false)
+    @Column(name = "reminiscencia")
+    private BigDecimal reminiscencia;
+    @JoinColumn(name = "cancion_nombre", referencedColumnName = "nombre", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Cancion cancion;
-    @JoinColumn(name = "perfil_preferencia_nombrepreferido", referencedColumnName = "nombrepreferido", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "preferencia_pwa_cedula", referencedColumnName = "perfil_pwa_cedula", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private PerfilPreferencia perfilPreferencia;
 
-    public Preferenciaxcancion() {
+    public PreferenciaXCancion() {
     }
 
-    public Preferenciaxcancion(PreferenciaxcancionPK preferenciaxcancionPK) {
-        this.preferenciaxcancionPK = preferenciaxcancionPK;
+    public PreferenciaXCancion(PreferenciaXCancionPK preferenciaXCancionPK) {
+        this.preferenciaXCancionPK = preferenciaXCancionPK;
     }
 
-    public Preferenciaxcancion(String cancionNombre, String perfilPreferenciaNombrepreferido) {
-        this.preferenciaxcancionPK = new PreferenciaxcancionPK(cancionNombre, perfilPreferenciaNombrepreferido);
+    public PreferenciaXCancion(PreferenciaXCancionPK preferenciaXCancionPK, double gusto, BigDecimal reminiscencia) {
+        this.preferenciaXCancionPK = preferenciaXCancionPK;
+        this.gusto = gusto;
+        this.reminiscencia = reminiscencia;
     }
 
-    public PreferenciaxcancionPK getPreferenciaxcancionPK() {
-        return preferenciaxcancionPK;
+    public PreferenciaXCancion(String cancionNombre, String preferenciaPwaCedula) {
+        this.preferenciaXCancionPK = new PreferenciaXCancionPK(cancionNombre, preferenciaPwaCedula);
     }
 
-    public void setPreferenciaxcancionPK(PreferenciaxcancionPK preferenciaxcancionPK) {
-        this.preferenciaxcancionPK = preferenciaxcancionPK;
+    public PreferenciaXCancionPK getPreferenciaXCancionPK() {
+        return preferenciaXCancionPK;
+    }
+
+    public void setPreferenciaXCancionPK(PreferenciaXCancionPK preferenciaXCancionPK) {
+        this.preferenciaXCancionPK = preferenciaXCancionPK;
     }
 
     public double getGusto() {
@@ -70,11 +82,11 @@ public class Preferenciaxcancion implements Serializable {
         this.gusto = gusto;
     }
 
-    public BigInteger getReminiscencia() {
+    public BigDecimal getReminiscencia() {
         return reminiscencia;
     }
 
-    public void setReminiscencia(BigInteger reminiscencia) {
+    public void setReminiscencia(BigDecimal reminiscencia) {
         this.reminiscencia = reminiscencia;
     }
 
@@ -97,18 +109,18 @@ public class Preferenciaxcancion implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (preferenciaxcancionPK != null ? preferenciaxcancionPK.hashCode() : 0);
+        hash += (preferenciaXCancionPK != null ? preferenciaXCancionPK.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Preferenciaxcancion)) {
+        if (!(object instanceof PreferenciaXCancion)) {
             return false;
         }
-        Preferenciaxcancion other = (Preferenciaxcancion) object;
-        if ((this.preferenciaxcancionPK == null && other.preferenciaxcancionPK != null) || (this.preferenciaxcancionPK != null && !this.preferenciaxcancionPK.equals(other.preferenciaxcancionPK))) {
+        PreferenciaXCancion other = (PreferenciaXCancion) object;
+        if ((this.preferenciaXCancionPK == null && other.preferenciaXCancionPK != null) || (this.preferenciaXCancionPK != null && !this.preferenciaXCancionPK.equals(other.preferenciaXCancionPK))) {
             return false;
         }
         return true;
@@ -116,7 +128,7 @@ public class Preferenciaxcancion implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.Preferenciaxcancion[ preferenciaxcancionPK=" + preferenciaxcancionPK + " ]";
+        return "ResPwAEntities.PreferenciaXCancion[ preferenciaXCancionPK=" + preferenciaXCancionPK + " ]";
     }
     
 }

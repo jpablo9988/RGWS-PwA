@@ -6,6 +6,7 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -23,48 +24,57 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "accion", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Accion.findAll", query = "SELECT a FROM Accion a")
-    , @NamedQuery(name = "Accion.findById", query = "SELECT a FROM Accion a WHERE a.id = :id")
-    , @NamedQuery(name = "Accion.findByNombre", query = "SELECT a FROM Accion a WHERE a.nombre = :nombre")
-    , @NamedQuery(name = "Accion.findByTipo", query = "SELECT a FROM Accion a WHERE a.tipo = :tipo")})
+    @NamedQuery(name = "Accion.findAll", query = "SELECT a FROM Accion a"),
+    @NamedQuery(name = "Accion.findById", query = "SELECT a FROM Accion a WHERE a.id = :id"),
+    @NamedQuery(name = "Accion.findByNombre", query = "SELECT a FROM Accion a WHERE a.nombre = :nombre"),
+    @NamedQuery(name = "Accion.findByTipo", query = "SELECT a FROM Accion a WHERE a.tipo = :tipo")})
 public class Accion implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(nullable = false)
-    private Integer id;
-    @Column(length = 2147483647)
+    @Column(name = "id")
+    private BigDecimal id;
+    @Basic(optional = false)
+    @Column(name = "nombre")
     private String nombre;
-    @Column(length = 2147483647)
+    @Basic(optional = false)
+    @Column(name = "tipo")
     private String tipo;
-    @JoinTable(name = "accionxjoint", joinColumns = {
-        @JoinColumn(name = "accion_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "joint_id", referencedColumnName = "id", nullable = false)})
+    @JoinTable(name = "accion_x_joint", joinColumns = {
+        @JoinColumn(name = "accion_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "joint_id", referencedColumnName = "id")})
     @ManyToMany
     private List<Joint> jointList;
-    @JoinColumn(name = "emocion_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "emocion_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Emocion emocionId;
 
     public Accion() {
     }
 
-    public Accion(Integer id) {
+    public Accion(BigDecimal id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Accion(BigDecimal id, String nombre, String tipo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tipo = tipo;
+    }
+
+    public BigDecimal getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(BigDecimal id) {
         this.id = id;
     }
 

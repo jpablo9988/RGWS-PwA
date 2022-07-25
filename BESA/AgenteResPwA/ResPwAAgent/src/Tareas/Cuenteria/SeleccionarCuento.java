@@ -7,8 +7,7 @@ package Tareas.Cuenteria;
 
 import Personalizacion.Modelo.CromosomaCuento;
 import Personalizacion.Modelo.ModeloSeleccion;
-import ResPwAEntities.Cuento;
-import ResPwAEntities.Preferenciaxcuento;
+import ResPwAEntities.PreferenciaXCuento;
 import RobotAgentBDI.Believes.RobotAgentBelieves;
 import Utils.ResPwaUtils;
 import RobotAgentBDI.ServiceRequestDataBuilder.ServiceRequestBuilder;
@@ -43,9 +42,9 @@ public class SeleccionarCuento extends Task {
         if (!blvs.getbEstadoRobot().isStoryMode()) {
             blvs.getbEstadoRobot().setStoryMode(true);
         }
-        List<Preferenciaxcuento> cuentos = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getPreferenciaxcuentoList();
-        ModeloSeleccion<Preferenciaxcuento> modeloCuento = new ModeloSeleccion<Preferenciaxcuento>(cuentos);
-        Preferenciaxcuento cuentoSelected = null;
+        List<PreferenciaXCuento> cuentos = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getPreferenciaXCuentoList();
+        ModeloSeleccion<PreferenciaXCuento> modeloCuento = new ModeloSeleccion<PreferenciaXCuento>(cuentos);
+        PreferenciaXCuento cuentoSelected = null;
         CromosomaCuento cromosoma = null;
         cromosoma = (CromosomaCuento) modeloCuento.selectCromosoma();
 

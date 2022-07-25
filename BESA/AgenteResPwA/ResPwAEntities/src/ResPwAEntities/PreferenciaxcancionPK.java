@@ -12,24 +12,24 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Embeddable
-public class PreferenciaxcancionPK implements Serializable {
+public class PreferenciaXCancionPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "cancion_nombre", nullable = false, length = 2147483647)
+    @Column(name = "cancion_nombre")
     private String cancionNombre;
     @Basic(optional = false)
-    @Column(name = "perfil_preferencia_nombrepreferido", nullable = false, length = 2147483647)
-    private String perfilPreferenciaNombrepreferido;
+    @Column(name = "preferencia_pwa_cedula")
+    private String preferenciaPwaCedula;
 
-    public PreferenciaxcancionPK() {
+    public PreferenciaXCancionPK() {
     }
 
-    public PreferenciaxcancionPK(String cancionNombre, String perfilPreferenciaNombrepreferido) {
+    public PreferenciaXCancionPK(String cancionNombre, String preferenciaPwaCedula) {
         this.cancionNombre = cancionNombre;
-        this.perfilPreferenciaNombrepreferido = perfilPreferenciaNombrepreferido;
+        this.preferenciaPwaCedula = preferenciaPwaCedula;
     }
 
     public String getCancionNombre() {
@@ -40,33 +40,33 @@ public class PreferenciaxcancionPK implements Serializable {
         this.cancionNombre = cancionNombre;
     }
 
-    public String getPerfilPreferenciaNombrepreferido() {
-        return perfilPreferenciaNombrepreferido;
+    public String getPreferenciaPwaCedula() {
+        return preferenciaPwaCedula;
     }
 
-    public void setPerfilPreferenciaNombrepreferido(String perfilPreferenciaNombrepreferido) {
-        this.perfilPreferenciaNombrepreferido = perfilPreferenciaNombrepreferido;
+    public void setPreferenciaPwaCedula(String preferenciaPwaCedula) {
+        this.preferenciaPwaCedula = preferenciaPwaCedula;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (cancionNombre != null ? cancionNombre.hashCode() : 0);
-        hash += (perfilPreferenciaNombrepreferido != null ? perfilPreferenciaNombrepreferido.hashCode() : 0);
+        hash += (preferenciaPwaCedula != null ? preferenciaPwaCedula.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PreferenciaxcancionPK)) {
+        if (!(object instanceof PreferenciaXCancionPK)) {
             return false;
         }
-        PreferenciaxcancionPK other = (PreferenciaxcancionPK) object;
+        PreferenciaXCancionPK other = (PreferenciaXCancionPK) object;
         if ((this.cancionNombre == null && other.cancionNombre != null) || (this.cancionNombre != null && !this.cancionNombre.equals(other.cancionNombre))) {
             return false;
         }
-        if ((this.perfilPreferenciaNombrepreferido == null && other.perfilPreferenciaNombrepreferido != null) || (this.perfilPreferenciaNombrepreferido != null && !this.perfilPreferenciaNombrepreferido.equals(other.perfilPreferenciaNombrepreferido))) {
+        if ((this.preferenciaPwaCedula == null && other.preferenciaPwaCedula != null) || (this.preferenciaPwaCedula != null && !this.preferenciaPwaCedula.equals(other.preferenciaPwaCedula))) {
             return false;
         }
         return true;
@@ -74,7 +74,7 @@ public class PreferenciaxcancionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.PreferenciaxcancionPK[ cancionNombre=" + cancionNombre + ", perfilPreferenciaNombrepreferido=" + perfilPreferenciaNombrepreferido + " ]";
+        return "ResPwAEntities.PreferenciaXCancionPK[ cancionNombre=" + cancionNombre + ", preferenciaPwaCedula=" + preferenciaPwaCedula + " ]";
     }
     
 }

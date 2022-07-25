@@ -1,4 +1,4 @@
-package ResPwAEntities.Controllers.Exceptions;
+package ResPwAEntities.Controllers.exceptions;
 
 public class NonexistentEntityException extends Exception {
     public NonexistentEntityException(String message, Throwable cause) {

@@ -6,6 +6,8 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -17,45 +19,61 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "preferencia_x_cuento", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Preferenciaxcuento.findAll", query = "SELECT p FROM Preferenciaxcuento p")
-    , @NamedQuery(name = "Preferenciaxcuento.findByGusto", query = "SELECT p FROM Preferenciaxcuento p WHERE p.preferenciaxcuentoPK.gusto = :gusto")
-    , @NamedQuery(name = "Preferenciaxcuento.findByPerfilPreferenciaNombrepreferido", query = "SELECT p FROM Preferenciaxcuento p WHERE p.preferenciaxcuentoPK.perfilPreferenciaNombrepreferido = :perfilPreferenciaNombrepreferido")})
-public class Preferenciaxcuento implements Serializable {
+    @NamedQuery(name = "PreferenciaXCuento.findAll", query = "SELECT p FROM PreferenciaXCuento p"),
+    @NamedQuery(name = "PreferenciaXCuento.findByCuentoNombre", query = "SELECT p FROM PreferenciaXCuento p WHERE p.preferenciaXCuentoPK.cuentoNombre = :cuentoNombre"),
+    @NamedQuery(name = "PreferenciaXCuento.findByPreferenciaPwaCedula", query = "SELECT p FROM PreferenciaXCuento p WHERE p.preferenciaXCuentoPK.preferenciaPwaCedula = :preferenciaPwaCedula"),
+    @NamedQuery(name = "PreferenciaXCuento.findByGusto", query = "SELECT p FROM PreferenciaXCuento p WHERE p.gusto = :gusto")})
+public class PreferenciaXCuento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected PreferenciaxcuentoPK preferenciaxcuentoPK;
-    private double gusto; //Cambio de BigInteger a Double
-    @JoinColumn(name = "cuento_nombre", referencedColumnName = "nombre", nullable = false)
+    protected PreferenciaXCuentoPK preferenciaXCuentoPK;
+    @Basic(optional = false)
+    @Column(name = "gusto")
+    private double gusto;
+    @JoinColumn(name = "cuento_nombre", referencedColumnName = "nombre", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Cuento cuento;
-    @JoinColumn(name = "perfil_preferencia_nombrepreferido", referencedColumnName = "nombrepreferido", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "preferencia_pwa_cedula", referencedColumnName = "perfil_pwa_cedula", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private PerfilPreferencia perfilPreferencia;
 
-    public Preferenciaxcuento() {
+    public PreferenciaXCuento() {
     }
 
-    public Preferenciaxcuento(PreferenciaxcuentoPK preferenciaxcuentoPK) {
-        this.preferenciaxcuentoPK = preferenciaxcuentoPK;
+    public PreferenciaXCuento(PreferenciaXCuentoPK preferenciaXCuentoPK) {
+        this.preferenciaXCuentoPK = preferenciaXCuentoPK;
     }
 
-    public Preferenciaxcuento(String perfilPreferenciaPerfilpwaCedula, String cuentoNombre) {
-        this.preferenciaxcuentoPK = new PreferenciaxcuentoPK(perfilPreferenciaPerfilpwaCedula, cuentoNombre);
+    public PreferenciaXCuento(PreferenciaXCuentoPK preferenciaXCuentoPK, double gusto) {
+        this.preferenciaXCuentoPK = preferenciaXCuentoPK;
+        this.gusto = gusto;
     }
 
-    public PreferenciaxcuentoPK getPreferenciaxcuentoPK() {
-        return preferenciaxcuentoPK;
+    public PreferenciaXCuento(String cuentoNombre, String preferenciaPwaCedula) {
+        this.preferenciaXCuentoPK = new PreferenciaXCuentoPK(cuentoNombre, preferenciaPwaCedula);
     }
 
-    public void setPreferenciaxcuentoPK(PreferenciaxcuentoPK preferenciaxcuentoPK) {
-        this.preferenciaxcuentoPK = preferenciaxcuentoPK;
+    public PreferenciaXCuentoPK getPreferenciaXCuentoPK() {
+        return preferenciaXCuentoPK;
+    }
+
+    public void setPreferenciaXCuentoPK(PreferenciaXCuentoPK preferenciaXCuentoPK) {
+        this.preferenciaXCuentoPK = preferenciaXCuentoPK;
+    }
+
+    public double getGusto() {
+        return gusto;
+    }
+
+    public void setGusto(double gusto) {
+        this.gusto = gusto;
     }
 
     public Cuento getCuento() {
@@ -77,25 +95,18 @@ public class Preferenciaxcuento implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (preferenciaxcuentoPK != null ? preferenciaxcuentoPK.hashCode() : 0);
+        hash += (preferenciaXCuentoPK != null ? preferenciaXCuentoPK.hashCode() : 0);
         return hash;
-    }
-    public double getGusto() {
-        return gusto;
-    }
-
-    public void setGusto(double gusto) {
-        this.gusto = gusto;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Preferenciaxcuento)) {
+        if (!(object instanceof PreferenciaXCuento)) {
             return false;
         }
-        Preferenciaxcuento other = (Preferenciaxcuento) object;
-        if ((this.preferenciaxcuentoPK == null && other.preferenciaxcuentoPK != null) || (this.preferenciaxcuentoPK != null && !this.preferenciaxcuentoPK.equals(other.preferenciaxcuentoPK))) {
+        PreferenciaXCuento other = (PreferenciaXCuento) object;
+        if ((this.preferenciaXCuentoPK == null && other.preferenciaXCuentoPK != null) || (this.preferenciaXCuentoPK != null && !this.preferenciaXCuentoPK.equals(other.preferenciaXCuentoPK))) {
             return false;
         }
         return true;
@@ -103,7 +114,7 @@ public class Preferenciaxcuento implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.Preferenciaxcuento[ preferenciaxcuentoPK=" + preferenciaxcuentoPK + " ]";
+        return "ResPwAEntities.PreferenciaXCuento[ preferenciaXCuentoPK=" + preferenciaXCuentoPK + " ]";
     }
     
 }

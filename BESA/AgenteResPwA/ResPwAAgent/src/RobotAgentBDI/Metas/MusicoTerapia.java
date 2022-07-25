@@ -10,11 +10,9 @@ import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import Init.InitRESPwA;
-import ResPwAEntities.Actividadpwa;
-import ResPwAEntities.Actxpreferencia;
+import ResPwAEntities.ActXPreferencia;
 import RobotAgentBDI.Believes.RobotAgentBelieves;
 import RobotAgentBDI.Utils.ResPwAActivity;
-import Tareas.Retroalimentacion.RecibirRetroalimentacionCuento;
 import Tareas.MusicoTerapia.ReproduccionCancion;
 import Tareas.MusicoTerapia.SeleccionarCancion;
 import Tareas.Retroalimentacion.RecibirRetroalimentacionCancion;
@@ -92,11 +90,11 @@ public class MusicoTerapia extends GoalBDI{
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         //System.out.println("Meta MusicoTerapia evaluateContribution");
         RobotAgentBelieves blvs = (RobotAgentBelieves)stateBDI.getBelieves();
-        List<Actxpreferencia> listaAct = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getActxpreferenciaList();
+        List<ActXPreferencia> listaAct = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getActXPreferenciaList();
         double valor=0;
         
-        for (Actxpreferencia act: listaAct) {
-            if(act.getActividadpwa().getNombre().equalsIgnoreCase(ResPwAActivity.MUSICOTERAPIA.toString())) {
+        for (ActXPreferencia act: listaAct) {
+            if(act.getActividadPwa().getNombre().equalsIgnoreCase(ResPwAActivity.MUSICOTERAPIA.toString())) {
                 valor = act.getGusto();
             }
         }

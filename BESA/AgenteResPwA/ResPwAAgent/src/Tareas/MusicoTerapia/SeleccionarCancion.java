@@ -7,26 +7,18 @@ package Tareas.MusicoTerapia;
 
 import Personalizacion.Modelo.CromosomaCancion;
 import Personalizacion.Modelo.ModeloSeleccion;
-import ResPwAEntities.Cancion;
-import ResPwAEntities.Cuento;
-import ResPwAEntities.Preferenciaxcancion;
-import ResPwAEntities.Preferenciaxcuento;
-
+import ResPwAEntities.PreferenciaXCancion;
 import RobotAgentBDI.Believes.RobotAgentBelieves;
 import RobotAgentBDI.Utils.ResPwAActivity;
 import rational.mapping.Believes;
 import Utils.ResPwaUtils;
-
 import RobotAgentBDI.ServiceRequestDataBuilder.ServiceRequestBuilder;
-import ServiceAgentResPwA.ActivityServices.ActivityServiceRequestType;
-import ServiceAgentResPwA.HumanServices.HumanServiceRequestType;
 import ServiceAgentResPwA.Guard.ServiceDataRequest;
 import ServiceAgentResPwA.VoiceServices.VoiceServiceRequestType;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import rational.mapping.Task;
 
 /**
@@ -54,9 +46,9 @@ public class SeleccionarCancion extends Task {
         ServiceDataRequest data = ServiceRequestBuilder.buildRequest(VoiceServiceRequestType.SAY, hm);
         ResPwaUtils.requestService(data, blvs);
 
-        List<Preferenciaxcancion> canciones = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getPreferenciaxcancionList();
-        ModeloSeleccion<Preferenciaxcancion> modeloCancion = new ModeloSeleccion<Preferenciaxcancion>(canciones);
-        Preferenciaxcancion cancionSelected = null;
+        List<PreferenciaXCancion> canciones = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getPreferenciaXCancionList();
+        ModeloSeleccion<PreferenciaXCancion> modeloCancion = new ModeloSeleccion<PreferenciaXCancion>(canciones);
+        PreferenciaXCancion cancionSelected = null;
         CromosomaCancion cromosoma = null;
         cromosoma = (CromosomaCancion) modeloCancion.selectCromosoma();
 

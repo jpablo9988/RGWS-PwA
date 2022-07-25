@@ -21,63 +21,63 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "estado_civil", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Estadocivil.findAll", query = "SELECT e FROM Estadocivil e")
-    , @NamedQuery(name = "Estadocivil.findByTipoec", query = "SELECT e FROM Estadocivil e WHERE e.tipoec = :tipoec")})
-public class Estadocivil implements Serializable {
+    @NamedQuery(name = "EstadoCivil.findAll", query = "SELECT e FROM EstadoCivil e"),
+    @NamedQuery(name = "EstadoCivil.findByTipoEc", query = "SELECT e FROM EstadoCivil e WHERE e.tipoEc = :tipoEc")})
+public class EstadoCivil implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(nullable = false, length = 2147483647)
-    private String tipoec;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadocivilTipoec")
-    private List<Perfilpwa> perfilpwaList;
+    @Column(name = "tipo_ec")
+    private String tipoEc;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadoCivilTipoEc")
+    private List<PerfilPwa> perfilPwaList;
 
-    public Estadocivil() {
+    public EstadoCivil() {
     }
 
-    public Estadocivil(String tipoec) {
-        this.tipoec = tipoec;
+    public EstadoCivil(String tipoEc) {
+        this.tipoEc = tipoEc;
     }
 
-    public String getTipoec() {
-        return tipoec;
+    public String getTipoEc() {
+        return tipoEc;
     }
 
-    public void setTipoec(String tipoec) {
-        this.tipoec = tipoec;
+    public void setTipoEc(String tipoEc) {
+        this.tipoEc = tipoEc;
     }
 
     @XmlTransient
-    public List<Perfilpwa> getPerfilpwaList() {
-        return perfilpwaList;
+    public List<PerfilPwa> getPerfilPwaList() {
+        return perfilPwaList;
     }
 
-    public void setPerfilpwaList(List<Perfilpwa> perfilpwaList) {
-        this.perfilpwaList = perfilpwaList;
+    public void setPerfilPwaList(List<PerfilPwa> perfilPwaList) {
+        this.perfilPwaList = perfilPwaList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (tipoec != null ? tipoec.hashCode() : 0);
+        hash += (tipoEc != null ? tipoEc.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Estadocivil)) {
+        if (!(object instanceof EstadoCivil)) {
             return false;
         }
-        Estadocivil other = (Estadocivil) object;
-        if ((this.tipoec == null && other.tipoec != null) || (this.tipoec != null && !this.tipoec.equals(other.tipoec))) {
+        EstadoCivil other = (EstadoCivil) object;
+        if ((this.tipoEc == null && other.tipoEc != null) || (this.tipoEc != null && !this.tipoEc.equals(other.tipoEc))) {
             return false;
         }
         return true;
@@ -85,7 +85,7 @@ public class Estadocivil implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.Estadocivil[ tipoec=" + tipoec + " ]";
+        return "ResPwAEntities.EstadoCivil[ tipoEc=" + tipoEc + " ]";
     }
     
 }

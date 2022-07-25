@@ -7,8 +7,7 @@ package BDInterface;
 
 import ResPwAEntities.*;
 import ResPwAEntities.Controllers.*;
-import ResPwAEntities.Controllers.Exceptions.NonexistentEntityException;
-import ResPwAEntities.EmotionalEntities.EmotionAxisConfig;
+import ResPwAEntities.EmotionalEntities.EmotionAxisConf;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,23 +21,23 @@ public class RESPwABDInterface {
 
     private static final String EMF = "ResPwAEntitiesPU";
 
-    public static Perfilpwa getProfile(String cedula) {
-        PerfilpwaJpaController pjc = new PerfilpwaJpaController(Persistence.createEntityManagerFactory(EMF));
-        return pjc.findPerfilpwa(cedula);
+    public static PerfilPwa getProfile(String cedula) {
+        PerfilPwaJpaController pjc = new PerfilPwaJpaController(Persistence.createEntityManagerFactory(EMF));
+        return pjc.findPerfilPwa(cedula);
     }
 
-    public static void updateProfile(Perfilpwa perfilpwa) {
+    public static void updateProfile(PerfilPwa PerfilPwa) {
         try {
-            PerfilpwaJpaController pjc = new PerfilpwaJpaController(Persistence.createEntityManagerFactory(EMF));
-            pjc.edit(perfilpwa);
+            PerfilPwaJpaController pjc = new PerfilPwaJpaController(Persistence.createEntityManagerFactory(EMF));
+            pjc.edit(PerfilPwa);
         } catch (Exception ex) {
             Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
         
     }}
 
-    public static void createProfile(Perfilpwa p) {
+    public static void createProfile(PerfilPwa p) {
         try {
-            PerfilpwaJpaController pjc = new PerfilpwaJpaController(Persistence.createEntityManagerFactory(EMF));
+            PerfilPwaJpaController pjc = new PerfilPwaJpaController(Persistence.createEntityManagerFactory(EMF));
             pjc.create(p);
         } catch (Exception ex) {
             Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,9 +90,9 @@ public class RESPwABDInterface {
 
     }
 
-    public static void updateActXPref(Actxpreferencia axp) {
+    public static void updateActXPref(ActXPreferencia axp) {
         try {
-            ActxpreferenciaJpaController axpc = new ActxpreferenciaJpaController(Persistence.createEntityManagerFactory(EMF));
+            ActXPreferenciaJpaController axpc = new ActXPreferenciaJpaController(Persistence.createEntityManagerFactory(EMF));
             axpc.edit(axp);
         } catch (Exception ex) {
             Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
@@ -101,9 +100,9 @@ public class RESPwABDInterface {
 
     }
 
-    public static void updatePrefXBaile(Preferenciaxbaile axp) {
+    public static void updatePrefXBaile(PreferenciaXBaile axp) {
         try {
-            PreferenciaxbaileJpaController axpc = new PreferenciaxbaileJpaController(Persistence.createEntityManagerFactory(EMF));
+            PreferenciaXBaileJpaController axpc = new PreferenciaXBaileJpaController(Persistence.createEntityManagerFactory(EMF));
             axpc.edit(axp);
         } catch (Exception ex) {
             Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,18 +110,18 @@ public class RESPwABDInterface {
 
     }
 
-    public static void updatePrefXCuento(Preferenciaxcuento axp) {
+    public static void updatePrefXCuento(PreferenciaXCuento axp) {
         try {
-            PreferenciaxcuentoJpaController axpc = new PreferenciaxcuentoJpaController(Persistence.createEntityManagerFactory(EMF));
+            PreferenciaXCuentoJpaController axpc = new PreferenciaXCuentoJpaController(Persistence.createEntityManagerFactory(EMF));
             axpc.edit(axp);
         } catch (Exception ex) {
             Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    public static void updatePrefXCancion(Preferenciaxcancion pxc) {
+    public static void updatePrefXCancion(PreferenciaXCancion pxc) {
         try {
-            PreferenciaxcancionJpaController pxcc = new PreferenciaxcancionJpaController(Persistence.createEntityManagerFactory(EMF));
+            PreferenciaXCancionJpaController pxcc = new PreferenciaXCancionJpaController(Persistence.createEntityManagerFactory(EMF));
             pxcc.edit(pxc);
         } catch (Exception ex) {
             Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
@@ -144,9 +143,9 @@ public class RESPwABDInterface {
 
     }
 
-    public static List<Actividadpwa> getActivities() {
-        ActividadpwaJpaController ajp = new ActividadpwaJpaController(Persistence.createEntityManagerFactory(EMF));
-        return ajp.findActividadpwaEntities();
+    public static List<ActividadPwa> getActivities() {
+        ActividadPwaJpaController ajp = new ActividadPwaJpaController(Persistence.createEntityManagerFactory(EMF));
+        return ajp.findActividadPwaEntities();
 
     }
 
@@ -160,9 +159,9 @@ public class RESPwABDInterface {
         return ajp.findReglaEntities();
     }
 
-    public static void createRegistroAct(Registroactividad ra) {
+    public static void createRegistroAct(RegistroActividad ra) {
         try {
-            RegistroactividadJpaController rapc = new RegistroactividadJpaController(Persistence.createEntityManagerFactory(EMF));
+            RegistroActividadJpaController rapc = new RegistroActividadJpaController(Persistence.createEntityManagerFactory(EMF));
             rapc.create(ra);
         } catch (Exception ex) {
             Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
@@ -171,9 +170,9 @@ public class RESPwABDInterface {
 
     
 
-    public static List<EmotionAxisConfig> getEmotionalAxisConfig() {
-        EmotionAxisConfigJpaController eapc = new EmotionAxisConfigJpaController(Persistence.createEntityManagerFactory(EMF));
-        return eapc.findEmotionAxisConfigEntities();
+    public static List<EmotionAxisConf> getEmotionalAxisConfig() {
+        EmotionAxisConfJpaController eapc = new EmotionAxisConfJpaController(Persistence.createEntityManagerFactory(EMF));
+        return eapc.findEmotionAxisConfEntities();
     }
 
    

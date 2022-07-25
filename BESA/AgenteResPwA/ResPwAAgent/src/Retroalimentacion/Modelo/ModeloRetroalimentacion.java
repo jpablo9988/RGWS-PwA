@@ -7,14 +7,10 @@ package Retroalimentacion.Modelo;
 
 import BDInterface.RESPwABDInterface;
 import ResPwAEntities.Antecedente;
-import ResPwAEntities.Baile;
-import ResPwAEntities.Preferenciaxcancion;
-import ResPwAEntities.Cuento;
-import ResPwAEntities.Preferenciaxbaile;
-import ResPwAEntities.Preferenciaxcuento;
+import ResPwAEntities.PreferenciaXCancion;
+import ResPwAEntities.PreferenciaXBaile;
+import ResPwAEntities.PreferenciaXCuento;
 import ResPwAEntities.Regla;
-import java.math.BigDecimal;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -33,8 +29,8 @@ public class ModeloRetroalimentacion<T> {
 
     public void activityFeedback(List<Antecedente> antecedentes) {
         Regla reglaAplicada = findRule(antecedentes);
-        if (activity instanceof Preferenciaxcancion) {
-            Preferenciaxcancion c = (Preferenciaxcancion) activity;
+        if (activity instanceof PreferenciaXCancion) {
+            PreferenciaXCancion c = (PreferenciaXCancion) activity;
 
             if (c.getGusto() + reglaAplicada.getFeedback() > 1.0f) {
                 c.setGusto(1.0f);
@@ -48,8 +44,8 @@ public class ModeloRetroalimentacion<T> {
             System.out.println("New Gustos: " + c.getGusto());
             RESPwABDInterface.updatePrefXCancion(c);
 
-        } else if (activity instanceof Preferenciaxcuento) {
-            Preferenciaxcuento c = (Preferenciaxcuento) activity;
+        } else if (activity instanceof PreferenciaXCuento) {
+            PreferenciaXCuento c = (PreferenciaXCuento) activity;
             if (c.getGusto() + reglaAplicada.getFeedback() > 1.0f) {
                 c.setGusto(1.0);
             } else {
@@ -62,8 +58,8 @@ public class ModeloRetroalimentacion<T> {
             }
             RESPwABDInterface.updatePrefXCuento(c);
 
-        } else if (activity instanceof Preferenciaxbaile) {
-            Preferenciaxbaile b = (Preferenciaxbaile) activity;
+        } else if (activity instanceof PreferenciaXBaile) {
+            PreferenciaXBaile b = (PreferenciaXBaile) activity;
             if (b.getGusto() + reglaAplicada.getFeedback() > 1.0f) {
                 b.setGusto(1.0);
             } else {

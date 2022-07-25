@@ -5,8 +5,7 @@
  */
 package Personalizacion.Modelo;
 
-import ResPwAEntities.Cuento;
-import ResPwAEntities.Preferenciaxcuento;
+import ResPwAEntities.PreferenciaXCuento;
 
 /**
  *
@@ -14,9 +13,9 @@ import ResPwAEntities.Preferenciaxcuento;
  */
 public class CromosomaCuento extends Cromosoma{
 
-    private Preferenciaxcuento cuento;
+    private PreferenciaXCuento cuento;
 
-    public CromosomaCuento(Preferenciaxcuento cuento) {
+    public CromosomaCuento(PreferenciaXCuento cuento) {
         this.cuento = cuento;
     }
     
@@ -25,7 +24,7 @@ public class CromosomaCuento extends Cromosoma{
         objectiveValue =  this.cuento.getGusto();
     }
 
-    public Preferenciaxcuento getCuento() {
+    public PreferenciaXCuento getCuento() {
         return cuento;
     }
     

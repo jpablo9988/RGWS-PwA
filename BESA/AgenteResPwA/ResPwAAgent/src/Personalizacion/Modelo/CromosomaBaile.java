@@ -5,21 +5,20 @@
  */
 package Personalizacion.Modelo;
 
-import ResPwAEntities.Baile;
-import ResPwAEntities.Preferenciaxbaile;
+import ResPwAEntities.PreferenciaXBaile;
 
 /**
  *
- * @author ASUS
+ * @author juan.amorocho
  */
 public class CromosomaBaile extends Cromosoma{
-    private Preferenciaxbaile baile;
+    private PreferenciaXBaile baile;
 
-    public CromosomaBaile(Preferenciaxbaile baile) {
+    public CromosomaBaile(PreferenciaXBaile baile) {
         this.baile = baile;
     }
 
-    public Preferenciaxbaile getBaile() {
+    public PreferenciaXBaile getBaile() {
         return baile;
     }
     

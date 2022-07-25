@@ -6,67 +6,68 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Embeddable
-public class ActxpreferenciaPK implements Serializable {
+public class ActXPreferenciaPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "actividadpwa_id", nullable = false)
-    private int actividadpwaId;
+    @Column(name = "actividad_pwa_id")
+    private BigDecimal actividadPwaId;
     @Basic(optional = false)
-    @Column(name = "perfil_preferencia_cedula", nullable = false, length = 2147483647)
-    private String perfilPreferenciaCedula;
+    @Column(name = "preferencia_pwa_cedula")
+    private String preferenciaPwaCedula;
 
-    public ActxpreferenciaPK() {
+    public ActXPreferenciaPK() {
     }
 
-    public ActxpreferenciaPK(int actividadpwaId, String perfilPreferenciaCedula) {
-        this.actividadpwaId = actividadpwaId;
-        this.perfilPreferenciaCedula = perfilPreferenciaCedula;
+    public ActXPreferenciaPK(BigDecimal actividadPwaId, String preferenciaPwaCedula) {
+        this.actividadPwaId = actividadPwaId;
+        this.preferenciaPwaCedula = preferenciaPwaCedula;
     }
 
-    public int getActividadpwaId() {
-        return actividadpwaId;
+    public BigDecimal getActividadPwaId() {
+        return actividadPwaId;
     }
 
-    public void setActividadpwaId(int actividadpwaId) {
-        this.actividadpwaId = actividadpwaId;
+    public void setActividadPwaId(BigDecimal actividadPwaId) {
+        this.actividadPwaId = actividadPwaId;
     }
 
-    public String getPerfilPreferenciaCedula() {
-        return perfilPreferenciaCedula;
+    public String getPreferenciaPwaCedula() {
+        return preferenciaPwaCedula;
     }
 
-    public void setPerfilPreferenciaCedula(String perfilPreferenciaCedula) {
-        this.perfilPreferenciaCedula = perfilPreferenciaCedula;
+    public void setPreferenciaPwaCedula(String preferenciaPwaCedula) {
+        this.preferenciaPwaCedula = preferenciaPwaCedula;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) actividadpwaId;
-        hash += (perfilPreferenciaCedula != null ? perfilPreferenciaCedula.hashCode() : 0);
+        hash += (actividadPwaId != null ? actividadPwaId.hashCode() : 0);
+        hash += (preferenciaPwaCedula != null ? preferenciaPwaCedula.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ActxpreferenciaPK)) {
+        if (!(object instanceof ActXPreferenciaPK)) {
             return false;
         }
-        ActxpreferenciaPK other = (ActxpreferenciaPK) object;
-        if (this.actividadpwaId != other.actividadpwaId) {
+        ActXPreferenciaPK other = (ActXPreferenciaPK) object;
+        if ((this.actividadPwaId == null && other.actividadPwaId != null) || (this.actividadPwaId != null && !this.actividadPwaId.equals(other.actividadPwaId))) {
             return false;
         }
-        if ((this.perfilPreferenciaCedula == null && other.perfilPreferenciaCedula != null) || (this.perfilPreferenciaCedula != null && !this.perfilPreferenciaCedula.equals(other.perfilPreferenciaCedula))) {
+        if ((this.preferenciaPwaCedula == null && other.preferenciaPwaCedula != null) || (this.preferenciaPwaCedula != null && !this.preferenciaPwaCedula.equals(other.preferenciaPwaCedula))) {
             return false;
         }
         return true;
@@ -74,7 +75,7 @@ public class ActxpreferenciaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.ActxpreferenciaPK[ actividadpwaId=" + actividadpwaId + ", perfilPreferenciaCedula=" + perfilPreferenciaCedula + " ]";
+        return "ResPwAEntities.ActXPreferenciaPK[ actividadPwaId=" + actividadPwaId + ", preferenciaPwaCedula=" + preferenciaPwaCedula + " ]";
     }
     
 }

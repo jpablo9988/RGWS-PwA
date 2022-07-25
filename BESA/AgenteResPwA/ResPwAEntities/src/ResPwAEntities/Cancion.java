@@ -13,6 +13,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,29 +25,36 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "cancion", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cancion.findAll", query = "SELECT c FROM Cancion c")
-    , @NamedQuery(name = "Cancion.findByNombre", query = "SELECT c FROM Cancion c WHERE c.nombre = :nombre")
-    , @NamedQuery(name = "Cancion.findByUrl", query = "SELECT c FROM Cancion c WHERE c.url = :url")})
+    @NamedQuery(name = "Cancion.findAll", query = "SELECT c FROM Cancion c"),
+    @NamedQuery(name = "Cancion.findByNombre", query = "SELECT c FROM Cancion c WHERE c.nombre = :nombre"),
+    @NamedQuery(name = "Cancion.findByUrl", query = "SELECT c FROM Cancion c WHERE c.url = :url")})
 public class Cancion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(nullable = false, length = 2147483647)
+    @Column(name = "nombre")
     private String nombre;
-    @Column(length = 2147483647)
+    @Column(name = "url")
     private String url;
-    @JoinColumn(name = "genero_genero", referencedColumnName = "genero", nullable = false)
+    @JoinTable(name = "lista_tag", joinColumns = {
+        @JoinColumn(name = "cancion_nombre", referencedColumnName = "nombre")}, inverseJoinColumns = {
+        @JoinColumn(name = "tag_id", referencedColumnName = "id")})
+    @ManyToMany
+    private List<Tag> tagList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancionNombre")
+    private List<Enriq> enriqList;
+    @JoinColumn(name = "genero", referencedColumnName = "genero")
     @ManyToOne(optional = false)
-    private Genero generoGenero;
+    private Genero genero;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancion")
-    private List<Preferenciaxcancion> preferenciaxcancionList;
+    private List<PreferenciaXCancion> preferenciaXCancionList;
 
     public Cancion() {
     }
@@ -70,21 +79,39 @@ public class Cancion implements Serializable {
         this.url = url;
     }
 
-    public Genero getGeneroGenero() {
-        return generoGenero;
+    @XmlTransient
+    public List<Tag> getTagList() {
+        return tagList;
     }
 
-    public void setGeneroGenero(Genero generoGenero) {
-        this.generoGenero = generoGenero;
+    public void setTagList(List<Tag> tagList) {
+        this.tagList = tagList;
     }
 
     @XmlTransient
-    public List<Preferenciaxcancion> getPreferenciaxcancionList() {
-        return preferenciaxcancionList;
+    public List<Enriq> getEnriqList() {
+        return enriqList;
     }
 
-    public void setPreferenciaxcancionList(List<Preferenciaxcancion> preferenciaxcancionList) {
-        this.preferenciaxcancionList = preferenciaxcancionList;
+    public void setEnriqList(List<Enriq> enriqList) {
+        this.enriqList = enriqList;
+    }
+
+    public Genero getGenero() {
+        return genero;
+    }
+
+    public void setGenero(Genero genero) {
+        this.genero = genero;
+    }
+
+    @XmlTransient
+    public List<PreferenciaXCancion> getPreferenciaXCancionList() {
+        return preferenciaXCancionList;
+    }
+
+    public void setPreferenciaXCancionList(List<PreferenciaXCancion> preferenciaXCancionList) {
+        this.preferenciaXCancionList = preferenciaXCancionList;
     }
 
     @Override
@@ -110,10 +137,6 @@ public class Cancion implements Serializable {
     @Override
     public String toString() {
         return "ResPwAEntities.Cancion[ nombre=" + nombre + " ]";
-    }
-
-    public List<Enriq> getEnriqList() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

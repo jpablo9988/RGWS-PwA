@@ -6,6 +6,7 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,35 +16,35 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Embeddable
-public class RegistroactividadPK implements Serializable {
+public class RegistroActividadPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @Basic(optional = false)
-    @Column(nullable = false, length = 2147483647)
-    private String perfilpwacedula;
+    @Column(name = "perfil_pwa_cedula")
+    private String perfilPwaCedula;
     @Basic(optional = false)
-    @Column(nullable = false, length = 2147483647)
+    @Column(name = "tipo")
     private String tipo;
     @Basic(optional = false)
-    @Column(name = "actividadpwa_id", nullable = false)
-    private int actividadpwaId;
+    @Column(name = "actividad_pwa_id")
+    private BigDecimal actividadPwaId;
 
-    public RegistroactividadPK() {
+    public RegistroActividadPK() {
     }
 
-    public RegistroactividadPK(Date fecha, String perfilpwacedula, String tipo, int actividadpwaId) {
+    public RegistroActividadPK(Date fecha, String perfilPwaCedula, String tipo, BigDecimal actividadPwaId) {
         this.fecha = fecha;
-        this.perfilpwacedula = perfilpwacedula;
+        this.perfilPwaCedula = perfilPwaCedula;
         this.tipo = tipo;
-        this.actividadpwaId = actividadpwaId;
+        this.actividadPwaId = actividadPwaId;
     }
-    public RegistroactividadPK(Date fecha, String tipo) {
+    public RegistroActividadPK(Date fecha, String tipo) {
         this.fecha = fecha;
         this.tipo = tipo;
     }
@@ -56,12 +57,12 @@ public class RegistroactividadPK implements Serializable {
         this.fecha = fecha;
     }
 
-    public String getPerfilpwacedula() {
-        return perfilpwacedula;
+    public String getPerfilPwaCedula() {
+        return perfilPwaCedula;
     }
 
-    public void setPerfilpwacedula(String perfilpwacedula) {
-        this.perfilpwacedula = perfilpwacedula;
+    public void setPerfilPwaCedula(String perfilPwaCedula) {
+        this.perfilPwaCedula = perfilPwaCedula;
     }
 
     public String getTipo() {
@@ -72,41 +73,41 @@ public class RegistroactividadPK implements Serializable {
         this.tipo = tipo;
     }
 
-    public int getActividadpwaId() {
-        return actividadpwaId;
+    public BigDecimal getActividadPwaId() {
+        return actividadPwaId;
     }
 
-    public void setActividadpwaId(int actividadpwaId) {
-        this.actividadpwaId = actividadpwaId;
+    public void setActividadPwaId(BigDecimal actividadPwaId) {
+        this.actividadPwaId = actividadPwaId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (fecha != null ? fecha.hashCode() : 0);
-        hash += (perfilpwacedula != null ? perfilpwacedula.hashCode() : 0);
+        hash += (perfilPwaCedula != null ? perfilPwaCedula.hashCode() : 0);
         hash += (tipo != null ? tipo.hashCode() : 0);
-        hash += (int) actividadpwaId;
+        hash += (actividadPwaId != null ? actividadPwaId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RegistroactividadPK)) {
+        if (!(object instanceof RegistroActividadPK)) {
             return false;
         }
-        RegistroactividadPK other = (RegistroactividadPK) object;
+        RegistroActividadPK other = (RegistroActividadPK) object;
         if ((this.fecha == null && other.fecha != null) || (this.fecha != null && !this.fecha.equals(other.fecha))) {
             return false;
         }
-        if ((this.perfilpwacedula == null && other.perfilpwacedula != null) || (this.perfilpwacedula != null && !this.perfilpwacedula.equals(other.perfilpwacedula))) {
+        if ((this.perfilPwaCedula == null && other.perfilPwaCedula != null) || (this.perfilPwaCedula != null && !this.perfilPwaCedula.equals(other.perfilPwaCedula))) {
             return false;
         }
         if ((this.tipo == null && other.tipo != null) || (this.tipo != null && !this.tipo.equals(other.tipo))) {
             return false;
         }
-        if (this.actividadpwaId != other.actividadpwaId) {
+        if ((this.actividadPwaId == null && other.actividadPwaId != null) || (this.actividadPwaId != null && !this.actividadPwaId.equals(other.actividadPwaId))) {
             return false;
         }
         return true;
@@ -114,11 +115,7 @@ public class RegistroactividadPK implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.RegistroactividadPK[ fecha=" + fecha + ", perfilpwacedula=" + perfilpwacedula + ", tipo=" + tipo + ", actividadpwaId=" + actividadpwaId + " ]";
-    }
-
-    public void setPerfilpwaCedula(Object perfilpwa) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "ResPwAEntities.RegistroActividadPK[ fecha=" + fecha + ", perfilPwaCedula=" + perfilPwaCedula + ", tipo=" + tipo + ", actividadPwaId=" + actividadPwaId + " ]";
     }
     
 }

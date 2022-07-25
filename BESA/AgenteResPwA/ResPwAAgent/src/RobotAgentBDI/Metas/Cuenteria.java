@@ -10,7 +10,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import Init.InitRESPwA;
-import ResPwAEntities.Actxpreferencia;
+import ResPwAEntities.ActXPreferencia;
 import RobotAgentBDI.Believes.RobotAgentBelieves;
 import RobotAgentBDI.Utils.ResPwAActivity;
 import Tareas.Retroalimentacion.RecibirRetroalimentacionCuento;
@@ -89,11 +89,11 @@ public class Cuenteria extends GoalBDI {
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         //System.out.println("Meta Cuenteria evaluateContribution");
         RobotAgentBelieves blvs = (RobotAgentBelieves) stateBDI.getBelieves();
-        List<Actxpreferencia> listaAct = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getActxpreferenciaList();
+        List<ActXPreferencia> listaAct = blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getActXPreferenciaList();
         double valor = 0;
 
-        for (Actxpreferencia act : listaAct) {
-            if (act.getActividadpwa().getNombre().equalsIgnoreCase(ResPwAActivity.CUENTERIA.toString())) {
+        for (ActXPreferencia act : listaAct) {
+            if (act.getActividadPwa().getNombre().equalsIgnoreCase(ResPwAActivity.CUENTERIA.toString())) {
                 valor = act.getGusto();
             }
         }       

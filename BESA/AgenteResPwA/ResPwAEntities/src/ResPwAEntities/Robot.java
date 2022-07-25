@@ -6,6 +6,7 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -21,23 +22,24 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "robot", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Robot.findAll", query = "SELECT r FROM Robot r")
-    , @NamedQuery(name = "Robot.findById", query = "SELECT r FROM Robot r WHERE r.id = :id")
-    , @NamedQuery(name = "Robot.findByNombre", query = "SELECT r FROM Robot r WHERE r.nombre = :nombre")})
+    @NamedQuery(name = "Robot.findAll", query = "SELECT r FROM Robot r"),
+    @NamedQuery(name = "Robot.findById", query = "SELECT r FROM Robot r WHERE r.id = :id"),
+    @NamedQuery(name = "Robot.findByNombre", query = "SELECT r FROM Robot r WHERE r.nombre = :nombre")})
 public class Robot implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(nullable = false)
-    private Integer id;
-    @Column(length = 2147483647)
+    @Column(name = "id")
+    private BigDecimal id;
+    @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "robotId")
     private List<Emocion> emocionList;
@@ -45,15 +47,15 @@ public class Robot implements Serializable {
     public Robot() {
     }
 
-    public Robot(Integer id) {
+    public Robot(BigDecimal id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public BigDecimal getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(BigDecimal id) {
         this.id = id;
     }
 

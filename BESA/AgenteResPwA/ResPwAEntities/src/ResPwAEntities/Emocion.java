@@ -23,44 +23,51 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "emocion", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Emocion.findAll", query = "SELECT e FROM Emocion e")
-    , @NamedQuery(name = "Emocion.findById", query = "SELECT e FROM Emocion e WHERE e.id = :id")
-    , @NamedQuery(name = "Emocion.findByImagen", query = "SELECT e FROM Emocion e WHERE e.imagen = :imagen")
-    , @NamedQuery(name = "Emocion.findByEmotionaltag", query = "SELECT e FROM Emocion e WHERE e.emotionaltag = :emotionaltag")})
+    @NamedQuery(name = "Emocion.findAll", query = "SELECT e FROM Emocion e"),
+    @NamedQuery(name = "Emocion.findById", query = "SELECT e FROM Emocion e WHERE e.id = :id"),
+    @NamedQuery(name = "Emocion.findByImagen", query = "SELECT e FROM Emocion e WHERE e.imagen = :imagen"),
+    @NamedQuery(name = "Emocion.findByEmotionalTag", query = "SELECT e FROM Emocion e WHERE e.emotionalTag = :emotionalTag")})
 public class Emocion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(nullable = false)
-    private Integer id;
-    @Column(length = 2147483647)
+    @Column(name = "id")
+    private String id;
+    @Basic(optional = false)
+    @Column(name = "imagen")
     private String imagen;
-    private String emotionaltag;
+    @Column(name = "emotional_tag")
+    private String emotionalTag;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "emocionId")
     private List<Accion> accionList;
-    @JoinColumn(name = "robot_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "robot_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Robot robotId;
 
     public Emocion() {
     }
 
-    public Emocion(Integer id) {
+    public Emocion(String id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Emocion(String id, String imagen) {
+        this.id = id;
+        this.imagen = imagen;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -72,12 +79,12 @@ public class Emocion implements Serializable {
         this.imagen = imagen;
     }
 
-    public String getEmotionaltag() {
-        return emotionaltag;
+    public String getEmotionalTag() {
+        return emotionalTag;
     }
 
-    public void setEmotionaltag(String emotionaltag) {
-        this.emotionaltag = emotionaltag;
+    public void setEmotionalTag(String emotionalTag) {
+        this.emotionalTag = emotionalTag;
     }
 
     @XmlTransient

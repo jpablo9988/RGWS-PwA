@@ -12,8 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -23,27 +21,26 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "genero", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Genero.findAll", query = "SELECT g FROM Genero g")
-    , @NamedQuery(name = "Genero.findByGenero", query = "SELECT g FROM Genero g WHERE g.genero = :genero")})
+    @NamedQuery(name = "Genero.findAll", query = "SELECT g FROM Genero g"),
+    @NamedQuery(name = "Genero.findByGenero", query = "SELECT g FROM Genero g WHERE g.genero = :genero")})
 public class Genero implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(nullable = false, length = 2147483647)
+    @Column(name = "genero")
     private String genero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "generoGenero")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genero")
     private List<Cuento> cuentoList;
-    @JoinColumn(name = "baile_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Baile baileId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "generoGenero")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genero")
+    private List<Baile> baileList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genero")
     private List<Cancion> cancionList;
 
     public Genero() {
@@ -70,12 +67,13 @@ public class Genero implements Serializable {
         this.cuentoList = cuentoList;
     }
 
-    public Baile getBaileId() {
-        return baileId;
+    @XmlTransient
+    public List<Baile> getBaileList() {
+        return baileList;
     }
 
-    public void setBaileId(Baile baileId) {
-        this.baileId = baileId;
+    public void setBaileList(List<Baile> baileList) {
+        this.baileList = baileList;
     }
 
     @XmlTransient

@@ -6,7 +6,7 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -21,45 +21,56 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "joint", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Joint.findAll", query = "SELECT j FROM Joint j")
-    , @NamedQuery(name = "Joint.findById", query = "SELECT j FROM Joint j WHERE j.id = :id")
-    , @NamedQuery(name = "Joint.findByNombre", query = "SELECT j FROM Joint j WHERE j.nombre = :nombre")
-    , @NamedQuery(name = "Joint.findByAngulo", query = "SELECT j FROM Joint j WHERE j.angulo = :angulo")
-    , @NamedQuery(name = "Joint.findByTiempo", query = "SELECT j FROM Joint j WHERE j.tiempo = :tiempo")})
+    @NamedQuery(name = "Joint.findAll", query = "SELECT j FROM Joint j"),
+    @NamedQuery(name = "Joint.findById", query = "SELECT j FROM Joint j WHERE j.id = :id"),
+    @NamedQuery(name = "Joint.findByNombre", query = "SELECT j FROM Joint j WHERE j.nombre = :nombre"),
+    @NamedQuery(name = "Joint.findByAngulo", query = "SELECT j FROM Joint j WHERE j.angulo = :angulo"),
+    @NamedQuery(name = "Joint.findByTiempo", query = "SELECT j FROM Joint j WHERE j.tiempo = :tiempo")})
 public class Joint implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(nullable = false)
-    private Integer id;
-    @Column(length = 2147483647)
+    @Column(name = "id")
+    private BigDecimal id;
+    @Basic(optional = false)
+    @Column(name = "nombre")
     private String nombre;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(precision = 17, scale = 17)
-    private Double angulo;
-    private BigInteger tiempo;
+    @Basic(optional = false)
+    @Column(name = "angulo")
+    private double angulo;
+    @Basic(optional = false)
+    @Column(name = "tiempo")
+    private BigDecimal tiempo;
     @ManyToMany(mappedBy = "jointList")
     private List<Accion> accionList;
 
     public Joint() {
     }
 
-    public Joint(Integer id) {
+    public Joint(BigDecimal id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Joint(BigDecimal id, String nombre, double angulo, BigDecimal tiempo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.angulo = angulo;
+        this.tiempo = tiempo;
+    }
+
+    public BigDecimal getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(BigDecimal id) {
         this.id = id;
     }
 
@@ -71,19 +82,19 @@ public class Joint implements Serializable {
         this.nombre = nombre;
     }
 
-    public Double getAngulo() {
+    public double getAngulo() {
         return angulo;
     }
 
-    public void setAngulo(Double angulo) {
+    public void setAngulo(double angulo) {
         this.angulo = angulo;
     }
 
-    public BigInteger getTiempo() {
+    public BigDecimal getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(BigInteger tiempo) {
+    public void setTiempo(BigDecimal tiempo) {
         this.tiempo = tiempo;
     }
 

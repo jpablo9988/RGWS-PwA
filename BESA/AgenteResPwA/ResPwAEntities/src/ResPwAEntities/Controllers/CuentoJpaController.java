@@ -5,29 +5,30 @@
  */
 package ResPwAEntities.Controllers;
 
-import ResPwAEntities.Controllers.Exceptions.IllegalOrphanException;
-import ResPwAEntities.Controllers.Exceptions.NonexistentEntityException;
-import ResPwAEntities.Controllers.Exceptions.PreexistingEntityException;
+import ResPwAEntities.Controllers.exceptions.IllegalOrphanException;
+import ResPwAEntities.Controllers.exceptions.NonexistentEntityException;
+import ResPwAEntities.Controllers.exceptions.PreexistingEntityException;
 import ResPwAEntities.Cuento;
-import ResPwAEntities.Frases;
-import ResPwAEntities.Genero;
-import ResPwAEntities.Preferenciaxcuento;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityNotFoundException;
+import java.io.Serializable;
 import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import ResPwAEntities.Genero;
+import ResPwAEntities.PreferenciaXCuento;
+import java.util.ArrayList;
+import java.util.List;
+import ResPwAEntities.Frase;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
-public class CuentoJpaController {
-    
-     public CuentoJpaController(EntityManagerFactory emf) {
+public class CuentoJpaController implements Serializable {
+
+    public CuentoJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -37,54 +38,54 @@ public class CuentoJpaController {
     }
 
     public void create(Cuento cuento) throws PreexistingEntityException, Exception {
-        if (cuento.getPreferenciaxcuentoList() == null) {
-            cuento.setPreferenciaxcuentoList(new ArrayList<Preferenciaxcuento>());
+        if (cuento.getPreferenciaXCuentoList() == null) {
+            cuento.setPreferenciaXCuentoList(new ArrayList<PreferenciaXCuento>());
         }
-        if (cuento.getFrasesList() == null) {
-            cuento.setFrasesList(new ArrayList<Frases>());
+        if (cuento.getFraseList() == null) {
+            cuento.setFraseList(new ArrayList<Frase>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Genero generoGenero = cuento.getGeneroGenero();
-            if (generoGenero != null) {
-                generoGenero = em.getReference(generoGenero.getClass(), generoGenero.getGenero());
-                cuento.setGeneroGenero(generoGenero);
+            Genero genero = cuento.getGenero();
+            if (genero != null) {
+                genero = em.getReference(genero.getClass(), genero.getGenero());
+                cuento.setGenero(genero);
             }
-            List<Preferenciaxcuento> attachedPreferenciaxcuentoList = new ArrayList<Preferenciaxcuento>();
-            for (Preferenciaxcuento preferenciaxcuentoListPreferenciaxcuentoToAttach : cuento.getPreferenciaxcuentoList()) {
-                preferenciaxcuentoListPreferenciaxcuentoToAttach = em.getReference(preferenciaxcuentoListPreferenciaxcuentoToAttach.getClass(), preferenciaxcuentoListPreferenciaxcuentoToAttach.getPreferenciaxcuentoPK());
-                attachedPreferenciaxcuentoList.add(preferenciaxcuentoListPreferenciaxcuentoToAttach);
+            List<PreferenciaXCuento> attachedPreferenciaXCuentoList = new ArrayList<PreferenciaXCuento>();
+            for (PreferenciaXCuento preferenciaXCuentoListPreferenciaXCuentoToAttach : cuento.getPreferenciaXCuentoList()) {
+                preferenciaXCuentoListPreferenciaXCuentoToAttach = em.getReference(preferenciaXCuentoListPreferenciaXCuentoToAttach.getClass(), preferenciaXCuentoListPreferenciaXCuentoToAttach.getPreferenciaXCuentoPK());
+                attachedPreferenciaXCuentoList.add(preferenciaXCuentoListPreferenciaXCuentoToAttach);
             }
-            cuento.setPreferenciaxcuentoList(attachedPreferenciaxcuentoList);
-            List<Frases> attachedFrasesList = new ArrayList<Frases>();
-            for (Frases frasesListFrasesToAttach : cuento.getFrasesList()) {
-                frasesListFrasesToAttach = em.getReference(frasesListFrasesToAttach.getClass(), frasesListFrasesToAttach.getAccion());
-                attachedFrasesList.add(frasesListFrasesToAttach);
+            cuento.setPreferenciaXCuentoList(attachedPreferenciaXCuentoList);
+            List<Frase> attachedFraseList = new ArrayList<Frase>();
+            for (Frase fraseListFraseToAttach : cuento.getFraseList()) {
+                fraseListFraseToAttach = em.getReference(fraseListFraseToAttach.getClass(), fraseListFraseToAttach.getFrasePK());
+                attachedFraseList.add(fraseListFraseToAttach);
             }
-            cuento.setFrasesList(attachedFrasesList);
+            cuento.setFraseList(attachedFraseList);
             em.persist(cuento);
-            if (generoGenero != null) {
-                generoGenero.getCuentoList().add(cuento);
-                generoGenero = em.merge(generoGenero);
+            if (genero != null) {
+                genero.getCuentoList().add(cuento);
+                genero = em.merge(genero);
             }
-            for (Preferenciaxcuento preferenciaxcuentoListPreferenciaxcuento : cuento.getPreferenciaxcuentoList()) {
-                Cuento oldCuentoOfPreferenciaxcuentoListPreferenciaxcuento = preferenciaxcuentoListPreferenciaxcuento.getCuento();
-                preferenciaxcuentoListPreferenciaxcuento.setCuento(cuento);
-                preferenciaxcuentoListPreferenciaxcuento = em.merge(preferenciaxcuentoListPreferenciaxcuento);
-                if (oldCuentoOfPreferenciaxcuentoListPreferenciaxcuento != null) {
-                    oldCuentoOfPreferenciaxcuentoListPreferenciaxcuento.getPreferenciaxcuentoList().remove(preferenciaxcuentoListPreferenciaxcuento);
-                    oldCuentoOfPreferenciaxcuentoListPreferenciaxcuento = em.merge(oldCuentoOfPreferenciaxcuentoListPreferenciaxcuento);
+            for (PreferenciaXCuento preferenciaXCuentoListPreferenciaXCuento : cuento.getPreferenciaXCuentoList()) {
+                Cuento oldCuentoOfPreferenciaXCuentoListPreferenciaXCuento = preferenciaXCuentoListPreferenciaXCuento.getCuento();
+                preferenciaXCuentoListPreferenciaXCuento.setCuento(cuento);
+                preferenciaXCuentoListPreferenciaXCuento = em.merge(preferenciaXCuentoListPreferenciaXCuento);
+                if (oldCuentoOfPreferenciaXCuentoListPreferenciaXCuento != null) {
+                    oldCuentoOfPreferenciaXCuentoListPreferenciaXCuento.getPreferenciaXCuentoList().remove(preferenciaXCuentoListPreferenciaXCuento);
+                    oldCuentoOfPreferenciaXCuentoListPreferenciaXCuento = em.merge(oldCuentoOfPreferenciaXCuentoListPreferenciaXCuento);
                 }
             }
-            for (Frases frasesListFrases : cuento.getFrasesList()) {
-                Cuento oldCuentoOfFrasesListFrases = frasesListFrases.getCuento();
-                frasesListFrases.setCuento(cuento);
-                frasesListFrases = em.merge(frasesListFrases);
-                if (oldCuentoOfFrasesListFrases != null) {
-                    oldCuentoOfFrasesListFrases.getFrasesList().remove(frasesListFrases);
-                    oldCuentoOfFrasesListFrases = em.merge(oldCuentoOfFrasesListFrases);
+            for (Frase fraseListFrase : cuento.getFraseList()) {
+                Cuento oldCuentoOfFraseListFrase = fraseListFrase.getCuento();
+                fraseListFrase.setCuento(cuento);
+                fraseListFrase = em.merge(fraseListFrase);
+                if (oldCuentoOfFraseListFrase != null) {
+                    oldCuentoOfFraseListFrase.getFraseList().remove(fraseListFrase);
+                    oldCuentoOfFraseListFrase = em.merge(oldCuentoOfFraseListFrase);
                 }
             }
             em.getTransaction().commit();
@@ -106,78 +107,78 @@ public class CuentoJpaController {
             em = getEntityManager();
             em.getTransaction().begin();
             Cuento persistentCuento = em.find(Cuento.class, cuento.getNombre());
-            Genero generoGeneroOld = persistentCuento.getGeneroGenero();
-            Genero generoGeneroNew = cuento.getGeneroGenero();
-            List<Preferenciaxcuento> preferenciaxcuentoListOld = persistentCuento.getPreferenciaxcuentoList();
-            List<Preferenciaxcuento> preferenciaxcuentoListNew = cuento.getPreferenciaxcuentoList();
-            List<Frases> frasesListOld = persistentCuento.getFrasesList();
-            List<Frases> frasesListNew = cuento.getFrasesList();
+            Genero generoOld = persistentCuento.getGenero();
+            Genero generoNew = cuento.getGenero();
+            List<PreferenciaXCuento> preferenciaXCuentoListOld = persistentCuento.getPreferenciaXCuentoList();
+            List<PreferenciaXCuento> preferenciaXCuentoListNew = cuento.getPreferenciaXCuentoList();
+            List<Frase> fraseListOld = persistentCuento.getFraseList();
+            List<Frase> fraseListNew = cuento.getFraseList();
             List<String> illegalOrphanMessages = null;
-            for (Preferenciaxcuento preferenciaxcuentoListOldPreferenciaxcuento : preferenciaxcuentoListOld) {
-                if (!preferenciaxcuentoListNew.contains(preferenciaxcuentoListOldPreferenciaxcuento)) {
+            for (PreferenciaXCuento preferenciaXCuentoListOldPreferenciaXCuento : preferenciaXCuentoListOld) {
+                if (!preferenciaXCuentoListNew.contains(preferenciaXCuentoListOldPreferenciaXCuento)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Preferenciaxcuento " + preferenciaxcuentoListOldPreferenciaxcuento + " since its cuento field is not nullable.");
+                    illegalOrphanMessages.add("You must retain PreferenciaXCuento " + preferenciaXCuentoListOldPreferenciaXCuento + " since its cuento field is not nullable.");
                 }
             }
-            for (Frases frasesListOldFrases : frasesListOld) {
-                if (!frasesListNew.contains(frasesListOldFrases)) {
+            for (Frase fraseListOldFrase : fraseListOld) {
+                if (!fraseListNew.contains(fraseListOldFrase)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Frases " + frasesListOldFrases + " since its cuento field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Frase " + fraseListOldFrase + " since its cuento field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            if (generoGeneroNew != null) {
-                generoGeneroNew = em.getReference(generoGeneroNew.getClass(), generoGeneroNew.getGenero());
-                cuento.setGeneroGenero(generoGeneroNew);
+            if (generoNew != null) {
+                generoNew = em.getReference(generoNew.getClass(), generoNew.getGenero());
+                cuento.setGenero(generoNew);
             }
-            List<Preferenciaxcuento> attachedPreferenciaxcuentoListNew = new ArrayList<Preferenciaxcuento>();
-            for (Preferenciaxcuento preferenciaxcuentoListNewPreferenciaxcuentoToAttach : preferenciaxcuentoListNew) {
-                preferenciaxcuentoListNewPreferenciaxcuentoToAttach = em.getReference(preferenciaxcuentoListNewPreferenciaxcuentoToAttach.getClass(), preferenciaxcuentoListNewPreferenciaxcuentoToAttach.getPreferenciaxcuentoPK());
-                attachedPreferenciaxcuentoListNew.add(preferenciaxcuentoListNewPreferenciaxcuentoToAttach);
+            List<PreferenciaXCuento> attachedPreferenciaXCuentoListNew = new ArrayList<PreferenciaXCuento>();
+            for (PreferenciaXCuento preferenciaXCuentoListNewPreferenciaXCuentoToAttach : preferenciaXCuentoListNew) {
+                preferenciaXCuentoListNewPreferenciaXCuentoToAttach = em.getReference(preferenciaXCuentoListNewPreferenciaXCuentoToAttach.getClass(), preferenciaXCuentoListNewPreferenciaXCuentoToAttach.getPreferenciaXCuentoPK());
+                attachedPreferenciaXCuentoListNew.add(preferenciaXCuentoListNewPreferenciaXCuentoToAttach);
             }
-            preferenciaxcuentoListNew = attachedPreferenciaxcuentoListNew;
-            cuento.setPreferenciaxcuentoList(preferenciaxcuentoListNew);
-            List<Frases> attachedFrasesListNew = new ArrayList<Frases>();
-            for (Frases frasesListNewFrasesToAttach : frasesListNew) {
-                //frasesListNewFrasesToAttach = em.getReference(frasesListNewFrasesToAttach.getClass(), frasesListNewFrasesToAttach.getFrasesPK());
-                attachedFrasesListNew.add(frasesListNewFrasesToAttach);
+            preferenciaXCuentoListNew = attachedPreferenciaXCuentoListNew;
+            cuento.setPreferenciaXCuentoList(preferenciaXCuentoListNew);
+            List<Frase> attachedFraseListNew = new ArrayList<Frase>();
+            for (Frase fraseListNewFraseToAttach : fraseListNew) {
+                fraseListNewFraseToAttach = em.getReference(fraseListNewFraseToAttach.getClass(), fraseListNewFraseToAttach.getFrasePK());
+                attachedFraseListNew.add(fraseListNewFraseToAttach);
             }
-            frasesListNew = attachedFrasesListNew;
-            cuento.setFrasesList(frasesListNew);
+            fraseListNew = attachedFraseListNew;
+            cuento.setFraseList(fraseListNew);
             cuento = em.merge(cuento);
-            if (generoGeneroOld != null && !generoGeneroOld.equals(generoGeneroNew)) {
-                generoGeneroOld.getCuentoList().remove(cuento);
-                generoGeneroOld = em.merge(generoGeneroOld);
+            if (generoOld != null && !generoOld.equals(generoNew)) {
+                generoOld.getCuentoList().remove(cuento);
+                generoOld = em.merge(generoOld);
             }
-            if (generoGeneroNew != null && !generoGeneroNew.equals(generoGeneroOld)) {
-                generoGeneroNew.getCuentoList().add(cuento);
-                generoGeneroNew = em.merge(generoGeneroNew);
+            if (generoNew != null && !generoNew.equals(generoOld)) {
+                generoNew.getCuentoList().add(cuento);
+                generoNew = em.merge(generoNew);
             }
-            for (Preferenciaxcuento preferenciaxcuentoListNewPreferenciaxcuento : preferenciaxcuentoListNew) {
-                if (!preferenciaxcuentoListOld.contains(preferenciaxcuentoListNewPreferenciaxcuento)) {
-                    Cuento oldCuentoOfPreferenciaxcuentoListNewPreferenciaxcuento = preferenciaxcuentoListNewPreferenciaxcuento.getCuento();
-                    preferenciaxcuentoListNewPreferenciaxcuento.setCuento(cuento);
-                    preferenciaxcuentoListNewPreferenciaxcuento = em.merge(preferenciaxcuentoListNewPreferenciaxcuento);
-                    if (oldCuentoOfPreferenciaxcuentoListNewPreferenciaxcuento != null && !oldCuentoOfPreferenciaxcuentoListNewPreferenciaxcuento.equals(cuento)) {
-                        oldCuentoOfPreferenciaxcuentoListNewPreferenciaxcuento.getPreferenciaxcuentoList().remove(preferenciaxcuentoListNewPreferenciaxcuento);
-                        oldCuentoOfPreferenciaxcuentoListNewPreferenciaxcuento = em.merge(oldCuentoOfPreferenciaxcuentoListNewPreferenciaxcuento);
+            for (PreferenciaXCuento preferenciaXCuentoListNewPreferenciaXCuento : preferenciaXCuentoListNew) {
+                if (!preferenciaXCuentoListOld.contains(preferenciaXCuentoListNewPreferenciaXCuento)) {
+                    Cuento oldCuentoOfPreferenciaXCuentoListNewPreferenciaXCuento = preferenciaXCuentoListNewPreferenciaXCuento.getCuento();
+                    preferenciaXCuentoListNewPreferenciaXCuento.setCuento(cuento);
+                    preferenciaXCuentoListNewPreferenciaXCuento = em.merge(preferenciaXCuentoListNewPreferenciaXCuento);
+                    if (oldCuentoOfPreferenciaXCuentoListNewPreferenciaXCuento != null && !oldCuentoOfPreferenciaXCuentoListNewPreferenciaXCuento.equals(cuento)) {
+                        oldCuentoOfPreferenciaXCuentoListNewPreferenciaXCuento.getPreferenciaXCuentoList().remove(preferenciaXCuentoListNewPreferenciaXCuento);
+                        oldCuentoOfPreferenciaXCuentoListNewPreferenciaXCuento = em.merge(oldCuentoOfPreferenciaXCuentoListNewPreferenciaXCuento);
                     }
                 }
             }
-            for (Frases frasesListNewFrases : frasesListNew) {
-                if (!frasesListOld.contains(frasesListNewFrases)) {
-                    Cuento oldCuentoOfFrasesListNewFrases = frasesListNewFrases.getCuento();
-                    frasesListNewFrases.setCuento(cuento);
-                    frasesListNewFrases = em.merge(frasesListNewFrases);
-                    if (oldCuentoOfFrasesListNewFrases != null && !oldCuentoOfFrasesListNewFrases.equals(cuento)) {
-                        oldCuentoOfFrasesListNewFrases.getFrasesList().remove(frasesListNewFrases);
-                        oldCuentoOfFrasesListNewFrases = em.merge(oldCuentoOfFrasesListNewFrases);
+            for (Frase fraseListNewFrase : fraseListNew) {
+                if (!fraseListOld.contains(fraseListNewFrase)) {
+                    Cuento oldCuentoOfFraseListNewFrase = fraseListNewFrase.getCuento();
+                    fraseListNewFrase.setCuento(cuento);
+                    fraseListNewFrase = em.merge(fraseListNewFrase);
+                    if (oldCuentoOfFraseListNewFrase != null && !oldCuentoOfFraseListNewFrase.equals(cuento)) {
+                        oldCuentoOfFraseListNewFrase.getFraseList().remove(fraseListNewFrase);
+                        oldCuentoOfFraseListNewFrase = em.merge(oldCuentoOfFraseListNewFrase);
                     }
                 }
             }
@@ -211,27 +212,27 @@ public class CuentoJpaController {
                 throw new NonexistentEntityException("The cuento with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<Preferenciaxcuento> preferenciaxcuentoListOrphanCheck = cuento.getPreferenciaxcuentoList();
-            for (Preferenciaxcuento preferenciaxcuentoListOrphanCheckPreferenciaxcuento : preferenciaxcuentoListOrphanCheck) {
+            List<PreferenciaXCuento> preferenciaXCuentoListOrphanCheck = cuento.getPreferenciaXCuentoList();
+            for (PreferenciaXCuento preferenciaXCuentoListOrphanCheckPreferenciaXCuento : preferenciaXCuentoListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Cuento (" + cuento + ") cannot be destroyed since the Preferenciaxcuento " + preferenciaxcuentoListOrphanCheckPreferenciaxcuento + " in its preferenciaxcuentoList field has a non-nullable cuento field.");
+                illegalOrphanMessages.add("This Cuento (" + cuento + ") cannot be destroyed since the PreferenciaXCuento " + preferenciaXCuentoListOrphanCheckPreferenciaXCuento + " in its preferenciaXCuentoList field has a non-nullable cuento field.");
             }
-            List<Frases> frasesListOrphanCheck = cuento.getFrasesList();
-            for (Frases frasesListOrphanCheckFrases : frasesListOrphanCheck) {
+            List<Frase> fraseListOrphanCheck = cuento.getFraseList();
+            for (Frase fraseListOrphanCheckFrase : fraseListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Cuento (" + cuento + ") cannot be destroyed since the Frases " + frasesListOrphanCheckFrases + " in its frasesList field has a non-nullable cuento field.");
+                illegalOrphanMessages.add("This Cuento (" + cuento + ") cannot be destroyed since the Frase " + fraseListOrphanCheckFrase + " in its fraseList field has a non-nullable cuento field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Genero generoGenero = cuento.getGeneroGenero();
-            if (generoGenero != null) {
-                generoGenero.getCuentoList().remove(cuento);
-                generoGenero = em.merge(generoGenero);
+            Genero genero = cuento.getGenero();
+            if (genero != null) {
+                genero.getCuentoList().remove(cuento);
+                genero = em.merge(genero);
             }
             em.remove(cuento);
             em.getTransaction().commit();

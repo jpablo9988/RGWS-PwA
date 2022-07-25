@@ -7,7 +7,7 @@ package Tareas.Cuenteria;
 
 import EmotionalAnalyzerAgent.Utils.*;
 import ResPwAEntities.Cuento;
-import ResPwAEntities.Frases;
+import ResPwAEntities.Frase;
 import RobotAgentBDI.Believes.ModeloEmocional.EmotionalEvent;
 import RobotAgentBDI.Believes.RobotAgentBelieves;
 import rational.mapping.Believes;
@@ -54,26 +54,26 @@ public class ReproducirCuento extends Task {
             Cuento cuento = blvs.getbEstadoActividad().getCuentoActual().getCuento();
 
             infoServicio = new HashMap<>();
-            infoServicio.put("SAY", cuento.getFrasesList().get(blvs.getbEstadoActividad().getIndexCuento()).getContenido());
+            infoServicio.put("SAY", cuento.getFraseList().get(blvs.getbEstadoActividad().getIndexCuento()).getContenido());
             ServiceDataRequest srb = ServiceRequestBuilder.buildRequest(VoiceServiceRequestType.SAY, infoServicio);
             ResPwaUtils.requestService(srb, blvs);
 
-            if (!cuento.getFrasesList().get(blvs.getbEstadoActividad().getIndexCuento()).getUrlimagen().equals(" ")) {
+            if (!cuento.getFraseList().get(blvs.getbEstadoActividad().getIndexCuento()).getUrlImagen().equals(" ")) {
                 infoServicio = new HashMap<>();
-                infoServicio.put("SHOWIMG", cuento.getFrasesList().get(blvs.getbEstadoActividad().getIndexCuento()).getUrlimagen());
+                infoServicio.put("SHOWIMG", cuento.getFraseList().get(blvs.getbEstadoActividad().getIndexCuento()).getUrlImagen());
                 srb = ServiceRequestBuilder.buildRequest(TabletServiceRequestType.SHOWIMG, infoServicio);
                 ResPwaUtils.requestService(srb, blvs);
             }
 
-            if (!cuento.getFrasesList().get(blvs.getbEstadoActividad().getIndexCuento()).getAccion().equals(" ")) {
+            if (!cuento.getFraseList().get(blvs.getbEstadoActividad().getIndexCuento()).getAccion().equals(" ")) {
                 infoServicio = new HashMap<>();
-                infoServicio.put("TAGSDANCE", cuento.getFrasesList().get(blvs.getbEstadoActividad().getIndexCuento()).getAccion());
+                infoServicio.put("TAGSDANCE", cuento.getFraseList().get(blvs.getbEstadoActividad().getIndexCuento()).getAccion());
                 srb = ServiceRequestBuilder.buildRequest(ActivityServiceRequestType.RUNANIMATION, infoServicio);
                 ResPwaUtils.requestService(srb, blvs);
             }
 
-            if (!cuento.getFrasesList().get(blvs.getbEstadoActividad().getIndexCuento()).getEmotionalevent().equals(" ")) {
-                String emoEvt = cuento.getFrasesList().get(blvs.getbEstadoActividad().getIndexCuento()).getEmotionalevent();
+            if (!cuento.getFraseList().get(blvs.getbEstadoActividad().getIndexCuento()).getEmotionalEvent().equals(" ")) {
+                String emoEvt = cuento.getFraseList().get(blvs.getbEstadoActividad().getIndexCuento()).getEmotionalEvent();
                 System.out.println("EVENTOS:");
 
                 String[] emoPos = emoEvt.split("_");
@@ -91,9 +91,9 @@ public class ReproducirCuento extends Task {
             }
             blvs.getbEstadoActividad().setIndexCuento(blvs.getbEstadoActividad().getIndexCuento() + 1);
         }
-        System.out.println("TOTAL FRASES" + blvs.getbEstadoActividad().getCuentoActual().getCuento().getFrasesList().size());
+        System.out.println("TOTAL Frase" + blvs.getbEstadoActividad().getCuentoActual().getCuento().getFraseList().size());
         System.out.println("VA EN ESTA FRASE: " + blvs.getbEstadoActividad().getIndexCuento());
-        if (blvs.getbEstadoActividad().getCuentoActual().getCuento().getFrasesList().size() > blvs.getbEstadoActividad().getIndexCuento()) {
+        if (blvs.getbEstadoActividad().getCuentoActual().getCuento().getFraseList().size() > blvs.getbEstadoActividad().getIndexCuento()) {
             setTaskWaitingForExecution();
         }
 
@@ -116,9 +116,9 @@ public class ReproducirCuento extends Task {
     public boolean checkFinish(Believes believes) {
 
         RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
-        System.out.println("TOTAL FRASES" + blvs.getbEstadoActividad().getCuentoActual().getCuento().getFrasesList().size());
+        System.out.println("TOTAL Frase" + blvs.getbEstadoActividad().getCuentoActual().getCuento().getFraseList().size());
         System.out.println("VA EN ESTA FRASE: " + blvs.getbEstadoActividad().getIndexCuento());
-        if (!blvs.getbEstadoInteraccion().isEstaHablando() && blvs.getbEstadoActividad().getCuentoActual().getCuento().getFrasesList().size() == blvs.getbEstadoActividad().getIndexCuento()) {
+        if (!blvs.getbEstadoInteraccion().isEstaHablando() && blvs.getbEstadoActividad().getCuentoActual().getCuento().getFraseList().size() == blvs.getbEstadoActividad().getIndexCuento()) {
             System.out.println("--- Se acabo ---");
             infoServicio = new HashMap<>();
             infoServicio.put("SAY", "El Fin. Cuentame si te gusto");

@@ -21,49 +21,61 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "cuidador", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cuidador.findAll", query = "SELECT c FROM Cuidador c")
-    , @NamedQuery(name = "Cuidador.findByNombreusuario", query = "SELECT c FROM Cuidador c WHERE c.nombreusuario = :nombreusuario")
-    , @NamedQuery(name = "Cuidador.findByContrase\u00f1a", query = "SELECT c FROM Cuidador c WHERE c.contrase\u00f1a = :contrase\u00f1a")
-    , @NamedQuery(name = "Cuidador.findByNombre", query = "SELECT c FROM Cuidador c WHERE c.nombre = :nombre")
-    , @NamedQuery(name = "Cuidador.findByCorreo", query = "SELECT c FROM Cuidador c WHERE c.correo = :correo")
-    , @NamedQuery(name = "Cuidador.findByCelular", query = "SELECT c FROM Cuidador c WHERE c.celular = :celular")})
+    @NamedQuery(name = "Cuidador.findAll", query = "SELECT c FROM Cuidador c"),
+    @NamedQuery(name = "Cuidador.findByNombreUsuario", query = "SELECT c FROM Cuidador c WHERE c.nombreUsuario = :nombreUsuario"),
+    @NamedQuery(name = "Cuidador.findByContrasena", query = "SELECT c FROM Cuidador c WHERE c.contrasena = :contrasena"),
+    @NamedQuery(name = "Cuidador.findByNombre", query = "SELECT c FROM Cuidador c WHERE c.nombre = :nombre"),
+    @NamedQuery(name = "Cuidador.findByCorreo", query = "SELECT c FROM Cuidador c WHERE c.correo = :correo"),
+    @NamedQuery(name = "Cuidador.findByCelular", query = "SELECT c FROM Cuidador c WHERE c.celular = :celular")})
 public class Cuidador implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(nullable = false, length = 2147483647)
-    private String nombreusuario;
-    @Column(length = 2147483647)
+    @Column(name = "nombre_usuario")
+    private String nombreUsuario;
+    @Basic(optional = false)
+    @Column(name = "contrasena")
     private String contrasena;
-    @Column(length = 2147483647)
+    @Basic(optional = false)
+    @Column(name = "nombre")
     private String nombre;
-    @Column(length = 2147483647)
+    @Basic(optional = false)
+    @Column(name = "correo")
     private String correo;
-    @Column(length = 2147483647)
+    @Basic(optional = false)
+    @Column(name = "celular")
     private String celular;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuidadorNombreusuario")
-    private List<Perfilpwa> perfilpwaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuidadorNombreUsuario")
+    private List<PerfilPwa> perfilPwaList;
 
     public Cuidador() {
     }
 
-    public Cuidador(String nombreusuario) {
-        this.nombreusuario = nombreusuario;
+    public Cuidador(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
-    public String getNombreusuario() {
-        return nombreusuario;
+    public Cuidador(String nombreUsuario, String contrasena, String nombre, String correo, String celular) {
+        this.nombreUsuario = nombreUsuario;
+        this.contrasena = contrasena;
+        this.nombre = nombre;
+        this.correo = correo;
+        this.celular = celular;
     }
 
-    public void setNombreusuario(String nombreusuario) {
-        this.nombreusuario = nombreusuario;
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
     public String getContrasena() {
@@ -99,18 +111,18 @@ public class Cuidador implements Serializable {
     }
 
     @XmlTransient
-    public List<Perfilpwa> getPerfilpwaList() {
-        return perfilpwaList;
+    public List<PerfilPwa> getPerfilPwaList() {
+        return perfilPwaList;
     }
 
-    public void setPerfilpwaList(List<Perfilpwa> perfilpwaList) {
-        this.perfilpwaList = perfilpwaList;
+    public void setPerfilPwaList(List<PerfilPwa> perfilPwaList) {
+        this.perfilPwaList = perfilPwaList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (nombreusuario != null ? nombreusuario.hashCode() : 0);
+        hash += (nombreUsuario != null ? nombreUsuario.hashCode() : 0);
         return hash;
     }
 
@@ -121,7 +133,7 @@ public class Cuidador implements Serializable {
             return false;
         }
         Cuidador other = (Cuidador) object;
-        if ((this.nombreusuario == null && other.nombreusuario != null) || (this.nombreusuario != null && !this.nombreusuario.equals(other.nombreusuario))) {
+        if ((this.nombreUsuario == null && other.nombreUsuario != null) || (this.nombreUsuario != null && !this.nombreUsuario.equals(other.nombreUsuario))) {
             return false;
         }
         return true;
@@ -129,7 +141,7 @@ public class Cuidador implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.Cuidador[ nombreusuario=" + nombreusuario + " ]";
+        return "ResPwAEntities.Cuidador[ nombreUsuario=" + nombreUsuario + " ]";
     }
-
+    
 }

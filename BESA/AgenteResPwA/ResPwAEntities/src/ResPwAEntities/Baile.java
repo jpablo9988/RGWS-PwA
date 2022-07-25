@@ -13,45 +13,53 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "baile", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Baile.findAll", query = "SELECT b FROM Baile b")
-    , @NamedQuery(name = "Baile.findById", query = "SELECT b FROM Baile b WHERE b.id = :id")
-    , @NamedQuery(name = "Baile.findByNombre", query = "SELECT b FROM Baile b WHERE b.nombre = :nombre")})
+    @NamedQuery(name = "Baile.findAll", query = "SELECT b FROM Baile b"),
+    @NamedQuery(name = "Baile.findById", query = "SELECT b FROM Baile b WHERE b.id = :id"),
+    @NamedQuery(name = "Baile.findByNombre", query = "SELECT b FROM Baile b WHERE b.nombre = :nombre")})
 public class Baile implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(nullable = false, precision = 131089)
+    @Column(name = "id")
     private BigDecimal id;
-    @Column(length = 2147483647)
+    @Basic(optional = false)
+    @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "baileId")
-    private List<Genero> generoList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "baile")
-    private Preferenciaxbaile preferenciaxbaile;
+    @JoinColumn(name = "genero", referencedColumnName = "genero")
+    @ManyToOne(optional = false)
+    private Genero genero;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "baile")
+    private List<PreferenciaXBaile> preferenciaXBaileList;
 
     public Baile() {
     }
 
     public Baile(BigDecimal id) {
         this.id = id;
+    }
+
+    public Baile(BigDecimal id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
     }
 
     public BigDecimal getId() {
@@ -70,21 +78,21 @@ public class Baile implements Serializable {
         this.nombre = nombre;
     }
 
+    public Genero getGenero() {
+        return genero;
+    }
+
+    public void setGenero(Genero genero) {
+        this.genero = genero;
+    }
+
     @XmlTransient
-    public List<Genero> getGeneroList() {
-        return generoList;
+    public List<PreferenciaXBaile> getPreferenciaXBaileList() {
+        return preferenciaXBaileList;
     }
 
-    public void setGeneroList(List<Genero> generoList) {
-        this.generoList = generoList;
-    }
-
-    public Preferenciaxbaile getPreferenciaxbaile() {
-        return preferenciaxbaile;
-    }
-
-    public void setPreferenciaxbaile(Preferenciaxbaile preferenciaxbaile) {
-        this.preferenciaxbaile = preferenciaxbaile;
+    public void setPreferenciaXBaileList(List<PreferenciaXBaile> preferenciaXBaileList) {
+        this.preferenciaXBaileList = preferenciaXBaileList;
     }
 
     @Override

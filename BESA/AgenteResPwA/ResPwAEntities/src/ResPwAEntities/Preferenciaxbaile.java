@@ -7,59 +7,66 @@ package ResPwAEntities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "preferencia_x_baile", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Preferenciaxbaile.findAll", query = "SELECT p FROM Preferenciaxbaile p")
-    , @NamedQuery(name = "Preferenciaxbaile.findByBaileId", query = "SELECT p FROM Preferenciaxbaile p WHERE p.baileId = :baileId")
-    , @NamedQuery(name = "Preferenciaxbaile.findByGusto", query = "SELECT p FROM Preferenciaxbaile p WHERE p.gusto = :gusto")})
-public class Preferenciaxbaile implements Serializable {
+    @NamedQuery(name = "PreferenciaXBaile.findAll", query = "SELECT p FROM PreferenciaXBaile p"),
+    @NamedQuery(name = "PreferenciaXBaile.findByBaileId", query = "SELECT p FROM PreferenciaXBaile p WHERE p.preferenciaXBailePK.baileId = :baileId"),
+    @NamedQuery(name = "PreferenciaXBaile.findByPreferenciaPwaCedula", query = "SELECT p FROM PreferenciaXBaile p WHERE p.preferenciaXBailePK.preferenciaPwaCedula = :preferenciaPwaCedula"),
+    @NamedQuery(name = "PreferenciaXBaile.findByGusto", query = "SELECT p FROM PreferenciaXBaile p WHERE p.gusto = :gusto")})
+public class PreferenciaXBaile implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Id
+    @EmbeddedId
+    protected PreferenciaXBailePK preferenciaXBailePK;
     @Basic(optional = false)
-    @Column(name = "baile_id", nullable = false, precision = 131089)
-    private BigDecimal baileId;
-    private double gusto; //Cambio de BigInteger a Double
-    @JoinColumn(name = "baile_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Baile baile;
-    @JoinColumn(name = "perfil_preferencia_nombrepreferido", referencedColumnName = "nombrepreferido", nullable = false)
+    @Column(name = "gusto")
+    private double gusto;
+    @JoinColumn(name = "baile_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private PerfilPreferencia perfilPreferenciaNombrepreferido;
+    private Baile baile;
+    @JoinColumn(name = "preferencia_pwa_cedula", referencedColumnName = "perfil_pwa_cedula", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private PerfilPreferencia perfilPreferencia;
 
-    public Preferenciaxbaile() {
+    public PreferenciaXBaile() {
     }
 
-    public Preferenciaxbaile(BigDecimal baileId) {
-        this.baileId = baileId;
+    public PreferenciaXBaile(PreferenciaXBailePK preferenciaXBailePK) {
+        this.preferenciaXBailePK = preferenciaXBailePK;
     }
 
-    public BigDecimal getBaileId() {
-        return baileId;
+    public PreferenciaXBaile(PreferenciaXBailePK preferenciaXBailePK, double gusto) {
+        this.preferenciaXBailePK = preferenciaXBailePK;
+        this.gusto = gusto;
     }
 
-    public void setBaileId(BigDecimal baileId) {
-        this.baileId = baileId;
+    public PreferenciaXBaile(BigDecimal baileId, String preferenciaPwaCedula) {
+        this.preferenciaXBailePK = new PreferenciaXBailePK(baileId, preferenciaPwaCedula);
+    }
+
+    public PreferenciaXBailePK getPreferenciaXBailePK() {
+        return preferenciaXBailePK;
+    }
+
+    public void setPreferenciaXBailePK(PreferenciaXBailePK preferenciaXBailePK) {
+        this.preferenciaXBailePK = preferenciaXBailePK;
     }
 
     public double getGusto() {
@@ -78,29 +85,29 @@ public class Preferenciaxbaile implements Serializable {
         this.baile = baile;
     }
 
-    public PerfilPreferencia getPerfilPreferenciaNombrepreferido() {
-        return perfilPreferenciaNombrepreferido;
+    public PerfilPreferencia getPerfilPreferencia() {
+        return perfilPreferencia;
     }
 
-    public void setPerfilPreferenciaNombrepreferido(PerfilPreferencia perfilPreferenciaNombrepreferido) {
-        this.perfilPreferenciaNombrepreferido = perfilPreferenciaNombrepreferido;
+    public void setPerfilPreferencia(PerfilPreferencia perfilPreferencia) {
+        this.perfilPreferencia = perfilPreferencia;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (baileId != null ? baileId.hashCode() : 0);
+        hash += (preferenciaXBailePK != null ? preferenciaXBailePK.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Preferenciaxbaile)) {
+        if (!(object instanceof PreferenciaXBaile)) {
             return false;
         }
-        Preferenciaxbaile other = (Preferenciaxbaile) object;
-        if ((this.baileId == null && other.baileId != null) || (this.baileId != null && !this.baileId.equals(other.baileId))) {
+        PreferenciaXBaile other = (PreferenciaXBaile) object;
+        if ((this.preferenciaXBailePK == null && other.preferenciaXBailePK != null) || (this.preferenciaXBailePK != null && !this.preferenciaXBailePK.equals(other.preferenciaXBailePK))) {
             return false;
         }
         return true;
@@ -108,7 +115,7 @@ public class Preferenciaxbaile implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.Preferenciaxbaile[ baileId=" + baileId + " ]";
+        return "ResPwAEntities.PreferenciaXBaile[ preferenciaXBailePK=" + preferenciaXBailePK + " ]";
     }
     
 }

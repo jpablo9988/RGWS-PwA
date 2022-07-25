@@ -7,6 +7,7 @@ package ResPwAEntities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,139 +17,186 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(name = "perfil_medico", catalog = "Res-pwaDB", schema = "public", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"perfilpwa_cedula2"})})
+@Table(name = "perfil_medico", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PerfilMedico.findAll", query = "SELECT p FROM PerfilMedico p")
-    , @NamedQuery(name = "PerfilMedico.findByPerfilpwaCedula", query = "SELECT p FROM PerfilMedico p WHERE p.perfilpwaCedula = :perfilpwaCedula")
-    , @NamedQuery(name = "PerfilMedico.findByTomamedicamentos", query = "SELECT p FROM PerfilMedico p WHERE p.tomamedicamentos = :tomamedicamentos")
-    , @NamedQuery(name = "PerfilMedico.findByDiscapauditiva", query = "SELECT p FROM PerfilMedico p WHERE p.discapauditiva = :discapauditiva")
-    , @NamedQuery(name = "PerfilMedico.findByDiscapvisual", query = "SELECT p FROM PerfilMedico p WHERE p.discapvisual = :discapvisual")
-    , @NamedQuery(name = "PerfilMedico.findByDiscmotora", query = "SELECT p FROM PerfilMedico p WHERE p.discmotora = :discmotora")
-    , @NamedQuery(name = "PerfilMedico.findByRiesgocaida", query = "SELECT p FROM PerfilMedico p WHERE p.riesgocaida = :riesgocaida")
-    , @NamedQuery(name = "PerfilMedico.findByPerfilMedicoId", query = "SELECT p FROM PerfilMedico p WHERE p.perfilMedicoId = :perfilMedicoId")})
+    @NamedQuery(name = "PerfilMedico.findAll", query = "SELECT p FROM PerfilMedico p"),
+    @NamedQuery(name = "PerfilMedico.findByPerfilPwaCedula", query = "SELECT p FROM PerfilMedico p WHERE p.perfilPwaCedula = :perfilPwaCedula"),
+    @NamedQuery(name = "PerfilMedico.findByTomaMedicamentos", query = "SELECT p FROM PerfilMedico p WHERE p.tomaMedicamentos = :tomaMedicamentos"),
+    @NamedQuery(name = "PerfilMedico.findByDiscapAuditiva", query = "SELECT p FROM PerfilMedico p WHERE p.discapAuditiva = :discapAuditiva"),
+    @NamedQuery(name = "PerfilMedico.findByDiscapVisual", query = "SELECT p FROM PerfilMedico p WHERE p.discapVisual = :discapVisual"),
+    @NamedQuery(name = "PerfilMedico.findByDiscapMotora", query = "SELECT p FROM PerfilMedico p WHERE p.discapMotora = :discapMotora"),
+    @NamedQuery(name = "PerfilMedico.findByEstadoEnfermedad", query = "SELECT p FROM PerfilMedico p WHERE p.estadoEnfermedad = :estadoEnfermedad"),
+    @NamedQuery(name = "PerfilMedico.findByPeriodoVigila", query = "SELECT p FROM PerfilMedico p WHERE p.periodoVigila = :periodoVigila"),
+    @NamedQuery(name = "PerfilMedico.findByFast", query = "SELECT p FROM PerfilMedico p WHERE p.fast = :fast"),
+    @NamedQuery(name = "PerfilMedico.findByRiesgoCaida", query = "SELECT p FROM PerfilMedico p WHERE p.riesgoCaida = :riesgoCaida")})
 public class PerfilMedico implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Column(name = "perfilpwa_cedula")
-    private Integer perfilpwaCedula;
-    private Integer tomamedicamentos;
-    private Character discapauditiva;
-    private Character discapvisual;
-    private Character discmotora;
-    private Character riesgocaida;
-    @Column(name = "FAST")
-    private int fast;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(name = "perfil_medico_id", nullable = false, precision = 131089)
-    private BigDecimal perfilMedicoId;
-    @JoinColumn(name = "causademencia_idcausa", referencedColumnName = "idcausa", nullable = false)
+    @Column(name = "perfil_pwa_cedula")
+    private String perfilPwaCedula;
+    @Basic(optional = false)
+    @Column(name = "toma_medicamentos")
+    private BigDecimal tomaMedicamentos;
+    @Basic(optional = false)
+    @Column(name = "discap_auditiva")
+    private BigDecimal discapAuditiva;
+    @Basic(optional = false)
+    @Column(name = "discap_visual")
+    private BigDecimal discapVisual;
+    @Basic(optional = false)
+    @Column(name = "discap_motora")
+    private BigDecimal discapMotora;
+    @Basic(optional = false)
+    @Column(name = "estado_enfermedad")
+    private BigDecimal estadoEnfermedad;
+    @Basic(optional = false)
+    @Column(name = "periodo_vigila")
+    private BigDecimal periodoVigila;
+    @Basic(optional = false)
+    @Column(name = "fast")
+    private int fast;
+    @Basic(optional = false)
+    @Column(name = "riesgo_caida")
+    private BigDecimal riesgoCaida;
+    @JoinColumn(name = "causa_demencia_condicion", referencedColumnName = "condicion")
     @ManyToOne(optional = false)
-    private Causademencia causademenciaIdcausa;
-    @JoinColumn(name = "perfilpwa_cedula2", referencedColumnName = "cedula", nullable = false)
+    private CausaDemencia causaDemenciaCondicion;
+    @JoinColumn(name = "perfil_pwa_cedula", referencedColumnName = "cedula", insertable = false, updatable = false)
     @OneToOne(optional = false)
-    private Perfilpwa perfilpwaCedula2;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilMedicoPerfilMedicoId")
+    private PerfilPwa perfilPwa;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "medicoPwaCedula")
+    private List<ActividadRutinaria> actividadRutinariaList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilMedico")
     private Cdr cdr;
 
     public PerfilMedico() {
     }
 
-    public PerfilMedico(BigDecimal perfilMedicoId) {
-        this.perfilMedicoId = perfilMedicoId;
+    public PerfilMedico(String perfilPwaCedula) {
+        this.perfilPwaCedula = perfilPwaCedula;
     }
 
-    public Integer getPerfilpwaCedula() {
-        return perfilpwaCedula;
+    public PerfilMedico(String perfilPwaCedula, BigDecimal tomaMedicamentos, BigDecimal discapAuditiva, BigDecimal discapVisual, BigDecimal discapMotora, BigDecimal estadoEnfermedad, BigDecimal periodoVigila, int fast, BigDecimal riesgoCaida) {
+        this.perfilPwaCedula = perfilPwaCedula;
+        this.tomaMedicamentos = tomaMedicamentos;
+        this.discapAuditiva = discapAuditiva;
+        this.discapVisual = discapVisual;
+        this.discapMotora = discapMotora;
+        this.estadoEnfermedad = estadoEnfermedad;
+        this.periodoVigila = periodoVigila;
+        this.fast = fast;
+        this.riesgoCaida = riesgoCaida;
     }
 
-    public void setPerfilpwaCedula(Integer perfilpwaCedula) {
-        this.perfilpwaCedula = perfilpwaCedula;
+    public String getPerfilPwaCedula() {
+        return perfilPwaCedula;
     }
 
-    public Integer getTomamedicamentos() {
-        return tomamedicamentos;
+    public void setPerfilPwaCedula(String perfilPwaCedula) {
+        this.perfilPwaCedula = perfilPwaCedula;
     }
 
-    public void setTomamedicamentos(Integer tomamedicamentos) {
-        this.tomamedicamentos = tomamedicamentos;
+    public BigDecimal getTomaMedicamentos() {
+        return tomaMedicamentos;
     }
 
-    public Character getDiscapauditiva() {
-        return discapauditiva;
+    public void setTomaMedicamentos(BigDecimal tomaMedicamentos) {
+        this.tomaMedicamentos = tomaMedicamentos;
     }
 
-    public void setDiscapauditiva(Character discapauditiva) {
-        this.discapauditiva = discapauditiva;
+    public BigDecimal getDiscapAuditiva() {
+        return discapAuditiva;
     }
 
-    public Character getDiscapvisual() {
-        return discapvisual;
+    public void setDiscapAuditiva(BigDecimal discapAuditiva) {
+        this.discapAuditiva = discapAuditiva;
     }
 
-    public void setDiscapvisual(Character discapvisual) {
-        this.discapvisual = discapvisual;
+    public BigDecimal getDiscapVisual() {
+        return discapVisual;
     }
 
-    public Character getDiscmotora() {
-        return discmotora;
+    public void setDiscapVisual(BigDecimal discapVisual) {
+        this.discapVisual = discapVisual;
     }
 
-    public void setDiscmotora(Character discmotora) {
-        this.discmotora = discmotora;
+    public BigDecimal getDiscapMotora() {
+        return discapMotora;
     }
 
-    public Character getRiesgocaida() {
-        return riesgocaida;
+    public void setDiscapMotora(BigDecimal discapMotora) {
+        this.discapMotora = discapMotora;
     }
 
-    public void setRiesgocaida(Character riesgocaida) {
-        this.riesgocaida = riesgocaida;
+    public BigDecimal getEstadoEnfermedad() {
+        return estadoEnfermedad;
     }
-    public int getFast()
-    {   
+
+    public void setEstadoEnfermedad(BigDecimal estadoEnfermedad) {
+        this.estadoEnfermedad = estadoEnfermedad;
+    }
+
+    public BigDecimal getPeriodoVigila() {
+        return periodoVigila;
+    }
+
+    public void setPeriodoVigila(BigDecimal periodoVigila) {
+        this.periodoVigila = periodoVigila;
+    }
+
+    public int getFast() {
         return fast;
     }
-    public void setFast(int fast)
-    {
+
+    public void setFast(int fast) {
         this.fast = fast;
     }
 
-    public BigDecimal getPerfilMedicoId() {
-        return perfilMedicoId;
+    public BigDecimal getRiesgoCaida() {
+        return riesgoCaida;
     }
 
-    public void setPerfilMedicoId(BigDecimal perfilMedicoId) {
-        this.perfilMedicoId = perfilMedicoId;
+    public void setRiesgoCaida(BigDecimal riesgoCaida) {
+        this.riesgoCaida = riesgoCaida;
     }
 
-    public Causademencia getCausademenciaIdcausa() {
-        return causademenciaIdcausa;
+    public CausaDemencia getCausaDemenciaCondicion() {
+        return causaDemenciaCondicion;
     }
 
-    public void setCausademenciaIdcausa(Causademencia causademenciaIdcausa) {
-        this.causademenciaIdcausa = causademenciaIdcausa;
+    public void setCausaDemenciaCondicion(CausaDemencia causaDemenciaCondicion) {
+        this.causaDemenciaCondicion = causaDemenciaCondicion;
     }
 
-    public Perfilpwa getPerfilpwaCedula2() {
-        return perfilpwaCedula2;
+    public PerfilPwa getPerfilPwa() {
+        return perfilPwa;
     }
 
-    public void setPerfilpwaCedula2(Perfilpwa perfilpwaCedula2) {
-        this.perfilpwaCedula2 = perfilpwaCedula2;
+    public void setPerfilPwa(PerfilPwa perfilPwa) {
+        this.perfilPwa = perfilPwa;
+    }
+
+    @XmlTransient
+    public List<ActividadRutinaria> getActividadRutinariaList() {
+        return actividadRutinariaList;
+    }
+
+    public void setActividadRutinariaList(List<ActividadRutinaria> actividadRutinariaList) {
+        this.actividadRutinariaList = actividadRutinariaList;
     }
 
     public Cdr getCdr() {
@@ -162,7 +210,7 @@ public class PerfilMedico implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (perfilMedicoId != null ? perfilMedicoId.hashCode() : 0);
+        hash += (perfilPwaCedula != null ? perfilPwaCedula.hashCode() : 0);
         return hash;
     }
 
@@ -173,7 +221,7 @@ public class PerfilMedico implements Serializable {
             return false;
         }
         PerfilMedico other = (PerfilMedico) object;
-        if ((this.perfilMedicoId == null && other.perfilMedicoId != null) || (this.perfilMedicoId != null && !this.perfilMedicoId.equals(other.perfilMedicoId))) {
+        if ((this.perfilPwaCedula == null && other.perfilPwaCedula != null) || (this.perfilPwaCedula != null && !this.perfilPwaCedula.equals(other.perfilPwaCedula))) {
             return false;
         }
         return true;
@@ -181,7 +229,7 @@ public class PerfilMedico implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.PerfilMedico[ perfilMedicoId=" + perfilMedicoId + " ]";
+        return "ResPwAEntities.PerfilMedico[ perfilPwaCedula=" + perfilPwaCedula + " ]";
     }
     
 }

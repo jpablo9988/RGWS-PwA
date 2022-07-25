@@ -6,16 +6,14 @@
 package RobotAgentBDI.Believes;
 
 import BDInterface.RESPwABDInterface;
-import ResPwAEntities.Actividadpwa;
-import ResPwAEntities.Actxpreferencia;
+import ResPwAEntities.ActividadPwa;
+import ResPwAEntities.ActXPreferencia;
 import ResPwAEntities.Baile;
-import ResPwAEntities.Cancion;
-import ResPwAEntities.Cuento;
-import ResPwAEntities.Preferenciaxbaile;
-import ResPwAEntities.Preferenciaxcancion;
-import ResPwAEntities.Preferenciaxcuento;
-import ResPwAEntities.Registroactividad;
-import ResPwAEntities.RegistroactividadPK;
+import ResPwAEntities.PreferenciaXBaile;
+import ResPwAEntities.PreferenciaXCancion;
+import ResPwAEntities.PreferenciaXCuento;
+import ResPwAEntities.RegistroActividad;
+import ResPwAEntities.RegistroActividadPK;
 import RobotAgentBDI.Utils.ResPwAStrategy;
 import RobotAgentBDI.Utils.ResPwAActivity;
 import SensorHandlerAgent.Guards.SensorData;
@@ -39,9 +37,9 @@ public class BEstadoActividad implements Believes {
     private boolean actividadEnCurso = false;
     private boolean mejoraEmocional = false;
     private ResPwAStrategy estrategia;
-    private Preferenciaxcancion cancionActual;
-    private Preferenciaxcuento cuentoActual;
-    private Preferenciaxbaile baileActual;
+    private PreferenciaXCancion cancionActual;
+    private PreferenciaXCuento cuentoActual;
+    private PreferenciaXBaile baileActual;
     private List<Baile> bailes;
     private String cedula;
     private Integer indexCuento = 0;
@@ -95,8 +93,8 @@ public class BEstadoActividad implements Believes {
 
     public double getGustoActividad(ResPwAActivity actividad) {
         double gusto = 0;
-        for (Actxpreferencia a : blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getActxpreferenciaList()) {
-            if (a.getActividadpwa().getNombre().equalsIgnoreCase(actividad.toString())) {
+        for (ActXPreferencia a : blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getActXPreferenciaList()) {
+            if (a.getActividadPwa().getNombre().equalsIgnoreCase(actividad.toString())) {
                 gusto = a.getGusto();
             }
         }
@@ -111,7 +109,7 @@ public class BEstadoActividad implements Believes {
         return actividadEnCurso;
     }
 
-    public Preferenciaxcancion getCancionActual() {
+    public PreferenciaXCancion getCancionActual() {
         return cancionActual;
     }
 
@@ -145,15 +143,15 @@ public class BEstadoActividad implements Believes {
         return time;
     }
 
-    public void setCancionActual(Preferenciaxcancion cancionActual) {
+    public void setCancionActual(PreferenciaXCancion cancionActual) {
         this.cancionActual = cancionActual;
     }
 
-    public void setCuentoActual(Preferenciaxcuento cuentoActual) {
+    public void setCuentoActual(PreferenciaXCuento cuentoActual) {
         this.cuentoActual = cuentoActual;
     }
 
-    public Preferenciaxcuento getCuentoActual() {
+    public PreferenciaXCuento getCuentoActual() {
         return cuentoActual;
     }
 
@@ -166,15 +164,15 @@ public class BEstadoActividad implements Believes {
     }
 
     public void createNewInteResgistry() {
-        RegistroactividadPK ractPK = new RegistroactividadPK(Date.valueOf(LocalDate.now()), actividadActual.getTipo());
-        Registroactividad ract = new Registroactividad(ractPK);
-        List<Actividadpwa> list = RESPwABDInterface.getActivities();
+        RegistroActividadPK ractPK = new RegistroActividadPK(Date.valueOf(LocalDate.now()), actividadActual.getTipo());
+        RegistroActividad ract = new RegistroActividad(ractPK);
+        List<ActividadPwa> list = RESPwABDInterface.getActivities();
         list.stream().filter((apwa) -> (apwa.getNombre().equalsIgnoreCase(actividadActual.toString()))).forEachOrdered((apwa) -> {
-            ract.setActividadpwa(apwa);
+            ract.setActividadPwa(apwa);
         });
-        ract.setEstadoinicial(cedula);
-        ract.setEstadofinal(cedula);
-        ract.setPerfilpwa(blvs.getbPerfilPwA().getPerfil());
+        ract.setEstadoInicial(cedula);
+        ract.setEstadoFinal(cedula);
+        ract.setPerfilPwa(blvs.getbPerfilPwA().getPerfil());
         RESPwABDInterface.createRegistroAct(ract);
     }
 
@@ -210,11 +208,11 @@ public class BEstadoActividad implements Believes {
         this.indexCuento = indexCuento;
     }
 
-    public Preferenciaxbaile getBaileActual() {
+    public PreferenciaXBaile getBaileActual() {
         return baileActual;
     }
 
-    public void setBaileActual(Preferenciaxbaile baileActual) {
+    public void setBaileActual(PreferenciaXBaile baileActual) {
         this.baileActual = baileActual;
     }
 

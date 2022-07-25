@@ -12,7 +12,7 @@ import ResPwAEntities.Accion;
 import ResPwAEntities.Emocion;
 import ResPwAEntities.Joint;
 import ResPwAEntities.Cuidador;
-import ResPwAEntities.Perfilpwa;
+import ResPwAEntities.PerfilPwa;
 import RobotAgentBDI.Metas.ConversarEmpaticamente;
 import RobotAgentBDI.Metas.Cuenteria;
 import RobotAgentBDI.Metas.LogIn;
@@ -94,20 +94,20 @@ public class InitRESPwA {
     }
 
     private static String obtenerUsuario() {
-        String cedula = null, user = "juleon", pwd = "12345";
+        String cedula = null, user = "juan_cuidador", pwd = "jpablo98";
         boolean login = false;
         Scanner scan = new Scanner(System.in);
         Cuidador c = null;
-        
+        /*
         // ---| CONECTAR SIN BASE DE DATOS |---
             System.out.println("Ingrese su nombre de usuario: ");
             user=scan.nextLine();
             System.out.println("Ingrese su contrasena: ");
             pwd= scan.nextLine();
             return pwd;
-            
+         */
         // ---| CONECTAR CON BASE DE DATOS |---
-           /* 
+           
         do {
             
             c = RESPwABDInterface.getCarer(user);
@@ -122,7 +122,7 @@ public class InitRESPwA {
             }
 
         } while (!login);
-        List<Perfilpwa> pwalist = c.getPerfilpwaList();
+        List<PerfilPwa> pwalist = c.getPerfilPwaList(); //Cambiar OneToOne a OneToMany en BD
 
         for (int i = 0; i < pwalist.size(); i++) {
            System.out.println(i + " Paciente: " + pwalist.get(i).getCedula());
@@ -130,8 +130,8 @@ public class InitRESPwA {
         System.out.println("Ingrese el numero del paciente que utilizara ResPwa");
         int selec = 0; //scan.nextInt();
         return pwalist.get(selec).getCedula();
+                
         
-        */
     }
 
     public static int getPlanID() {
@@ -160,7 +160,7 @@ public class InitRESPwA {
 //        RAGoals.add(cuenteriaGoal);
 //        RAGoals.add(tp);
 //        RAGoals.add(musicoTGoal);
-        RAGoals.add(testPlan);
+          RAGoals.add(testPlan);
 
 //        RAGoals.add(tp);
 //        RAGoals.add(musicoTGoal);
@@ -201,8 +201,8 @@ public class InitRESPwA {
 
         params = new HashMap<>();
         for (Emocion e : emociones) {
-            if (!params.containsKey(e.getEmotionaltag())) {
-                params.put(e.getEmotionaltag(), new HashMap<String, Object>());
+            if (!params.containsKey(e.getEmotionalTag())) {
+                params.put(e.getEmotionalTag(), new HashMap<String, Object>());
             }
             accion = new HashMap<>();
             for (Accion a : e.getAccionList()) 
@@ -226,7 +226,7 @@ public class InitRESPwA {
                 accion.put("image", e.getImagen());
                 accion.put(a.getNombre(), joints);
             }
-            params.put(e.getEmotionaltag(), accion);
+            params.put(e.getEmotionalTag(), accion);
         }
         infoServicio.put("INITIALCONF", params);
         ServiceDataRequest srb = ServiceRequestBuilder.buildRequest(MovementServiceRequestType.INITIALCONF, infoServicio);

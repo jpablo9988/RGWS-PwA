@@ -117,17 +117,17 @@ public class IniciarServicios extends Task {
 
         
         infoServicio = new HashMap<>();
-        infoServicio.put("SETTABLETBRIGHT", blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getBrillopreferido());
+        infoServicio.put("SETTABLETBRIGHT", blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getBrilloPreferido());
         srb = ServiceRequestBuilder.buildRequest(TabletServiceRequestType.SETTABLETBRIGHT, infoServicio);
         ResPwaUtils.requestService(srb,blvs);
 
-        infoServicio.put("SETTABLETVOL", blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getVolpreferido());//depende perfil del usuario 1-15
+        infoServicio.put("SETTABLETVOL", blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getVolPreferido());//depende perfil del usuario 1-15
         srb = ServiceRequestBuilder.buildRequest(TabletServiceRequestType.SETTABLETVOL, infoServicio);
         ResPwaUtils.requestService(srb,blvs);
         infoServicio = new HashMap<>();
         
         infoServicio = new HashMap<>();
-        infoServicio.put("SETSAYVOLUMEN", blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getVolpreferido());//depende perfil del usuario 0-1.0
+        infoServicio.put("SETSAYVOLUMEN", blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getVolPreferido());//depende perfil del usuario 0-1.0
         srb = ServiceRequestBuilder.buildRequest(VoiceServiceRequestType.SETSAYVOLUME, infoServicio);
         ResPwaUtils.requestService(srb,blvs);
         

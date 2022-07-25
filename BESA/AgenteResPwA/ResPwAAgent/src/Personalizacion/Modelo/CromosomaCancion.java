@@ -5,8 +5,7 @@
  */
 package Personalizacion.Modelo;
 
-import ResPwAEntities.Cancion;
-import ResPwAEntities.Preferenciaxcancion;
+import ResPwAEntities.PreferenciaXCancion;
 
 /**
  *
@@ -14,9 +13,9 @@ import ResPwAEntities.Preferenciaxcancion;
  */
 public class CromosomaCancion extends Cromosoma{
     
-    private Preferenciaxcancion cancion;
+    private PreferenciaXCancion cancion;
 
-    public CromosomaCancion( Preferenciaxcancion cancion ) {
+    public CromosomaCancion( PreferenciaXCancion cancion ) {
       this.cancion = cancion;
     }
     
@@ -29,7 +28,7 @@ public class CromosomaCancion extends Cromosoma{
         }
     }
 
-    public Preferenciaxcancion getCancion() {
+    public PreferenciaXCancion getCancion() {
         return cancion;
     }
     

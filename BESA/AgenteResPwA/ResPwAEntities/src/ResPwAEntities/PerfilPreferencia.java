@@ -6,172 +6,220 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.util.List;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(name = "perfil_preferencia", catalog = "Res-pwaDB", schema = "public")
+@Table(name = "perfil_preferencia", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PerfilPreferencia.findAll", query = "SELECT p FROM PerfilPreferencia p")
-    , @NamedQuery(name = "PerfilPreferencia.findByNombrepreferido", query = "SELECT p FROM PerfilPreferencia p WHERE p.nombrepreferido = :nombrepreferido")
-    , @NamedQuery(name = "PerfilPreferencia.findByGustosejercicio", query = "SELECT p FROM PerfilPreferencia p WHERE p.gustosejercicio = :gustosejercicio")
-    , @NamedQuery(name = "PerfilPreferencia.findByHobbies", query = "SELECT p FROM PerfilPreferencia p WHERE p.hobbies = :hobbies")})
+    @NamedQuery(name = "PerfilPreferencia.findAll", query = "SELECT p FROM PerfilPreferencia p"),
+    @NamedQuery(name = "PerfilPreferencia.findByPerfilPwaCedula", query = "SELECT p FROM PerfilPreferencia p WHERE p.perfilPwaCedula = :perfilPwaCedula"),
+    @NamedQuery(name = "PerfilPreferencia.findByNombrePreferido", query = "SELECT p FROM PerfilPreferencia p WHERE p.nombrePreferido = :nombrePreferido"),
+    @NamedQuery(name = "PerfilPreferencia.findByGustoKaraoke", query = "SELECT p FROM PerfilPreferencia p WHERE p.gustoKaraoke = :gustoKaraoke"),
+    @NamedQuery(name = "PerfilPreferencia.findByGustoMusica", query = "SELECT p FROM PerfilPreferencia p WHERE p.gustoMusica = :gustoMusica"),
+    @NamedQuery(name = "PerfilPreferencia.findByGustoBaile", query = "SELECT p FROM PerfilPreferencia p WHERE p.gustoBaile = :gustoBaile"),
+    @NamedQuery(name = "PerfilPreferencia.findByGustosEjercicio", query = "SELECT p FROM PerfilPreferencia p WHERE p.gustosEjercicio = :gustosEjercicio"),
+    @NamedQuery(name = "PerfilPreferencia.findByBrilloPreferido", query = "SELECT p FROM PerfilPreferencia p WHERE p.brilloPreferido = :brilloPreferido"),
+    @NamedQuery(name = "PerfilPreferencia.findByVolPreferido", query = "SELECT p FROM PerfilPreferencia p WHERE p.volPreferido = :volPreferido")})
 public class PerfilPreferencia implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(nullable = false, length = 2147483647)
-    private String nombrepreferido;
-    @Column(length = 2147483647)
-    private String gustosejercicio;
-    @Column(length = 2147483647)
-    private String hobbies;
+    @Column(name = "perfil_pwa_cedula")
+    private String perfilPwaCedula;
     @Basic(optional = false)
-    @Column(name = "BRILLOPREFERIDO")
-    private BigDecimal brillopreferido;
+    @Column(name = "nombre_preferido")
+    private String nombrePreferido;
     @Basic(optional = false)
-    @Column(name = "VOLPREFERIDO")
-    private BigDecimal volpreferido;
+    @Column(name = "gusto_karaoke")
+    private double gustoKaraoke;
+    @Basic(optional = false)
+    @Column(name = "gusto_musica")
+    private double gustoMusica;
+    @Basic(optional = false)
+    @Column(name = "gusto_baile")
+    private double gustoBaile;
+    @Basic(optional = false)
+    @Column(name = "gustos_ejercicio")
+    private double gustosEjercicio;
+    @Basic(optional = false)
+    @Column(name = "brillo_preferido")
+    private BigDecimal brilloPreferido;
+    @Basic(optional = false)
+    @Column(name = "vol_preferido")
+    private BigDecimal volPreferido;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilPreferencia")
-    private List<Preferenciaxcuento> preferenciaxcuentoList;
-    @JoinColumns({
-        @JoinColumn(name = "actxpreferencia_perfil_preferencia_cedula", referencedColumnName = "perfil_preferencia_cedula", nullable = false)
-        , @JoinColumn(name = "actxpreferencia_actividadpwa_id", referencedColumnName = "actividadpwa_id", nullable = false)})
-    
-    @JoinColumn(name = "perfilpwa_cedula", referencedColumnName = "cedula", nullable = false)
-    @ManyToOne(optional = false)
-    private Perfilpwa perfilpwaCedula;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilPreferenciaNombrepreferido")
-    private List<Preferenciaxbaile> preferenciaxbaileList;
+    private List<PreferenciaXCuento> preferenciaXCuentoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilPreferencia")
-    private List<Preferenciaxcancion> preferenciaxcancionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilPreferenciaNombrepreferido")
-    private List<Preferenciasxrutina> preferenciasxrutinaList;
+    private List<PreferenciaXRutina> preferenciaXRutinaList;
+    @JoinColumn(name = "perfil_pwa_cedula", referencedColumnName = "cedula", insertable = false, updatable = false)
+    @OneToOne(optional = false)
+    private PerfilPwa perfilPwa;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilPreferencia")
-    private List<Actxpreferencia> actxpreferenciaList;
+    private List<ActXPreferencia> actXPreferenciaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilPreferencia")
+    private List<PreferenciaXBaile> preferenciaXBaileList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilPreferencia")
+    private List<PreferenciaXCancion> preferenciaXCancionList;
 
     public PerfilPreferencia() {
     }
 
-    public PerfilPreferencia(String nombrepreferido) {
-        this.nombrepreferido = nombrepreferido;
+    public PerfilPreferencia(String perfilPwaCedula) {
+        this.perfilPwaCedula = perfilPwaCedula;
     }
 
-    public String getNombrepreferido() {
-        return nombrepreferido;
+    public PerfilPreferencia(String perfilPwaCedula, String nombrePreferido, double gustoKaraoke, double gustoMusica, double gustoBaile, double gustosEjercicio, BigDecimal brilloPreferido, BigDecimal volPreferido) {
+        this.perfilPwaCedula = perfilPwaCedula;
+        this.nombrePreferido = nombrePreferido;
+        this.gustoKaraoke = gustoKaraoke;
+        this.gustoMusica = gustoMusica;
+        this.gustoBaile = gustoBaile;
+        this.gustosEjercicio = gustosEjercicio;
+        this.brilloPreferido = brilloPreferido;
+        this.volPreferido = volPreferido;
     }
 
-    public void setNombrepreferido(String nombrepreferido) {
-        this.nombrepreferido = nombrepreferido;
+    public String getPerfilPwaCedula() {
+        return perfilPwaCedula;
     }
 
-    public String getGustosejercicio() {
-        return gustosejercicio;
+    public void setPerfilPwaCedula(String perfilPwaCedula) {
+        this.perfilPwaCedula = perfilPwaCedula;
     }
 
-    public void setGustosejercicio(String gustosejercicio) {
-        this.gustosejercicio = gustosejercicio;
+    public String getNombrePreferido() {
+        return nombrePreferido;
     }
 
-    public String getHobbies() {
-        return hobbies;
+    public void setNombrePreferido(String nombrePreferido) {
+        this.nombrePreferido = nombrePreferido;
     }
 
-    public void setHobbies(String hobbies) {
-        this.hobbies = hobbies;
-    }
-    public BigDecimal getBrillopreferido()
-    {
-        return brillopreferido;
-    }
-    public void setBrillopreferido()
-    {
-        this.brillopreferido = brillopreferido;
-    }
-    public BigDecimal getVolpreferido() {
-        return volpreferido;
+    public double getGustoKaraoke() {
+        return gustoKaraoke;
     }
 
-    public void setVolpreferido(BigDecimal volpreferido) {
-        this.volpreferido = volpreferido;
+    public void setGustoKaraoke(double gustoKaraoke) {
+        this.gustoKaraoke = gustoKaraoke;
     }
 
-    @XmlTransient
-    public List<Preferenciaxcuento> getPreferenciaxcuentoList() {
-        return preferenciaxcuentoList;
+    public double getGustoMusica() {
+        return gustoMusica;
     }
 
-    public void setPreferenciaxcuentoList(List<Preferenciaxcuento> preferenciaxcuentoList) {
-        this.preferenciaxcuentoList = preferenciaxcuentoList;
+    public void setGustoMusica(double gustoMusica) {
+        this.gustoMusica = gustoMusica;
     }
 
-    public List<Actxpreferencia> getActxpreferenciaList() {
-        return actxpreferenciaList;
+    public double getGustoBaile() {
+        return gustoBaile;
     }
 
-    public void setActxpreferencia(List<Actxpreferencia> actxpreferenciaList) {
-        this.actxpreferenciaList = actxpreferenciaList;
+    public void setGustoBaile(double gustoBaile) {
+        this.gustoBaile = gustoBaile;
     }
 
-    public Perfilpwa getPerfilpwaCedula() {
-        return perfilpwaCedula;
+    public double getGustosEjercicio() {
+        return gustosEjercicio;
     }
 
-    public void setPerfilpwaCedula(Perfilpwa perfilpwaCedula) {
-        this.perfilpwaCedula = perfilpwaCedula;
+    public void setGustosEjercicio(double gustosEjercicio) {
+        this.gustosEjercicio = gustosEjercicio;
     }
 
-    @XmlTransient
-    public List<Preferenciaxbaile> getPreferenciaxbaileList() {
-        return preferenciaxbaileList;
+    public BigDecimal getBrilloPreferido() {
+        return brilloPreferido;
     }
 
-    public void setPreferenciaxbaileList(List<Preferenciaxbaile> preferenciaxbaileList) {
-        this.preferenciaxbaileList = preferenciaxbaileList;
+    public void setBrilloPreferido(BigDecimal brilloPreferido) {
+        this.brilloPreferido = brilloPreferido;
     }
 
-    @XmlTransient
-    public List<Preferenciaxcancion> getPreferenciaxcancionList() {
-        return preferenciaxcancionList;
+    public BigDecimal getVolPreferido() {
+        return volPreferido;
     }
 
-    public void setPreferenciaxcancionList(List<Preferenciaxcancion> preferenciaxcancionList) {
-        this.preferenciaxcancionList = preferenciaxcancionList;
+    public void setVolPreferido(BigDecimal volPreferido) {
+        this.volPreferido = volPreferido;
     }
 
     @XmlTransient
-    public List<Preferenciasxrutina> getPreferenciasxrutinaList() {
-        return preferenciasxrutinaList;
+    public List<PreferenciaXCuento> getPreferenciaXCuentoList() {
+        return preferenciaXCuentoList;
     }
 
-    public void setPreferenciasxrutinaList(List<Preferenciasxrutina> preferenciasxrutinaList) {
-        this.preferenciasxrutinaList = preferenciasxrutinaList;
+    public void setPreferenciaXCuentoList(List<PreferenciaXCuento> preferenciaXCuentoList) {
+        this.preferenciaXCuentoList = preferenciaXCuentoList;
+    }
+
+    @XmlTransient
+    public List<PreferenciaXRutina> getPreferenciaXRutinaList() {
+        return preferenciaXRutinaList;
+    }
+
+    public void setPreferenciaXRutinaList(List<PreferenciaXRutina> preferenciaXRutinaList) {
+        this.preferenciaXRutinaList = preferenciaXRutinaList;
+    }
+
+    public PerfilPwa getPerfilPwa() {
+        return perfilPwa;
+    }
+
+    public void setPerfilPwa(PerfilPwa perfilPwa) {
+        this.perfilPwa = perfilPwa;
+    }
+
+    @XmlTransient
+    public List<ActXPreferencia> getActXPreferenciaList() {
+        return actXPreferenciaList;
+    }
+
+    public void setActXPreferenciaList(List<ActXPreferencia> actXPreferenciaList) {
+        this.actXPreferenciaList = actXPreferenciaList;
+    }
+
+    @XmlTransient
+    public List<PreferenciaXBaile> getPreferenciaXBaileList() {
+        return preferenciaXBaileList;
+    }
+
+    public void setPreferenciaXBaileList(List<PreferenciaXBaile> preferenciaXBaileList) {
+        this.preferenciaXBaileList = preferenciaXBaileList;
+    }
+
+    @XmlTransient
+    public List<PreferenciaXCancion> getPreferenciaXCancionList() {
+        return preferenciaXCancionList;
+    }
+
+    public void setPreferenciaXCancionList(List<PreferenciaXCancion> preferenciaXCancionList) {
+        this.preferenciaXCancionList = preferenciaXCancionList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (nombrepreferido != null ? nombrepreferido.hashCode() : 0);
+        hash += (perfilPwaCedula != null ? perfilPwaCedula.hashCode() : 0);
         return hash;
     }
 
@@ -182,7 +230,7 @@ public class PerfilPreferencia implements Serializable {
             return false;
         }
         PerfilPreferencia other = (PerfilPreferencia) object;
-        if ((this.nombrepreferido == null && other.nombrepreferido != null) || (this.nombrepreferido != null && !this.nombrepreferido.equals(other.nombrepreferido))) {
+        if ((this.perfilPwaCedula == null && other.perfilPwaCedula != null) || (this.perfilPwaCedula != null && !this.perfilPwaCedula.equals(other.perfilPwaCedula))) {
             return false;
         }
         return true;
@@ -190,7 +238,7 @@ public class PerfilPreferencia implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.PerfilPreferencia[ nombrepreferido=" + nombrepreferido + " ]";
+        return "ResPwAEntities.PerfilPreferencia[ perfilPwaCedula=" + perfilPwaCedula + " ]";
     }
     
 }

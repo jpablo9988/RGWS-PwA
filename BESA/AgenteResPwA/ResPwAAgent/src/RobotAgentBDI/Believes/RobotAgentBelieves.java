@@ -8,12 +8,9 @@ package RobotAgentBDI.Believes;
 import BDInterface.RESPwABDInterface;
 import EmotionalAnalyzerAgent.Guards.EmotionalData;
 import ResPwAEntities.Antecedente;
-import ResPwAEntities.Cancion;
-import ResPwAEntities.Cuento;
-import ResPwAEntities.Perfilpwa;
-import ResPwAEntities.Preferenciaxbaile;
-import ResPwAEntities.Preferenciaxcancion;
-import ResPwAEntities.Preferenciaxcuento;
+import ResPwAEntities.PerfilPwa;
+import ResPwAEntities.PreferenciaXCancion;
+import ResPwAEntities.PreferenciaXCuento;
 import Utils.Imagen;
 import Retroalimentacion.Modelo.ModeloRetroalimentacion;
 import RobotAgentBDI.Utils.ResPwAActivity;
@@ -49,7 +46,7 @@ public class RobotAgentBelieves implements Believes {
         bPerfilPwA = new BPerfilPwA(this);
         bPerfilPwA.setPerfil(getPerfilBD(cedula));
 
-        System.out.println("VERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRrr: " + bPerfilPwA.getPerfil().getPerfilPreferencia().getActxpreferenciaList().get(0).getGusto());
+        System.out.println("VERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRrr: " + bPerfilPwA.getPerfil().getPerfilPreferencia().getActXPreferenciaList().get(0).getGusto());
 //        FBaseUtils.initResPwa(this);
     }
 
@@ -101,14 +98,14 @@ public class RobotAgentBelieves implements Believes {
 
         switch (activity) {
             case CUENTERIA:
-                activityInCourse = (Preferenciaxcuento) bEstadoActividad.getCuentoActual();
-                ModeloRetroalimentacion<Preferenciaxcuento> modeloRetroCuento = new ModeloRetroalimentacion<>((Preferenciaxcuento) activityInCourse);
+                activityInCourse = (PreferenciaXCuento) bEstadoActividad.getCuentoActual();
+                ModeloRetroalimentacion<PreferenciaXCuento> modeloRetroCuento = new ModeloRetroalimentacion<>((PreferenciaXCuento) activityInCourse);
                 modeloRetroCuento.activityFeedback(antecedentsForFeedback);
                 break;
 
             case MUSICOTERAPIA:
-                activityInCourse = (Preferenciaxcancion) bEstadoActividad.getCancionActual();
-                ModeloRetroalimentacion<Preferenciaxcancion> modelRetroCancion = new ModeloRetroalimentacion<>((Preferenciaxcancion) activityInCourse);
+                activityInCourse = (PreferenciaXCancion) bEstadoActividad.getCancionActual();
+                ModeloRetroalimentacion<PreferenciaXCancion> modelRetroCancion = new ModeloRetroalimentacion<>((PreferenciaXCancion) activityInCourse);
                 modelRetroCancion.activityFeedback(antecedentsForFeedback);
                 break;
         }
@@ -172,11 +169,11 @@ public class RobotAgentBelieves implements Believes {
 
         switch (activity) {
             case CUENTERIA:
-                activityInCourse = (Preferenciaxcuento) bEstadoActividad.getCuentoActual();
+                activityInCourse = (PreferenciaXCuento) bEstadoActividad.getCuentoActual();
                 break;
 
             case MUSICOTERAPIA:
-                activityInCourse = (Preferenciaxcancion) bEstadoActividad.getCancionActual();
+                activityInCourse = (PreferenciaXCancion) bEstadoActividad.getCancionActual();
                 break;
         }
 
@@ -184,13 +181,13 @@ public class RobotAgentBelieves implements Believes {
 
     }
 
-    private Perfilpwa getPerfilBD(String cedula) {
+    private PerfilPwa getPerfilBD(String cedula) {
         //conectarConBD
         return getFromDB(cedula);
     }
 
-    Perfilpwa getFromDB(String cedula) {
-        Perfilpwa perfil = RESPwABDInterface.getProfile(cedula);
+    PerfilPwa getFromDB(String cedula) {
+        PerfilPwa perfil = RESPwABDInterface.getProfile(cedula);
         return perfil;
     }
 

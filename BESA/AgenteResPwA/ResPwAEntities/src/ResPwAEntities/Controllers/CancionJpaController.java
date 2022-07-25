@@ -6,27 +6,30 @@
 package ResPwAEntities.Controllers;
 
 import ResPwAEntities.Cancion;
-import ResPwAEntities.Controllers.Exceptions.IllegalOrphanException;
-import ResPwAEntities.Controllers.Exceptions.NonexistentEntityException;
-import ResPwAEntities.Controllers.Exceptions.PreexistingEntityException;
-import ResPwAEntities.Enriq;
-import ResPwAEntities.Genero;
-import ResPwAEntities.Preferenciaxcancion;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityNotFoundException;
+import ResPwAEntities.Controllers.exceptions.IllegalOrphanException;
+import ResPwAEntities.Controllers.exceptions.NonexistentEntityException;
+import ResPwAEntities.Controllers.exceptions.PreexistingEntityException;
+import java.io.Serializable;
 import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import ResPwAEntities.Genero;
+import ResPwAEntities.Tag;
+import java.util.ArrayList;
+import java.util.List;
+import ResPwAEntities.Enriq;
+import ResPwAEntities.PreferenciaXCancion;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
-public class CancionJpaController {
-     public CancionJpaController(EntityManagerFactory emf) {
+public class CancionJpaController implements Serializable {
+
+    public CancionJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -36,45 +39,67 @@ public class CancionJpaController {
     }
 
     public void create(Cancion cancion) throws PreexistingEntityException, Exception {
-        
-       
-        if (cancion.getPreferenciaxcancionList() == null) {
-            cancion.setPreferenciaxcancionList(new ArrayList<Preferenciaxcancion>());
+        if (cancion.getTagList() == null) {
+            cancion.setTagList(new ArrayList<Tag>());
+        }
+        if (cancion.getEnriqList() == null) {
+            cancion.setEnriqList(new ArrayList<Enriq>());
+        }
+        if (cancion.getPreferenciaXCancionList() == null) {
+            cancion.setPreferenciaXCancionList(new ArrayList<PreferenciaXCancion>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Genero generoGenero = cancion.getGeneroGenero();
-            if (generoGenero != null) {
-                generoGenero = em.getReference(generoGenero.getClass(), generoGenero.getGenero());
-                cancion.setGeneroGenero(generoGenero);
+            Genero genero = cancion.getGenero();
+            if (genero != null) {
+                genero = em.getReference(genero.getClass(), genero.getGenero());
+                cancion.setGenero(genero);
             }
-           
-          
+            List<Tag> attachedTagList = new ArrayList<Tag>();
+            for (Tag tagListTagToAttach : cancion.getTagList()) {
+                tagListTagToAttach = em.getReference(tagListTagToAttach.getClass(), tagListTagToAttach.getId());
+                attachedTagList.add(tagListTagToAttach);
+            }
+            cancion.setTagList(attachedTagList);
             List<Enriq> attachedEnriqList = new ArrayList<Enriq>();
-            
-            
-            List<Preferenciaxcancion> attachedPreferenciaxcancionList = new ArrayList<Preferenciaxcancion>();
-            for (Preferenciaxcancion preferenciaxcancionListPreferenciaxcancionToAttach : cancion.getPreferenciaxcancionList()) {
-                preferenciaxcancionListPreferenciaxcancionToAttach = em.getReference(preferenciaxcancionListPreferenciaxcancionToAttach.getClass(), preferenciaxcancionListPreferenciaxcancionToAttach.getPreferenciaxcancionPK());
-                attachedPreferenciaxcancionList.add(preferenciaxcancionListPreferenciaxcancionToAttach);
+            for (Enriq enriqListEnriqToAttach : cancion.getEnriqList()) {
+                enriqListEnriqToAttach = em.getReference(enriqListEnriqToAttach.getClass(), enriqListEnriqToAttach.getParams());
+                attachedEnriqList.add(enriqListEnriqToAttach);
             }
-            cancion.setPreferenciaxcancionList(attachedPreferenciaxcancionList);
+            cancion.setEnriqList(attachedEnriqList);
+            List<PreferenciaXCancion> attachedPreferenciaXCancionList = new ArrayList<PreferenciaXCancion>();
+            for (PreferenciaXCancion preferenciaXCancionListPreferenciaXCancionToAttach : cancion.getPreferenciaXCancionList()) {
+                preferenciaXCancionListPreferenciaXCancionToAttach = em.getReference(preferenciaXCancionListPreferenciaXCancionToAttach.getClass(), preferenciaXCancionListPreferenciaXCancionToAttach.getPreferenciaXCancionPK());
+                attachedPreferenciaXCancionList.add(preferenciaXCancionListPreferenciaXCancionToAttach);
+            }
+            cancion.setPreferenciaXCancionList(attachedPreferenciaXCancionList);
             em.persist(cancion);
-            if (generoGenero != null) {
-                generoGenero.getCancionList().add(cancion);
-                generoGenero = em.merge(generoGenero);
+            if (genero != null) {
+                genero.getCancionList().add(cancion);
+                genero = em.merge(genero);
             }
-            
-          
-            for (Preferenciaxcancion preferenciaxcancionListPreferenciaxcancion : cancion.getPreferenciaxcancionList()) {
-                Cancion oldCancionOfPreferenciaxcancionListPreferenciaxcancion = preferenciaxcancionListPreferenciaxcancion.getCancion();
-                preferenciaxcancionListPreferenciaxcancion.setCancion(cancion);
-                preferenciaxcancionListPreferenciaxcancion = em.merge(preferenciaxcancionListPreferenciaxcancion);
-                if (oldCancionOfPreferenciaxcancionListPreferenciaxcancion != null) {
-                    oldCancionOfPreferenciaxcancionListPreferenciaxcancion.getPreferenciaxcancionList().remove(preferenciaxcancionListPreferenciaxcancion);
-                    oldCancionOfPreferenciaxcancionListPreferenciaxcancion = em.merge(oldCancionOfPreferenciaxcancionListPreferenciaxcancion);
+            for (Tag tagListTag : cancion.getTagList()) {
+                tagListTag.getCancionList().add(cancion);
+                tagListTag = em.merge(tagListTag);
+            }
+            for (Enriq enriqListEnriq : cancion.getEnriqList()) {
+                Cancion oldCancionNombreOfEnriqListEnriq = enriqListEnriq.getCancionNombre();
+                enriqListEnriq.setCancionNombre(cancion);
+                enriqListEnriq = em.merge(enriqListEnriq);
+                if (oldCancionNombreOfEnriqListEnriq != null) {
+                    oldCancionNombreOfEnriqListEnriq.getEnriqList().remove(enriqListEnriq);
+                    oldCancionNombreOfEnriqListEnriq = em.merge(oldCancionNombreOfEnriqListEnriq);
+                }
+            }
+            for (PreferenciaXCancion preferenciaXCancionListPreferenciaXCancion : cancion.getPreferenciaXCancionList()) {
+                Cancion oldCancionOfPreferenciaXCancionListPreferenciaXCancion = preferenciaXCancionListPreferenciaXCancion.getCancion();
+                preferenciaXCancionListPreferenciaXCancion.setCancion(cancion);
+                preferenciaXCancionListPreferenciaXCancion = em.merge(preferenciaXCancionListPreferenciaXCancion);
+                if (oldCancionOfPreferenciaXCancionListPreferenciaXCancion != null) {
+                    oldCancionOfPreferenciaXCancionListPreferenciaXCancion.getPreferenciaXCancionList().remove(preferenciaXCancionListPreferenciaXCancion);
+                    oldCancionOfPreferenciaXCancionListPreferenciaXCancion = em.merge(oldCancionOfPreferenciaXCancionListPreferenciaXCancion);
                 }
             }
             em.getTransaction().commit();
@@ -96,14 +121,102 @@ public class CancionJpaController {
             em = getEntityManager();
             em.getTransaction().begin();
             Cancion persistentCancion = em.find(Cancion.class, cancion.getNombre());
-            Genero generoGeneroOld = persistentCancion.getGeneroGenero();
-            Genero generoGeneroNew = cancion.getGeneroGenero();
-            
-            
-            
-            
-            
-            
+            Genero generoOld = persistentCancion.getGenero();
+            Genero generoNew = cancion.getGenero();
+            List<Tag> tagListOld = persistentCancion.getTagList();
+            List<Tag> tagListNew = cancion.getTagList();
+            List<Enriq> enriqListOld = persistentCancion.getEnriqList();
+            List<Enriq> enriqListNew = cancion.getEnriqList();
+            List<PreferenciaXCancion> preferenciaXCancionListOld = persistentCancion.getPreferenciaXCancionList();
+            List<PreferenciaXCancion> preferenciaXCancionListNew = cancion.getPreferenciaXCancionList();
+            List<String> illegalOrphanMessages = null;
+            for (Enriq enriqListOldEnriq : enriqListOld) {
+                if (!enriqListNew.contains(enriqListOldEnriq)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Enriq " + enriqListOldEnriq + " since its cancionNombre field is not nullable.");
+                }
+            }
+            for (PreferenciaXCancion preferenciaXCancionListOldPreferenciaXCancion : preferenciaXCancionListOld) {
+                if (!preferenciaXCancionListNew.contains(preferenciaXCancionListOldPreferenciaXCancion)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain PreferenciaXCancion " + preferenciaXCancionListOldPreferenciaXCancion + " since its cancion field is not nullable.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            if (generoNew != null) {
+                generoNew = em.getReference(generoNew.getClass(), generoNew.getGenero());
+                cancion.setGenero(generoNew);
+            }
+            List<Tag> attachedTagListNew = new ArrayList<Tag>();
+            for (Tag tagListNewTagToAttach : tagListNew) {
+                tagListNewTagToAttach = em.getReference(tagListNewTagToAttach.getClass(), tagListNewTagToAttach.getId());
+                attachedTagListNew.add(tagListNewTagToAttach);
+            }
+            tagListNew = attachedTagListNew;
+            cancion.setTagList(tagListNew);
+            List<Enriq> attachedEnriqListNew = new ArrayList<Enriq>();
+            for (Enriq enriqListNewEnriqToAttach : enriqListNew) {
+                enriqListNewEnriqToAttach = em.getReference(enriqListNewEnriqToAttach.getClass(), enriqListNewEnriqToAttach.getParams());
+                attachedEnriqListNew.add(enriqListNewEnriqToAttach);
+            }
+            enriqListNew = attachedEnriqListNew;
+            cancion.setEnriqList(enriqListNew);
+            List<PreferenciaXCancion> attachedPreferenciaXCancionListNew = new ArrayList<PreferenciaXCancion>();
+            for (PreferenciaXCancion preferenciaXCancionListNewPreferenciaXCancionToAttach : preferenciaXCancionListNew) {
+                preferenciaXCancionListNewPreferenciaXCancionToAttach = em.getReference(preferenciaXCancionListNewPreferenciaXCancionToAttach.getClass(), preferenciaXCancionListNewPreferenciaXCancionToAttach.getPreferenciaXCancionPK());
+                attachedPreferenciaXCancionListNew.add(preferenciaXCancionListNewPreferenciaXCancionToAttach);
+            }
+            preferenciaXCancionListNew = attachedPreferenciaXCancionListNew;
+            cancion.setPreferenciaXCancionList(preferenciaXCancionListNew);
+            cancion = em.merge(cancion);
+            if (generoOld != null && !generoOld.equals(generoNew)) {
+                generoOld.getCancionList().remove(cancion);
+                generoOld = em.merge(generoOld);
+            }
+            if (generoNew != null && !generoNew.equals(generoOld)) {
+                generoNew.getCancionList().add(cancion);
+                generoNew = em.merge(generoNew);
+            }
+            for (Tag tagListOldTag : tagListOld) {
+                if (!tagListNew.contains(tagListOldTag)) {
+                    tagListOldTag.getCancionList().remove(cancion);
+                    tagListOldTag = em.merge(tagListOldTag);
+                }
+            }
+            for (Tag tagListNewTag : tagListNew) {
+                if (!tagListOld.contains(tagListNewTag)) {
+                    tagListNewTag.getCancionList().add(cancion);
+                    tagListNewTag = em.merge(tagListNewTag);
+                }
+            }
+            for (Enriq enriqListNewEnriq : enriqListNew) {
+                if (!enriqListOld.contains(enriqListNewEnriq)) {
+                    Cancion oldCancionNombreOfEnriqListNewEnriq = enriqListNewEnriq.getCancionNombre();
+                    enriqListNewEnriq.setCancionNombre(cancion);
+                    enriqListNewEnriq = em.merge(enriqListNewEnriq);
+                    if (oldCancionNombreOfEnriqListNewEnriq != null && !oldCancionNombreOfEnriqListNewEnriq.equals(cancion)) {
+                        oldCancionNombreOfEnriqListNewEnriq.getEnriqList().remove(enriqListNewEnriq);
+                        oldCancionNombreOfEnriqListNewEnriq = em.merge(oldCancionNombreOfEnriqListNewEnriq);
+                    }
+                }
+            }
+            for (PreferenciaXCancion preferenciaXCancionListNewPreferenciaXCancion : preferenciaXCancionListNew) {
+                if (!preferenciaXCancionListOld.contains(preferenciaXCancionListNewPreferenciaXCancion)) {
+                    Cancion oldCancionOfPreferenciaXCancionListNewPreferenciaXCancion = preferenciaXCancionListNewPreferenciaXCancion.getCancion();
+                    preferenciaXCancionListNewPreferenciaXCancion.setCancion(cancion);
+                    preferenciaXCancionListNewPreferenciaXCancion = em.merge(preferenciaXCancionListNewPreferenciaXCancion);
+                    if (oldCancionOfPreferenciaXCancionListNewPreferenciaXCancion != null && !oldCancionOfPreferenciaXCancionListNewPreferenciaXCancion.equals(cancion)) {
+                        oldCancionOfPreferenciaXCancionListNewPreferenciaXCancion.getPreferenciaXCancionList().remove(preferenciaXCancionListNewPreferenciaXCancion);
+                        oldCancionOfPreferenciaXCancionListNewPreferenciaXCancion = em.merge(oldCancionOfPreferenciaXCancionListNewPreferenciaXCancion);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -141,22 +254,26 @@ public class CancionJpaController {
                 }
                 illegalOrphanMessages.add("This Cancion (" + cancion + ") cannot be destroyed since the Enriq " + enriqListOrphanCheckEnriq + " in its enriqList field has a non-nullable cancionNombre field.");
             }
-            List<Preferenciaxcancion> preferenciaxcancionListOrphanCheck = cancion.getPreferenciaxcancionList();
-            for (Preferenciaxcancion preferenciaxcancionListOrphanCheckPreferenciaxcancion : preferenciaxcancionListOrphanCheck) {
+            List<PreferenciaXCancion> preferenciaXCancionListOrphanCheck = cancion.getPreferenciaXCancionList();
+            for (PreferenciaXCancion preferenciaXCancionListOrphanCheckPreferenciaXCancion : preferenciaXCancionListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Cancion (" + cancion + ") cannot be destroyed since the Preferenciaxcancion " + preferenciaxcancionListOrphanCheckPreferenciaxcancion + " in its preferenciaxcancionList field has a non-nullable cancion field.");
+                illegalOrphanMessages.add("This Cancion (" + cancion + ") cannot be destroyed since the PreferenciaXCancion " + preferenciaXCancionListOrphanCheckPreferenciaXCancion + " in its preferenciaXCancionList field has a non-nullable cancion field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Genero generoGenero = cancion.getGeneroGenero();
-            if (generoGenero != null) {
-                generoGenero.getCancionList().remove(cancion);
-                generoGenero = em.merge(generoGenero);
+            Genero genero = cancion.getGenero();
+            if (genero != null) {
+                genero.getCancionList().remove(cancion);
+                genero = em.merge(genero);
             }
-          
+            List<Tag> tagList = cancion.getTagList();
+            for (Tag tagListTag : tagList) {
+                tagListTag.getCancionList().remove(cancion);
+                tagListTag = em.merge(tagListTag);
+            }
             em.remove(cancion);
             em.getTransaction().commit();
         } finally {
@@ -211,4 +328,5 @@ public class CancionJpaController {
             em.close();
         }
     }
+    
 }

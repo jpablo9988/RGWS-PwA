@@ -6,7 +6,6 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -22,38 +21,28 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "causa_demencia", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Causademencia.findAll", query = "SELECT c FROM Causademencia c")
-    , @NamedQuery(name = "Causademencia.findByCondicion", query = "SELECT c FROM Causademencia c WHERE c.condicion = :condicion")
-    , @NamedQuery(name = "Causademencia.findByIdcausa", query = "SELECT c FROM Causademencia c WHERE c.idcausa = :idcausa")})
-public class Causademencia implements Serializable {
+    @NamedQuery(name = "CausaDemencia.findAll", query = "SELECT c FROM CausaDemencia c"),
+    @NamedQuery(name = "CausaDemencia.findByCondicion", query = "SELECT c FROM CausaDemencia c WHERE c.condicion = :condicion")})
+public class CausaDemencia implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @Column(nullable = false, length = 2147483647)
-    private String condicion;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(nullable = false, precision = 131089)
-    private BigDecimal idcausa;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "causademenciaIdcausa")
+    @Column(name = "condicion")
+    private String condicion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "causaDemenciaCondicion")
     private List<PerfilMedico> perfilMedicoList;
 
-    public Causademencia() {
+    public CausaDemencia() {
     }
 
-    public Causademencia(BigDecimal idcausa) {
-        this.idcausa = idcausa;
-    }
-
-    public Causademencia(BigDecimal idcausa, String condicion) {
-        this.idcausa = idcausa;
+    public CausaDemencia(String condicion) {
         this.condicion = condicion;
     }
 
@@ -63,14 +52,6 @@ public class Causademencia implements Serializable {
 
     public void setCondicion(String condicion) {
         this.condicion = condicion;
-    }
-
-    public BigDecimal getIdcausa() {
-        return idcausa;
-    }
-
-    public void setIdcausa(BigDecimal idcausa) {
-        this.idcausa = idcausa;
     }
 
     @XmlTransient
@@ -85,18 +66,18 @@ public class Causademencia implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idcausa != null ? idcausa.hashCode() : 0);
+        hash += (condicion != null ? condicion.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Causademencia)) {
+        if (!(object instanceof CausaDemencia)) {
             return false;
         }
-        Causademencia other = (Causademencia) object;
-        if ((this.idcausa == null && other.idcausa != null) || (this.idcausa != null && !this.idcausa.equals(other.idcausa))) {
+        CausaDemencia other = (CausaDemencia) object;
+        if ((this.condicion == null && other.condicion != null) || (this.condicion != null && !this.condicion.equals(other.condicion))) {
             return false;
         }
         return true;
@@ -104,7 +85,7 @@ public class Causademencia implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.Causademencia[ idcausa=" + idcausa + " ]";
+        return "ResPwAEntities.CausaDemencia[ condicion=" + condicion + " ]";
     }
     
 }

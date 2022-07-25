@@ -23,37 +23,43 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 57305
+ * @author USER
  */
 @Entity
-@Table(catalog = "Res-pwaDB", schema = "public")
+@Table(name = "cuento", catalog = "Res_PwADB", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cuento.findAll", query = "SELECT c FROM Cuento c")
-    , @NamedQuery(name = "Cuento.findByNombre", query = "SELECT c FROM Cuento c WHERE c.nombre = :nombre")
-    , @NamedQuery(name = "Cuento.findByAutor", query = "SELECT c FROM Cuento c WHERE c.autor = :autor")})
+    @NamedQuery(name = "Cuento.findAll", query = "SELECT c FROM Cuento c"),
+    @NamedQuery(name = "Cuento.findByNombre", query = "SELECT c FROM Cuento c WHERE c.nombre = :nombre"),
+    @NamedQuery(name = "Cuento.findByAutor", query = "SELECT c FROM Cuento c WHERE c.autor = :autor")})
 public class Cuento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(nullable = false, length = 2147483647)
+    @Column(name = "nombre")
     private String nombre;
-    @Column(length = 2147483647)
+    @Basic(optional = false)
+    @Column(name = "autor")
     private String autor;
-    @JoinColumn(name = "genero_genero", referencedColumnName = "genero", nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuento")
+    private List<PreferenciaXCuento> preferenciaXCuentoList;
+    @JoinColumn(name = "genero", referencedColumnName = "genero")
     @ManyToOne(optional = false)
-    private Genero generoGenero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentoNombre")
-    private List<Preferenciaxcuento> preferenciaxcuentoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentoNombre")
-    private List<Frases> frasesList;
+    private Genero genero;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuento")
+    private List<Frase> fraseList;
 
     public Cuento() {
     }
 
     public Cuento(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Cuento(String nombre, String autor) {
+        this.nombre = nombre;
+        this.autor = autor;
     }
 
     public String getNombre() {
@@ -72,30 +78,30 @@ public class Cuento implements Serializable {
         this.autor = autor;
     }
 
-    public Genero getGeneroGenero() {
-        return generoGenero;
+    @XmlTransient
+    public List<PreferenciaXCuento> getPreferenciaXCuentoList() {
+        return preferenciaXCuentoList;
     }
 
-    public void setGeneroGenero(Genero generoGenero) {
-        this.generoGenero = generoGenero;
+    public void setPreferenciaXCuentoList(List<PreferenciaXCuento> preferenciaXCuentoList) {
+        this.preferenciaXCuentoList = preferenciaXCuentoList;
+    }
+
+    public Genero getGenero() {
+        return genero;
+    }
+
+    public void setGenero(Genero genero) {
+        this.genero = genero;
     }
 
     @XmlTransient
-    public List<Preferenciaxcuento> getPreferenciaxcuentoList() {
-        return preferenciaxcuentoList;
+    public List<Frase> getFraseList() {
+        return fraseList;
     }
 
-    public void setPreferenciaxcuentoList(List<Preferenciaxcuento> preferenciaxcuentoList) {
-        this.preferenciaxcuentoList = preferenciaxcuentoList;
-    }
-
-    @XmlTransient
-    public List<Frases> getFrasesList() {
-        return frasesList;
-    }
-
-    public void setFrasesList(List<Frases> frasesList) {
-        this.frasesList = frasesList;
+    public void setFraseList(List<Frase> fraseList) {
+        this.fraseList = fraseList;
     }
 
     @Override

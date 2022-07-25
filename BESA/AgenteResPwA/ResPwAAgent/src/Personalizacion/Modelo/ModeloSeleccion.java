@@ -5,12 +5,9 @@
  */
 package Personalizacion.Modelo;
 
-import ResPwAEntities.Baile;
-import ResPwAEntities.Cancion;
-import ResPwAEntities.Cuento;
-import ResPwAEntities.Preferenciaxbaile;
-import ResPwAEntities.Preferenciaxcancion;
-import ResPwAEntities.Preferenciaxcuento;
+import ResPwAEntities.PreferenciaXBaile;
+import ResPwAEntities.PreferenciaXCancion;
+import ResPwAEntities.PreferenciaXCuento;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +47,7 @@ public class ModeloSeleccion<T> {
 
     public Cromosoma getChromosomeSelected() {
         double percentSelected;
-        double chromosomeValue = 0.0;
+        //double chromosomeValue = 0.0;
         boolean searched = false;
         Cromosoma cromosomaAnterior = null;
         Cromosoma cromosomaPosterior = null;
@@ -127,16 +124,14 @@ public class ModeloSeleccion<T> {
 
     void initialize() {
 
-        for (T t : elementosASeleccionar) {
-            if (t instanceof Preferenciaxcancion) {
-                cromosomas.add(new CromosomaCancion((Preferenciaxcancion) t));
-            } else if (t instanceof Preferenciaxcuento) {
-                cromosomas.add(new CromosomaCuento((Preferenciaxcuento) t));
-            } else if (t instanceof Preferenciaxbaile) {
-                cromosomas.add(new CromosomaBaile((Preferenciaxbaile) t));
+        elementosASeleccionar.forEach(t -> {
+            if (t instanceof PreferenciaXCancion) {
+                cromosomas.add(new CromosomaCancion((PreferenciaXCancion) t));
+            } else if (t instanceof PreferenciaXCuento) {
+                cromosomas.add(new CromosomaCuento((PreferenciaXCuento) t));
+            } else if (t instanceof PreferenciaXBaile) {
+                cromosomas.add(new CromosomaBaile((PreferenciaXBaile) t));
             }
-            
-
-        }
+        });
     }
 }
