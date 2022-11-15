@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -21,10 +22,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author juan.amorocho y andres.cacique
+ * @author tesispepper
  */
 @Entity
-@Table(name = "emotion_axis_conf", catalog = "Res_PwADB", schema = "public")
+@Table(name = "emotion_axis_conf")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EmotionAxisConf.findAll", query = "SELECT e FROM EmotionAxisConf e"),
@@ -39,7 +40,7 @@ public class EmotionAxisConf implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "positive_name")
     private String positiveName;
@@ -48,21 +49,21 @@ public class EmotionAxisConf implements Serializable {
     private String negativeName;
     @Basic(optional = false)
     @Column(name = "base_value")
-    private float baseValue;
+    private double baseValue;
     @Basic(optional = false)
     @Column(name = "forget_factor")
-    private float forgetFactor;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "emotionalAxisConfigId")
+    private double forgetFactor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "emotionalAxisConfigId", fetch = FetchType.EAGER)
     private List<EventInfluence> eventInfluenceList;
 
     public EmotionAxisConf() {
     }
 
-    public EmotionAxisConf(Long id) {
+    public EmotionAxisConf(Integer id) {
         this.id = id;
     }
 
-    public EmotionAxisConf(Long id, String positiveName, String negativeName, float baseValue, float forgetFactor) {
+    public EmotionAxisConf(Integer id, String positiveName, String negativeName, double baseValue, double forgetFactor) {
         this.id = id;
         this.positiveName = positiveName;
         this.negativeName = negativeName;
@@ -70,11 +71,11 @@ public class EmotionAxisConf implements Serializable {
         this.forgetFactor = forgetFactor;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -94,19 +95,19 @@ public class EmotionAxisConf implements Serializable {
         this.negativeName = negativeName;
     }
 
-    public float getBaseValue() {
+    public double getBaseValue() {
         return baseValue;
     }
 
-    public void setBaseValue(float baseValue) {
+    public void setBaseValue(double baseValue) {
         this.baseValue = baseValue;
     }
 
-    public float getForgetFactor() {
+    public double getForgetFactor() {
         return forgetFactor;
     }
 
-    public void setForgetFactor(float forgetFactor) {
+    public void setForgetFactor(double forgetFactor) {
         this.forgetFactor = forgetFactor;
     }
 

@@ -21,7 +21,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class EnriqJpaController implements Serializable {
 

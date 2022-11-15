@@ -6,11 +6,11 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -20,10 +20,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "preferencia_x_baile", catalog = "Res_PwADB", schema = "public")
+@Table(name = "preferencia_x_baile")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PreferenciaXBaile.findAll", query = "SELECT p FROM PreferenciaXBaile p"),
@@ -39,10 +39,10 @@ public class PreferenciaXBaile implements Serializable {
     @Column(name = "gusto")
     private double gusto;
     @JoinColumn(name = "baile_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Baile baile;
     @JoinColumn(name = "preferencia_pwa_cedula", referencedColumnName = "perfil_pwa_cedula", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private PerfilPreferencia perfilPreferencia;
 
     public PreferenciaXBaile() {
@@ -57,7 +57,7 @@ public class PreferenciaXBaile implements Serializable {
         this.gusto = gusto;
     }
 
-    public PreferenciaXBaile(BigDecimal baileId, String preferenciaPwaCedula) {
+    public PreferenciaXBaile(int baileId, String preferenciaPwaCedula) {
         this.preferenciaXBailePK = new PreferenciaXBailePK(baileId, preferenciaPwaCedula);
     }
 

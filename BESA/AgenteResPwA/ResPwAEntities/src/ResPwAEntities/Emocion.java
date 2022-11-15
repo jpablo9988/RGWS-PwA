@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,10 +24,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "emocion", catalog = "Res_PwADB", schema = "public")
+@Table(name = "emocion")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Emocion.findAll", query = "SELECT e FROM Emocion e"),
@@ -45,10 +46,10 @@ public class Emocion implements Serializable {
     private String imagen;
     @Column(name = "emotional_tag")
     private String emotionalTag;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "emocionId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "emocionId", fetch = FetchType.EAGER)
     private List<Accion> accionList;
     @JoinColumn(name = "robot_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Robot robotId;
 
     public Emocion() {

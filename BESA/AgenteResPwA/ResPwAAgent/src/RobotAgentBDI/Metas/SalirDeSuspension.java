@@ -6,14 +6,19 @@
 package RobotAgentBDI.Metas;
 
 import BESA.BDI.AgentStructuralModel.GoalBDI;
+
+import java.util.Date;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import RobotAgentBDI.Believes.RobotAgentBelieves;
 import Init.InitRESPwA;
+import ResPwAEntities.PerfilEjercicio;
 import Tareas.RecargarBateria.SuspenderRobot;
 import Tareas.SalirDeSuspension.DesuspenderRobot;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import rational.RationalRole;
 import rational.mapping.Believes;
@@ -59,8 +64,22 @@ public class SalirDeSuspension extends GoalBDI {
         System.out.println("Meta RecargarBateria detectGoal");
 
         RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
-        if (blvs.getbEstadoRobot().getBatteryPerc()>30.0 && !blvs.getbEstadoRobot().getBateria() && blvs.getbEstadoInteraccion().isSistemaSuspendido()) {
+        if (blvs.getbEstadoInteraccion().isSistemaSuspendido()) 
+        {
+            if (blvs.getbPerfilPwA().getPerfil().getPerfilEjercicio() != null) {
+                PerfilEjercicio miPerfil = blvs.getbPerfilPwA().getPerfil().getPerfilEjercicio();
+                Date currDate = new Date();
+                Calendar currDiaCalendar = GregorianCalendar.getInstance();
+                currDiaCalendar.setTime(currDate);
+                int currHour = currDiaCalendar.get(Calendar.HOUR_OF_DAY);
+                if (((currDate.equals(miPerfil.getFechaProx()) || currDate.after(miPerfil.getFechaProx())) && currHour >= miPerfil.getHoraProx())) {
+                    return 1.0;
+                }
+            }
+
+            if (blvs.getbEstadoRobot().getBatteryPerc() > 30.0 && !blvs.getbEstadoRobot().getBateria()) {
                 return 1.0;
+            }
         }
         return 0;
     }

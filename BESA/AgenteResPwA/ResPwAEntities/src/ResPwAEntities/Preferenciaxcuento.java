@@ -10,6 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -19,10 +20,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "preferencia_x_cuento", catalog = "Res_PwADB", schema = "public")
+@Table(name = "preferencia_x_cuento")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PreferenciaXCuento.findAll", query = "SELECT p FROM PreferenciaXCuento p"),
@@ -38,10 +39,10 @@ public class PreferenciaXCuento implements Serializable {
     @Column(name = "gusto")
     private double gusto;
     @JoinColumn(name = "cuento_nombre", referencedColumnName = "nombre", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Cuento cuento;
     @JoinColumn(name = "preferencia_pwa_cedula", referencedColumnName = "perfil_pwa_cedula", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private PerfilPreferencia perfilPreferencia;
 
     public PreferenciaXCuento() {

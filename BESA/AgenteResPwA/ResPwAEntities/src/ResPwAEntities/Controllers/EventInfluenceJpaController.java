@@ -20,7 +20,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class EventInfluenceJpaController implements Serializable {
 
@@ -86,7 +86,7 @@ public class EventInfluenceJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = eventInfluence.getId();
+                Integer id = eventInfluence.getId();
                 if (findEventInfluence(id) == null) {
                     throw new NonexistentEntityException("The eventInfluence with id " + id + " no longer exists.");
                 }
@@ -99,7 +99,7 @@ public class EventInfluenceJpaController implements Serializable {
         }
     }
 
-    public void destroy(Long id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -149,7 +149,7 @@ public class EventInfluenceJpaController implements Serializable {
         }
     }
 
-    public EventInfluence findEventInfluence(Long id) {
+    public EventInfluence findEventInfluence(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(EventInfluence.class, id);

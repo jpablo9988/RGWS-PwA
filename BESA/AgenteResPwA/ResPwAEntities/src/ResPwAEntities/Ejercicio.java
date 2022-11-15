@@ -6,121 +6,137 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "ejercicio", catalog = "Res_PwADB", schema = "public")
+@Table(name = "ejercicio")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Ejercicio.findAll", query = "SELECT e FROM Ejercicio e"),
-    @NamedQuery(name = "Ejercicio.findByIdEjercicio", query = "SELECT e FROM Ejercicio e WHERE e.ejercicioPK.idEjercicio = :idEjercicio"),
-    @NamedQuery(name = "Ejercicio.findByDescripcion", query = "SELECT e FROM Ejercicio e WHERE e.descripcion = :descripcion"),
-    @NamedQuery(name = "Ejercicio.findByTipoEjercicio", query = "SELECT e FROM Ejercicio e WHERE e.tipoEjercicio = :tipoEjercicio"),
-    @NamedQuery(name = "Ejercicio.findByIntensidad", query = "SELECT e FROM Ejercicio e WHERE e.intensidad = :intensidad"),
-    @NamedQuery(name = "Ejercicio.findByRutinaId", query = "SELECT e FROM Ejercicio e WHERE e.ejercicioPK.rutinaId = :rutinaId"),
-    @NamedQuery(name = "Ejercicio.findByUrlvideo", query = "SELECT e FROM Ejercicio e WHERE e.urlvideo = :urlvideo")})
+    @NamedQuery(name = "Ejercicio.findByNombre", query = "SELECT e FROM Ejercicio e WHERE e.nombre = :nombre"),
+    @NamedQuery(name = "Ejercicio.findByDuracion", query = "SELECT e FROM Ejercicio e WHERE e.duracion = :duracion"),
+    @NamedQuery(name = "Ejercicio.findByNecesitaPeso", query = "SELECT e FROM Ejercicio e WHERE e.necesitaPeso = :necesitaPeso"),
+    @NamedQuery(name = "Ejercicio.findByUrlVideo", query = "SELECT e FROM Ejercicio e WHERE e.urlVideo = :urlVideo")})
 public class Ejercicio implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected EjercicioPK ejercicioPK;
-    @Column(name = "descripcion")
-    private String descripcion;
+    @Id
     @Basic(optional = false)
-    @Column(name = "tipo_ejercicio")
-    private String tipoEjercicio;
+    @Column(name = "nombre")
+    private String nombre;
     @Basic(optional = false)
-    @Column(name = "intensidad")
-    private int intensidad;
-    @Column(name = "urlvideo")
-    private String urlvideo;
-    @JoinColumn(name = "rutina_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Rutina rutina;
+    @Column(name = "duracion")
+    private double duracion;
+    @Basic(optional = false)
+    @Column(name = "necesita_peso")
+    private boolean necesitaPeso;
+    @Column(name = "url_video")
+    private String urlVideo;
+    @ManyToMany(mappedBy = "ejercicioList", fetch = FetchType.EAGER)
+    private List<CategoriaEntrenamiento> categoriaEntrenamientoList;
+    @JoinTable(name = "perfil_ejercicio_x_ejercicio", joinColumns = {
+        @JoinColumn(name = "nombre_ejercicio", referencedColumnName = "nombre")}, inverseJoinColumns = {
+        @JoinColumn(name = "perfil_pwa_cedula", referencedColumnName = "perfil_pwa_cedula")})
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<PerfilEjercicio> perfilEjercicioList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ejercicio1", fetch = FetchType.EAGER)
+    private List<FraseInspiracional> fraseInspiracionalList;
 
     public Ejercicio() {
     }
 
-    public Ejercicio(EjercicioPK ejercicioPK) {
-        this.ejercicioPK = ejercicioPK;
+    public Ejercicio(String nombre) {
+        this.nombre = nombre;
     }
 
-    public Ejercicio(EjercicioPK ejercicioPK, String tipoEjercicio, int intensidad) {
-        this.ejercicioPK = ejercicioPK;
-        this.tipoEjercicio = tipoEjercicio;
-        this.intensidad = intensidad;
+    public Ejercicio(String nombre, double duracion, boolean necesitaPeso) {
+        this.nombre = nombre;
+        this.duracion = duracion;
+        this.necesitaPeso = necesitaPeso;
     }
 
-    public Ejercicio(BigDecimal idEjercicio, BigDecimal rutinaId) {
-        this.ejercicioPK = new EjercicioPK(idEjercicio, rutinaId);
+    public String getNombre() {
+        return nombre;
     }
 
-    public EjercicioPK getEjercicioPK() {
-        return ejercicioPK;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public void setEjercicioPK(EjercicioPK ejercicioPK) {
-        this.ejercicioPK = ejercicioPK;
+    public double getDuracion() {
+        return duracion;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public void setDuracion(double duracion) {
+        this.duracion = duracion;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public boolean getNecesitaPeso() {
+        return necesitaPeso;
     }
 
-    public String getTipoEjercicio() {
-        return tipoEjercicio;
+    public void setNecesitaPeso(boolean necesitaPeso) {
+        this.necesitaPeso = necesitaPeso;
     }
 
-    public void setTipoEjercicio(String tipoEjercicio) {
-        this.tipoEjercicio = tipoEjercicio;
+    public String getUrlVideo() {
+        return urlVideo;
     }
 
-    public int getIntensidad() {
-        return intensidad;
+    public void setUrlVideo(String urlVideo) {
+        this.urlVideo = urlVideo;
     }
 
-    public void setIntensidad(int intensidad) {
-        this.intensidad = intensidad;
+    @XmlTransient
+    public List<CategoriaEntrenamiento> getCategoriaEntrenamientoList() {
+        return categoriaEntrenamientoList;
     }
 
-    public String getUrlvideo() {
-        return urlvideo;
+    public void setCategoriaEntrenamientoList(List<CategoriaEntrenamiento> categoriaEntrenamientoList) {
+        this.categoriaEntrenamientoList = categoriaEntrenamientoList;
     }
 
-    public void setUrlvideo(String urlvideo) {
-        this.urlvideo = urlvideo;
+    @XmlTransient
+    public List<PerfilEjercicio> getPerfilEjercicioList() {
+        return perfilEjercicioList;
     }
 
-    public Rutina getRutina() {
-        return rutina;
+    public void setPerfilEjercicioList(List<PerfilEjercicio> perfilEjercicioList) {
+        this.perfilEjercicioList = perfilEjercicioList;
     }
 
-    public void setRutina(Rutina rutina) {
-        this.rutina = rutina;
+    @XmlTransient
+    public List<FraseInspiracional> getFraseInspiracionalList() {
+        return fraseInspiracionalList;
+    }
+
+    public void setFraseInspiracionalList(List<FraseInspiracional> fraseInspiracionalList) {
+        this.fraseInspiracionalList = fraseInspiracionalList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (ejercicioPK != null ? ejercicioPK.hashCode() : 0);
+        hash += (nombre != null ? nombre.hashCode() : 0);
         return hash;
     }
 
@@ -131,7 +147,7 @@ public class Ejercicio implements Serializable {
             return false;
         }
         Ejercicio other = (Ejercicio) object;
-        if ((this.ejercicioPK == null && other.ejercicioPK != null) || (this.ejercicioPK != null && !this.ejercicioPK.equals(other.ejercicioPK))) {
+        if ((this.nombre == null && other.nombre != null) || (this.nombre != null && !this.nombre.equals(other.nombre))) {
             return false;
         }
         return true;
@@ -139,7 +155,7 @@ public class Ejercicio implements Serializable {
 
     @Override
     public String toString() {
-        return "ResPwAEntities.Ejercicio[ ejercicioPK=" + ejercicioPK + " ]";
+        return "ResPwAEntities.Ejercicio[ nombre=" + nombre + " ]";
     }
     
 }

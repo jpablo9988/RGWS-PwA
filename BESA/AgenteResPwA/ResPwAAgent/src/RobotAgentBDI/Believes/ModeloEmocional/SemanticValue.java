@@ -2,9 +2,9 @@ package RobotAgentBDI.Believes.ModeloEmocional;
 
 public class SemanticValue {
     private final String name;
-    private final float value;
+    private final double value;
     
-    public SemanticValue(String name, float value) {
+    public SemanticValue(String name, double value) {
         this.name = name;
         this.value = Utils.checkNegativeOneToOneLimits(value);
     }
@@ -13,7 +13,7 @@ public class SemanticValue {
         return name;
     }
 
-    public float getValue() {
+    public double getValue() {
         return value;
     }
     

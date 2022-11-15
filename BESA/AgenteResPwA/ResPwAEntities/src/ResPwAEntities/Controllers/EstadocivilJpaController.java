@@ -22,7 +22,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class EstadoCivilJpaController implements Serializable {
 

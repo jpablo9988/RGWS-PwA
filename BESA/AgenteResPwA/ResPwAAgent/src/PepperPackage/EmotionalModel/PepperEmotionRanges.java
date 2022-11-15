@@ -10,7 +10,7 @@ package PepperPackage.EmotionalModel;
  * @author mafegarces
  */
 public enum PepperEmotionRanges {
-    VSAD("60415", -1, -0.6), SAD("6943743", -0.6, -0.2), NORMAL("16777215", -0.2, 0.2), HAPPY("16777082", 0.2, 0.6), VHAPPY("16776960", 0.6, 1);
+    VSAD("60415", -1, -0.6), SAD("6943743", -0.6, -0.2), NORMAL("16777215", -0.2, 0.2), HAPPY("16777082", 0.2, 0.6), VHAPPY("16776960", 0.6, 1.0);
 
 
     private String hexa;
@@ -35,7 +35,7 @@ public enum PepperEmotionRanges {
         return max;
     }
 
-    public static PepperEmotionRanges getFromEmotionalValue(float state) {
+    public static PepperEmotionRanges getFromEmotionalValue(double state) {
 
         if (state >= PepperEmotionRanges.VSAD.getMin() && state < PepperEmotionRanges.VSAD.getMax()) {
             return PepperEmotionRanges.VSAD;
@@ -53,3 +53,4 @@ public enum PepperEmotionRanges {
 
     }
 }
+

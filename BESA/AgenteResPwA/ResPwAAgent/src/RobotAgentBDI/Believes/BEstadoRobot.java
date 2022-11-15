@@ -288,7 +288,7 @@ public class BEstadoRobot extends ResPwaEmotionalModel implements Believes {
             HashMap<String, Object> infoServicio = new HashMap<>();
             EmotionAxis ea = getTopEmotionAxis();
 
-            float state = ea.getCurrentValue();
+            double state = ea.getCurrentValue();
             if (state > 0 && valencia != 1) {
                 valencia = 1;
                 tiempoEmocionPredominante = System.currentTimeMillis();
@@ -313,6 +313,7 @@ public class BEstadoRobot extends ResPwaEmotionalModel implements Believes {
             } else {
                 infoServicio.put("velHabla", normalizeValue(state, PepperConf.TALKSPEED));
             }
+            /*
             System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             System.out.println("Valores Emocionales para: " + ea.getNegativeName());
             System.out.println("Valores Emocionales para: " + state);
@@ -323,7 +324,7 @@ public class BEstadoRobot extends ResPwaEmotionalModel implements Believes {
             System.out.println("ledIntens " + normalizeValue(state, PepperConf.LEDINTENSITY));
             System.out.println("DURATION " + normalizeValue(state, PepperConf.DURATION));
             System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
+            */
             ServiceDataRequest srb = ServiceRequestBuilder.buildRequest(RobotStateServiceRequestType.ROBOTEMOTION, infoServicio);
             ResPwaUtils.requestService(srb);
         } catch (CloneNotSupportedException ex) {
@@ -336,8 +337,8 @@ public class BEstadoRobot extends ResPwaEmotionalModel implements Believes {
         processEmotionalEvent(new EmotionalEvent());
     }
 
-    private float normalizeValue(float val, PepperConf conf) {
-        float normalValue, max = conf.getMax(), min = conf.getMin(), oldRange, newRange, oldMin = -1, oldMax = 1;
+    private double normalizeValue(double val, PepperConf conf) {
+        double normalValue, max = conf.getMax(), min = conf.getMin(), oldRange, newRange, oldMin = -1, oldMax = 1;
         oldRange = oldMax - oldMin;
         newRange = max - min;
         normalValue = (((val - oldMin) * newRange) / (oldRange)) + min;

@@ -10,6 +10,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import Init.InitRESPwA;
+import RobotAgentBDI.Believes.RobotAgentBelieves;
 import java.util.ArrayList;
 import java.util.List;
 import rational.RationalRole;
@@ -43,6 +44,7 @@ public class TestPlan2 extends GoalBDI
         RationalRole testTask2Role = new RationalRole(description, rolePlan);
         //Instanciacion de Meta y Retorno
         TestPlan2 goal = new TestPlan2 (InitRESPwA.getPlanID(), testTask2Role, description, GoalBDITypes.OPORTUNITY);
+        System.out.println("DEBUG: TestPlan2, gol construido");
         return goal;
     }
     public TestPlan2(long id, RationalRole role, String description, GoalBDITypes type) {
@@ -62,17 +64,28 @@ public class TestPlan2 extends GoalBDI
     }
     @Override
     public double detectGoal(Believes believes) throws KernellAgentEventExceptionBESA 
-    {
-        return 100;
+    {        
+        //System.out.println("DEBUG: TestPlan2 Detectado");
+        RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
+        if (blvs.getbEstadoInteraccion().getTestPlanDone()) 
+        {
+            return 0;
+        }
+        else
+        {
+            return 100;
+        }
+        
     }
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        System.out.println("Meta TestPlan evaluateContribution");
+        //System.out.println("DEBUG: TestPlan2, evaluación contribuida");
         return 100;
     }
     @Override
     public boolean goalSucceeded(Believes believes) throws KernellAgentEventExceptionBESA {
-        System.out.println("Meta TestPlan2 goalSucceeded");
-        return true;
+        RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
+        System.out.println("DEBUG: TestPlan2, gol checkeado: " +  blvs.getbEstadoInteraccion().getTestPlanDone());
+        return blvs.getbEstadoInteraccion().getTestPlanDone();
     }
 }

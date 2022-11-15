@@ -30,7 +30,7 @@ public class PepperEAStrategy implements EmotionalAnalyzerStrategy {
         EmotionalEvent evt = null;
 
         if (ret.get("PersonData") != null) {
-            System.out.println("Evento Reconocido PersonData");
+            //DEBUG - System.out.println("Evento Reconocido PersonData");
             ret = (Map<String, Object>) ret.get("PersonData");
             aux = (Map<String, Object>) ret.get("bodyLanguageState");
             aux = (Map<String, Object>) aux.get("ease");
@@ -70,7 +70,7 @@ public class PepperEAStrategy implements EmotionalAnalyzerStrategy {
             map.put("emotions", emo);
 
         } else if (ret.get("voiceEmotionRecognized") != null) {
-            System.out.println("Evento Reconocido voiceEmotionRecognized");
+            // - DEBUG - System.out.println("Evento Reconocido voiceEmotionRecognized");
             double joyval, angval, sowval, calmval;
             List<Object> auxL = (List<Object>) ret.get("voiceEmotionRecognized");
             List<Integer> emotList = (List<Integer>) auxL.get(1);
@@ -86,7 +86,7 @@ public class PepperEAStrategy implements EmotionalAnalyzerStrategy {
 
             //TO DO.  [ [4,3], [0,2,1,3,0], 1 ]
         } else {
-            System.out.println("Evento Reconocido else");
+            // - DEBUG -- System.out.println("Evento Reconocido else");
             String paramsString;
             paramsString = ret.keySet().iterator().next();
 //            System.out.println("paramsString: " + paramsString);

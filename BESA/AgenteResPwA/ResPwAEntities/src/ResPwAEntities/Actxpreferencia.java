@@ -6,11 +6,11 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -20,10 +20,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "act_x_preferencia", catalog = "Res_PwADB", schema = "public")
+@Table(name = "act_x_preferencia")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ActXPreferencia.findAll", query = "SELECT a FROM ActXPreferencia a"),
@@ -39,17 +39,17 @@ public class ActXPreferencia implements Serializable {
     protected ActXPreferenciaPK actXPreferenciaPK;
     @Basic(optional = false)
     @Column(name = "activa")
-    private BigDecimal activa;
+    private double activa;
     @Basic(optional = false)
     @Column(name = "gusto")
     private double gusto;
     @Column(name = "enriq")
     private String enriq;
     @JoinColumn(name = "actividad_pwa_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private ActividadPwa actividadPwa;
     @JoinColumn(name = "preferencia_pwa_cedula", referencedColumnName = "perfil_pwa_cedula", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private PerfilPreferencia perfilPreferencia;
 
     public ActXPreferencia() {
@@ -59,13 +59,13 @@ public class ActXPreferencia implements Serializable {
         this.actXPreferenciaPK = actXPreferenciaPK;
     }
 
-    public ActXPreferencia(ActXPreferenciaPK actXPreferenciaPK, BigDecimal activa, double gusto) {
+    public ActXPreferencia(ActXPreferenciaPK actXPreferenciaPK, double activa, double gusto) {
         this.actXPreferenciaPK = actXPreferenciaPK;
         this.activa = activa;
         this.gusto = gusto;
     }
 
-    public ActXPreferencia(BigDecimal actividadPwaId, String preferenciaPwaCedula) {
+    public ActXPreferencia(int actividadPwaId, String preferenciaPwaCedula) {
         this.actXPreferenciaPK = new ActXPreferenciaPK(actividadPwaId, preferenciaPwaCedula);
     }
 
@@ -77,11 +77,11 @@ public class ActXPreferencia implements Serializable {
         this.actXPreferenciaPK = actXPreferenciaPK;
     }
 
-    public BigDecimal getActiva() {
+    public double getActiva() {
         return activa;
     }
 
-    public void setActiva(BigDecimal activa) {
+    public void setActiva(double activa) {
         this.activa = activa;
     }
 

@@ -25,7 +25,8 @@ import rational.mapping.Task;
  *
  * @author mafegarces
  */
-public class DesuspenderRobot extends Task{
+public class DesuspenderRobot extends Task
+{
     
     private HashMap<String,Object> infoServicio = new HashMap<>();
 

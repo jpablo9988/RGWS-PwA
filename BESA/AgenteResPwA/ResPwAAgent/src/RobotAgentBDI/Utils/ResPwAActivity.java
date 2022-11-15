@@ -12,7 +12,8 @@ package RobotAgentBDI.Utils;
 public enum ResPwAActivity {
     MUSICOTERAPIA("Entretenimiento"),
     MEMORAMA("Entretenimiento"),
-    CUENTERIA("Entretenimiento");
+    CUENTERIA("Entretenimiento"),
+    EJERCICIO("Entretenimiento");
     private ResPwAActivity(String s){
         tipo=s;
     }

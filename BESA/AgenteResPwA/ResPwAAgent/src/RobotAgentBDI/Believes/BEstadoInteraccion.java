@@ -7,8 +7,13 @@ package RobotAgentBDI.Believes;
 
 import SensorHandlerAgent.Guards.SensorData;
 import PepperPackage.EmotionalModel.PepperEmotionRanges;
+import ResPwAEntities.Ejercicio;
+import ResPwAEntities.Historial;
 import ServiceAgentResPwA.VoiceServices.PepperTopicsNames;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import rational.data.InfoData;
@@ -32,7 +37,7 @@ public class BEstadoInteraccion implements Believes {
     private boolean sistemaSuspendidoInt = false;
     private long nivelEnriquecimiento = 0;
     private long velocidadAnim = 0;
-    private double distanciaPwA = 0;
+    private double distanciaPwA = -1;
     private boolean estaHablando = false;
     private boolean estaMoviendo = false;
     private boolean desplazandose = false;
@@ -54,18 +59,47 @@ public class BEstadoInteraccion implements Believes {
     private boolean modificarPreferencias = false;
     private String respuestaPreferencia = null;
     private String respuestaResultSet[] = null;
+    private boolean testPlanDone = false;
+    private boolean isPreparacionNegada = false;
+    private boolean isPreparadoEjercicio = false;
+    private boolean existenPruebasEjercicio = true;
+    private boolean cancelarProgramacionEjercicio = false;
+    private boolean estoyListoEmpezarPreparacion = false;
+    private boolean detectedCloseObstacle = false;
+    private List<Historial> currHistorialList = new ArrayList<>();
 
     private String retroalimentacionValue;
     private String estadoEmocional = "normal";
     private double respuestasPorContexto;
     private long tiempoInt;
     private Map<String, Boolean> topicos = new HashMap<>();
+    private List<Ejercicio> currEjercicios = new ArrayList<>();
+
+    private boolean estoyDetectandoCerca = false;
+
+    private Date offsetPreparacionNegada;
 
     public BEstadoInteraccion() {
         topicos = new HashMap<>();
         for (PepperTopicsNames topic : PepperTopicsNames.values()) {
             topicos.put(topic.getTopic(), false);
         }
+    }
+
+    public List<Historial> getCurrHistorialList() {
+        return this.currHistorialList;
+    }
+    public void updateHistorialList(Historial data, int index)
+    {
+        currHistorialList.set(index, data);
+    }
+    public void addToHistorialList(Historial data)
+    {
+        currHistorialList.add(data);
+    }
+    public void resetHistorialList()
+    {
+        currHistorialList.clear();
     }
 
     public String getEstadoEmocional() {
@@ -86,7 +120,7 @@ public class BEstadoInteraccion implements Believes {
 
     @Override
     public boolean update(InfoData si) {
-        System.out.println("BEstadoInteraccion update Received: " + si);
+        //System.out.println("BEstadoInteraccion update Received: " + si);
         SensorData infoRecibida = (SensorData) si;
 
         if (infoRecibida.getDataP().containsKey("endVideo")) {
@@ -114,8 +148,8 @@ public class BEstadoInteraccion implements Believes {
                 nivelEnriquecimiento--;
             }
         }
-        if(infoRecibida.getDataP().containsKey("retroValue")){
-            retroalimentacionValue = (String)infoRecibida.getDataP().get("retroValue");
+        if (infoRecibida.getDataP().containsKey("retroValue")) {
+            retroalimentacionValue = (String) infoRecibida.getDataP().get("retroValue");
         }
         if (infoRecibida.getDataP().containsKey("wakeUpFinished")) {
             sistemaSuspendido = Boolean.valueOf((String) infoRecibida.getDataP().get("wakeUpFinished"));
@@ -134,7 +168,10 @@ public class BEstadoInteraccion implements Believes {
         }
         if (infoRecibida.getDataP().containsKey("distanceOfTrackedHuman")) {
             Double aux = (Double) infoRecibida.getDataP().get("distanceOfTrackedHuman");
+
             distanciaPwA = aux == null ? -1 : aux;
+            //System.out.println("Distancia de humano detectada..." + distanciaPwA);
+            //if (distanciaPwA != -1)
 
         }
         if (infoRecibida.getDataP().containsKey("dialogIsStarted")) {
@@ -159,12 +196,16 @@ public class BEstadoInteraccion implements Believes {
         }
         if (infoRecibida.getDataP().containsKey("distanceOfTrackedHuman")) {
             Double aux = (Double) infoRecibida.getDataP().get("distanceOfTrackedHuman");
+            //System.out.println("Distancia de humano detectada..." + distanciaPwA);
             distanciaPwA = aux == null ? -1 : aux;
 
         }
         if (infoRecibida.getDataP().containsKey("dialogIsStarted")) {
             estaHablando = true;
 
+        }
+        if (infoRecibida.getDataP().containsKey("closeObjectDetected")) {
+            System.out.println("Detected nearby obstacle");
         }
         if (infoRecibida.getDataP().containsKey("endOfAnimatedSpeech")) {
             estaHablando = false;
@@ -186,10 +227,10 @@ public class BEstadoInteraccion implements Believes {
         if (infoRecibida.getDataP().containsKey("initServ")) {
             confirmarActServicios = Boolean.valueOf((String) infoRecibida.getDataP().get("initServ"));
         }
-//        if(infoRecibida.getDataP().containsKey("speechDetected") || infoRecibida.getDataP().containsKey("wordRecognized")){
-//           recibirRespuestaPwA = true;
-//           
-//        }
+        if (infoRecibida.getDataP().containsKey("speechDetected") || infoRecibida.getDataP().containsKey("wordRecognized")) {
+            recibirRespuestaPwA = true;
+
+        }
         if (infoRecibida.getDataP().containsKey("wavingDetection")) {
             movManoSaludo = Boolean.valueOf((String) infoRecibida.getDataP().get("wavingDetection"));
             saludo = Boolean.valueOf((String) infoRecibida.getDataP().get("wavingDetection"));
@@ -203,14 +244,20 @@ public class BEstadoInteraccion implements Believes {
         if (infoRecibida.getDataP().containsKey("ayudaValue")) {
             ayudaActividadSolicitada = Boolean.valueOf((String) infoRecibida.getDataP().get("ayudaValue"));
         }
-
+        if ((infoRecibida.getDataP().containsKey("listoValue")) && isPreparacionNegada) {
+            this.estoyListoEmpezarPreparacion = true;
+        }
+        if ((infoRecibida.getDataP().containsKey("preparacionNegacion"))
+                && this.isTopicoActivo(PepperTopicsNames.PREPARACION)) {
+            isPreparacionNegada = true;
+        }
         if (infoRecibida.getDataP().containsKey("DialogInput")) {
             respuestaPreferencia = (String) infoRecibida.getDataP().get("DialogInput");
             System.out.println("Recibiiiir:  " + respuestaPreferencia);
             respuestaResultSet = respuestaPreferencia.split(" ");
             if (respuestaResultSet.length > 1) {
-                if (respuestaResultSet[1].equals("brightness") ||
-                         respuestaResultSet[1].equals("volume")) {
+                if (respuestaResultSet[1].equals("brightness")
+                        || respuestaResultSet[1].equals("volume")) {
                     modificarPreferencias = true;
                 }
             }
@@ -524,9 +571,81 @@ public class BEstadoInteraccion implements Believes {
     public boolean estaBailando() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    public String[] getRespuestaResultSet()
-    {
+
+    public String[] getRespuestaResultSet() {
         return respuestaResultSet;
+    }
+
+    public boolean getTestPlanDone() {
+        return this.testPlanDone;
+    }
+
+    public void setTestPlanDone(boolean planDone) {
+        this.testPlanDone = planDone;
+    }
+
+    public boolean getPreparacionNegada() {
+        return this.isPreparacionNegada;
+    }
+
+    public void resetPreparacionNegada() {
+        this.isPreparacionNegada = false;
+    }
+
+    public boolean getPreparadoEjercicio() {
+        return this.isPreparadoEjercicio;
+    }
+
+    public void setPreparadoEjercicio(boolean data) {
+        this.isPreparadoEjercicio = data;
+    }
+
+    public void setExistenPruebasEjercicio(boolean data) {
+        this.existenPruebasEjercicio = data;
+    }
+
+    public boolean getExistenPruebasEjercicio() {
+        return this.existenPruebasEjercicio;
+    }
+
+    public void setCancelarProgramacionEjercicio(boolean data) {
+        this.cancelarProgramacionEjercicio = data;
+    }
+
+    public boolean getCancelarProgramacionEjercicio() {
+        return this.cancelarProgramacionEjercicio;
+    }
+
+    public List<Ejercicio> getCurrEjercicios() {
+        return this.currEjercicios;
+    }
+
+    public void setCurrEjercicios(List<Ejercicio> currEjercicios) {
+        this.currEjercicios = currEjercicios;
+    }
+
+    public void setEstoyDetectandoPersonaCerca(boolean data) {
+        this.estoyDetectandoCerca = data;
+    }
+
+    public boolean getEstoyDetectandoPersonaCerca() {
+        return this.estoyDetectandoCerca;
+    }
+
+    public Date getOffsetPreparacionNegada() {
+        return this.offsetPreparacionNegada;
+    }
+
+    public void setOffsetPreparacionNegada(Date data) {
+        this.offsetPreparacionNegada = data;
+    }
+
+    public boolean getEstoyListoEmpezarPreparacion() {
+        return this.estoyListoEmpezarPreparacion;
+    }
+
+    public void setEstoyListoEmpezarPreparacion(boolean data) {
+        this.estoyListoEmpezarPreparacion = data;
     }
 
 }

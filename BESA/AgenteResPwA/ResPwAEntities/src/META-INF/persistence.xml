@@ -8,10 +8,8 @@
     <class>ResPwAEntities.Frase</class>
     <class>ResPwAEntities.Regla</class>
     <class>ResPwAEntities.Enriq</class>
-    <class>ResPwAEntities.Rutina</class>
     <class>ResPwAEntities.Robot</class>
     <class>ResPwAEntities.Frase</class>
-    <class>ResPwAEntities.Semana</class>
     <class>ResPwAEntities.Cdr</class>
     <class>ResPwAEntities.Cancion</class>
     <class>ResPwAEntities.ActXPreferencia</class>
@@ -39,8 +37,22 @@
     <class>ResPwAEntities.EmotionalEntities.EmotionAxisConf</class>
     <class> ResPwAEntities.EmotionalEntities.EventInfluence</class>
     <class> ResPwAEntities.EmotionalEntities.Imagen</class>
-
-
+    <class>ResPwAEntities.Dia</class>
+    <class>ResPwAEntities.DiaXProgramaEjercicio</class>
+    <class>ResPwAEntities.PerfilEjercicio</class>
+    <class>ResPwAEntities.CategoriaEntrenamiento</class>
+    <class>ResPwAEntities.DiaXCategoriaEntrenamiento</class>
+    <class>ResPwAEntities.ProgramaEjercicio</class>
+    <class>ResPwAEntities.Intensidad</class>
+    <class>ResPwAEntities.EmotionalEntities.EventInfluence</class>
+    <class>ResPwAEntities.EmotionalEntities.Imagen</class>
+    <class>ResPwAEntities.Horario</class>
+    <class>ResPwAEntities.Historial</class>
+    <class>ResPwAEntities.FraseInspiracional</class>
+    <class>ResPwAEntities.PerfilEjercicioXEjercicio</class>
+    <class>ResPwAEntities.EventInfluence</class>
+    <class>ResPwAEntities.Imagen</class>
+    <class>ResPwAEntities.EmotionAxisConf</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/res_pwadb"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>

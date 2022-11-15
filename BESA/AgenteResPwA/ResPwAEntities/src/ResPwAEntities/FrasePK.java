@@ -6,21 +6,20 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Embeddable
 public class FrasePK implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "orden")
-    private BigDecimal orden;
+    private int orden;
     @Basic(optional = false)
     @Column(name = "cuento_nombre")
     private String cuentoNombre;
@@ -28,16 +27,16 @@ public class FrasePK implements Serializable {
     public FrasePK() {
     }
 
-    public FrasePK(BigDecimal orden, String cuentoNombre) {
+    public FrasePK(int orden, String cuentoNombre) {
         this.orden = orden;
         this.cuentoNombre = cuentoNombre;
     }
 
-    public BigDecimal getOrden() {
+    public int getOrden() {
         return orden;
     }
 
-    public void setOrden(BigDecimal orden) {
+    public void setOrden(int orden) {
         this.orden = orden;
     }
 
@@ -52,7 +51,7 @@ public class FrasePK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (orden != null ? orden.hashCode() : 0);
+        hash += (int) orden;
         hash += (cuentoNombre != null ? cuentoNombre.hashCode() : 0);
         return hash;
     }
@@ -64,7 +63,7 @@ public class FrasePK implements Serializable {
             return false;
         }
         FrasePK other = (FrasePK) object;
-        if ((this.orden == null && other.orden != null) || (this.orden != null && !this.orden.equals(other.orden))) {
+        if (this.orden != other.orden) {
             return false;
         }
         if ((this.cuentoNombre == null && other.cuentoNombre != null) || (this.cuentoNombre != null && !this.cuentoNombre.equals(other.cuentoNombre))) {

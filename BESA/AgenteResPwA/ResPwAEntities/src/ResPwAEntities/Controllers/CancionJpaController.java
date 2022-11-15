@@ -25,7 +25,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class CancionJpaController implements Serializable {
 

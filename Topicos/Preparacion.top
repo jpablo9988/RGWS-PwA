@@ -1,0 +1,14 @@
+topic: ~Preparacion()
+        language: spe
+                       concept: (bloque_uno) [Hola agotado mamado mamada]
+                       u:(e:Dialog/NotSpeaking5) Primero, Te sientes comodo con la ropa que tienes puesta?                       
+                       		u1:([si]) Super, yo tambien estoy muy comodo! Sientes que estas en un espacio adecuado para realizar nuestra rutina?
+					u2:([si]) Super. Por último, Te sientes bien con los zapatos que tienes?
+							u3:([si]) Muchas gracias! Es hora de empezar nuestra rutina de ejercicio. Atentos!
+                      					u3:([no]) Ah, entiendo. Esperaré un poco antes de preguntarte de nuevo.
+					u2:([no]) Ah, entiendo. Esperaré un poco antes de preguntarte de nuevo.	
+                       		u1:([no]) Ah, entiendo. Esperaré un poco antes de preguntarte de nuevo.
+                       				
+                       				
+                       			
+                       

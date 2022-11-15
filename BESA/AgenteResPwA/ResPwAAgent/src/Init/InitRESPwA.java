@@ -13,6 +13,7 @@ import ResPwAEntities.Emocion;
 import ResPwAEntities.Joint;
 import ResPwAEntities.Cuidador;
 import ResPwAEntities.PerfilPwa;
+import RobotAgentBDI.Metas.*;
 import RobotAgentBDI.Metas.ConversarEmpaticamente;
 import RobotAgentBDI.Metas.Cuenteria;
 import RobotAgentBDI.Metas.LogIn;
@@ -31,8 +32,10 @@ import ServiceAgentResPwA.MovementServices.MovementServiceRequestType;
 import ServiceAgentResPwA.Agent.ServiceAgentRESPwA;
 import ServiceAgentResPwA.Guard.ServiceDataRequest;
 import ServiceAgentResPwA.TabletServices.TabletServiceRequestType;
+import ServiceAgentResPwA.VoiceServices.PepperTopicsNames;
 import ServiceAgentResPwA.VoiceServices.VoiceServiceRequestType;
 import Tareas.Test.TestTask;
+import Utils.ResPwaUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -79,10 +82,12 @@ public class InitRESPwA {
             startAllAgents(RABDI, EAA, SHA, SPA);
             startConfig(p);
             // -------------| PRUEBA - Dance, Macarena |-----------------
-            HashMap<String, Object> hm1 = new HashMap<>();
-            hm1.put("TAGSDANCE", "MACARENA");
-            ServiceDataRequest data = ServiceRequestBuilder.buildRequest(ActivityServiceRequestType.RUNANIMATION, hm1);
-            p.sendRequest(data);
+            //HashMap<String, Object> hm1 = new HashMap<>();
+            //hm1.put("TAGSDANCE", "FRAGCONVRIGHTOUTFOCUS");
+            //ServiceDataRequest data = ServiceRequestBuilder.buildRequest(ActivityServiceRequestType.RUNANIMATION, hm1);
+            //p.sendRequest(data);
+            // ------------------|PRUEBA: Topico| ------------------
+            
             // -------------| END - PRUEBA |-----------------------------
         } catch (ExceptionBESA ex) 
         {
@@ -141,27 +146,29 @@ public class InitRESPwA {
     private static List<GoalBDI> createRobotAgentGoals() {
         List<GoalBDI> RAGoals = new ArrayList<>();
         //Crear Metas
-//        ConversarEmpaticamente convEmpatica = ConversarEmpaticamente.buildGoal();
+        //PrepararEjercicio prepEjercicio = PrepararEjercicio.buildGoal();
+        //ConversarEmpaticamente convEmpatica = ConversarEmpaticamente.buildGoal();
 //      CambiarDificultad cambiarDificultadGoal=  CambiarDificultad.buildGoal();
 //      EstimularEmocionalmente estimularEmocionalmenteGoal=  EstimularEmocionalmente.buildGoal();
 //        Cuenteria cuenteriaGoal = Cuenteria.buildGoal();
 //        MusicoTerapia musicoTGoal= MusicoTerapia.buildGoal();
-        TestPlan2 testPlan = TestPlan2.buildGoal();
+          //TestPlan2 testPlan = TestPlan2.buildGoal();
 //        TestPlan tp = TestPlan.buildGoal();
 //        LogIn logInGoal = LogIn.buildGoal();
 //        MantenerAtencionPwA mantenerAtencionPwAGoal=  MantenerAtencionPwA.buildGoal();
 //        RecargarBateria recargarBateriaGoal=  RecargarBateria.buildGoal();
 //        PedirAyuda pedirAyudaGoal= PedirAyuda.buildGoal();
 //        ReiniciarActividad reiniciarActividadGoal=  ReiniciarActividad.buildGoal();
-//        Saludar saludar = Saludar.buildGoal();
+          //Saludar saludar = Saludar.buildGoal();
 //        ReportarEmergencia reportar = ReportarEmergencia.buildGoal();
         //Agregar a Lista
-//        RAGoals.add(convEmpatica);
+          //RAGoals.add(prepEjercicio);
+          //RAGoals.add(convEmpatica);
 //        RAGoals.add(cuenteriaGoal);
 //        RAGoals.add(tp);
 //        RAGoals.add(musicoTGoal);
-          RAGoals.add(testPlan);
-
+          //RAGoals.add(testPlan);
+          //RAGoals.add(asigEjercicio);
 //        RAGoals.add(tp);
 //        RAGoals.add(musicoTGoal);
 //        RAGoals.add(logInGoal);
@@ -171,10 +178,20 @@ public class InitRESPwA {
 //        RAGoals.add(recargarBateriaGoal);
 //        RAGoals.add(pedirAyudaGoal);
 //        RAGoals.add(reiniciarActividadGoal);
-//        RAGoals.add(saludar);
+        // RAGoals.add(saludar);
 //        RAGoals.add(reportar);
 //      RAGoals.add(cambiarDificultadGoal);
 //      RAGoals.add(estimularEmocionalmenteGoal);
+
+        // ----------- PRUEBA NUEVAS METAS ------------ //
+        RutinaEjercicio rutEjercicio = RutinaEjercicio.buildGoal();
+        AsignarProgramaEjercicio asigEjercicio = AsignarProgramaEjercicio.buildGoal();
+        DetectarPersonaCercana detecPersona = DetectarPersonaCercana.buildGoal();
+        
+        // -- Activación de Metas en el sistema.
+        RAGoals.add(rutEjercicio);
+        RAGoals.add(asigEjercicio);
+        RAGoals.add(detecPersona);
 
         return RAGoals;
     }
@@ -220,7 +237,7 @@ public class InitRESPwA {
                     times = (List<Double>) joint.get("time");
 
                     keys.add(j.getAngulo());
-                    times.add(j.getTiempo().doubleValue());
+                    times.add(j.getTiempo());
 
                 }
                 accion.put("image", e.getImagen());

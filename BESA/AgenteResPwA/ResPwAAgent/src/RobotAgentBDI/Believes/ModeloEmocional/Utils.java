@@ -8,15 +8,15 @@ public final class Utils {
         public static final float ObjectWeight = 0.3f;
     }
 
-    public static float checkZeroToOneLimits(float value) {
+    public static double checkZeroToOneLimits(double value) {
         return checkLimits(value, 0f, 1f);
     }
 
-    public static float checkNegativeOneToOneLimits(float value) {
+    public static double checkNegativeOneToOneLimits(double value) {
         return checkLimits(value, -1f, 1f);
     }
 
-    private static float checkLimits(float value, float min, float max) {
+    private static double checkLimits(double value, double min, double max) {
         if (value < min) {
             value = min;
         }

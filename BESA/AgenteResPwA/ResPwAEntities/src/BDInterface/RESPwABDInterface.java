@@ -25,7 +25,6 @@ public class RESPwABDInterface {
         PerfilPwaJpaController pjc = new PerfilPwaJpaController(Persistence.createEntityManagerFactory(EMF));
         return pjc.findPerfilPwa(cedula);
     }
-
     public static void updateProfile(PerfilPwa PerfilPwa) {
         try {
             PerfilPwaJpaController pjc = new PerfilPwaJpaController(Persistence.createEntityManagerFactory(EMF));
@@ -34,6 +33,30 @@ public class RESPwABDInterface {
             Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
         
     }}
+    public static void updateExcerciseProfile(PerfilEjercicio p)
+    {
+        try
+        {
+            PerfilEjercicioJpaController pmc = new PerfilEjercicioJpaController (Persistence.createEntityManagerFactory(EMF));
+            pmc.edit(p);
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void updateHistorial(Historial h)
+    {
+        try
+        {
+            HistorialJpaController pmc = new HistorialJpaController (Persistence.createEntityManagerFactory(EMF));
+            pmc.edit(h);
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public static void createProfile(PerfilPwa p) {
         try {
@@ -43,6 +66,58 @@ public class RESPwABDInterface {
             Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    public static void createSchedule(Horario h)
+    {
+        try {
+            HorarioJpaController hpc = new HorarioJpaController(Persistence.createEntityManagerFactory(EMF));
+            hpc.create(h);
+        } catch (Exception ex) {
+            Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void createHistory(Historial h)
+    {
+        try {
+            HistorialJpaController hpc = new HistorialJpaController(Persistence.createEntityManagerFactory(EMF));
+            hpc.create(h);
+        } catch (Exception ex) {
+            Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void createExcerciseProfile(PerfilEjercicio p)
+    {
+        try
+        {
+            PerfilEjercicioJpaController pec = new PerfilEjercicioJpaController (Persistence.createEntityManagerFactory(EMF));
+            pec.create(p);
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static PerfilEjercicio getExcerciseProfile(String cedula)
+    {
+        PerfilEjercicioJpaController pec = new PerfilEjercicioJpaController (Persistence.createEntityManagerFactory(EMF));
+        return pec.findPerfilEjercicio(cedula);
+    }
+    public static void updateMedicalProfile(PerfilMedico p)
+    {
+        try
+        {
+            PerfilMedicoJpaController pmc = new PerfilMedicoJpaController (Persistence.createEntityManagerFactory(EMF));
+            pmc.edit(p);
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static PerfilMedico getMedicalProfile(String cedula)
+    {
+        PerfilMedicoJpaController pmc = new PerfilMedicoJpaController (Persistence.createEntityManagerFactory(EMF));
+        return pmc.findPerfilMedico(cedula);
     }
 
     public static Cuidador getCarer(String s) {
@@ -74,6 +149,16 @@ public class RESPwABDInterface {
         try {
             CancionJpaController cjc = new CancionJpaController(Persistence.createEntityManagerFactory(EMF));
             cjc.edit(c);
+        } catch (Exception ex) {
+            Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public static void updateExercise(Ejercicio e) {
+        try {
+            EjercicioJpaController cjc = new EjercicioJpaController(Persistence.createEntityManagerFactory(EMF));
+            cjc.edit(e);
         } catch (Exception ex) {
             Logger.getLogger(RESPwABDInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -168,7 +253,11 @@ public class RESPwABDInterface {
         }
     }
 
-    
+    public static List<ProgramaEjercicio> getExercisePrograms()
+    {
+        ProgramaEjercicioJpaController pepc = new ProgramaEjercicioJpaController(Persistence.createEntityManagerFactory(EMF));
+        return pepc.findProgramaEjercicioEntities();
+    }
 
     public static List<EmotionAxisConf> getEmotionalAxisConfig() {
         EmotionAxisConfJpaController eapc = new EmotionAxisConfJpaController(Persistence.createEntityManagerFactory(EMF));

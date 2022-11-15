@@ -9,6 +9,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -20,10 +21,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "enriq", catalog = "Res_PwADB", schema = "public")
+@Table(name = "enriq")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Enriq.findAll", query = "SELECT e FROM Enriq e"),
@@ -40,12 +41,12 @@ public class Enriq implements Serializable {
     @Column(name = "valor")
     private String valor;
     @JoinColumn(name = "cancion_nombre", referencedColumnName = "nombre")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Cancion cancionNombre;
     @JoinColumns({
         @JoinColumn(name = "frase_orden", referencedColumnName = "orden"),
         @JoinColumn(name = "frase_nombre", referencedColumnName = "cuento_nombre")})
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Frase frase;
 
     public Enriq() {

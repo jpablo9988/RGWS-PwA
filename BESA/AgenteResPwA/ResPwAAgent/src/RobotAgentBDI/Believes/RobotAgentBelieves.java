@@ -8,6 +8,7 @@ package RobotAgentBDI.Believes;
 import BDInterface.RESPwABDInterface;
 import EmotionalAnalyzerAgent.Guards.EmotionalData;
 import ResPwAEntities.Antecedente;
+import ResPwAEntities.PerfilEjercicio;
 import ResPwAEntities.PerfilPwa;
 import ResPwAEntities.PreferenciaXCancion;
 import ResPwAEntities.PreferenciaXCuento;
@@ -108,6 +109,19 @@ public class RobotAgentBelieves implements Believes {
                 ModeloRetroalimentacion<PreferenciaXCancion> modelRetroCancion = new ModeloRetroalimentacion<>((PreferenciaXCancion) activityInCourse);
                 modelRetroCancion.activityFeedback(antecedentsForFeedback);
                 break;
+            case EJERCICIO:
+                // save to bd : )
+                PerfilEjercicio currPerfilEjercicio = bPerfilPwA.getPerfil().getPerfilEjercicio();
+                if (currPerfilEjercicio != null)
+                {
+                    for (int i = 0; i < currPerfilEjercicio.getEjercicioList().size(); i++)
+                    {
+                        //currPerfilEjercicio.getEjercicioList().get(i).setPreferencia(voiceFeedback);
+                        //System.out.println("Entró acá: " + voiceFeedback);
+                        //RESPwABDInterface.updateExercise(currPerfilEjercicio.getEjercicioList().get(i));
+                    }
+                }
+                break;
         }
 
     }
@@ -189,6 +203,10 @@ public class RobotAgentBelieves implements Believes {
     PerfilPwa getFromDB(String cedula) {
         PerfilPwa perfil = RESPwABDInterface.getProfile(cedula);
         return perfil;
+    }
+    public void updateProfileInBelieves (String cedula)
+    {
+         bPerfilPwA.setPerfil(getPerfilBD(cedula));
     }
 
     public BEstadoInteraccion getbEstadoInteraccion() {

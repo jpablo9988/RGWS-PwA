@@ -6,11 +6,11 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -23,10 +23,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "antecedente", catalog = "Res_PwADB", schema = "public")
+@Table(name = "antecedente")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Antecedente.findAll", query = "SELECT a FROM Antecedente a"),
@@ -36,11 +36,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Antecedente implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private BigDecimal id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "etiqueta")
     private String etiqueta;
@@ -50,27 +49,27 @@ public class Antecedente implements Serializable {
     @JoinTable(name = "regla_x_antecedente", joinColumns = {
         @JoinColumn(name = "antecedente_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "regla_id", referencedColumnName = "id")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Regla> reglaList;
 
     public Antecedente() {
     }
 
-    public Antecedente(BigDecimal id) {
+    public Antecedente(Integer id) {
         this.id = id;
     }
 
-    public Antecedente(BigDecimal id, String etiqueta, double valor) {
+    public Antecedente(Integer id, String etiqueta, double valor) {
         this.id = id;
         this.etiqueta = etiqueta;
         this.valor = valor;
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

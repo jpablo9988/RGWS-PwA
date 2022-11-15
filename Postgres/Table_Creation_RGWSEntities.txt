@@ -1,0 +1,770 @@
+---------------------------- TABLE DROPS:----------------------------------
+drop table IF EXISTS accion CASCADE;
+drop table IF EXISTS accion_x_joint CASCADE;
+drop table IF EXISTS actividad_pwa CASCADE;
+drop table IF EXISTS actividad_rutinaria CASCADE;
+drop table IF EXISTS act_x_preferencia CASCADE;
+drop table IF EXISTS antecedente CASCADE;
+drop table IF EXISTS baile CASCADE; 
+drop table IF EXISTS cancion CASCADE;
+drop table IF EXISTS causa_demencia CASCADE;
+drop table IF EXISTS cdr CASCADE;
+drop table IF EXISTS cuento CASCADE;
+drop table IF EXISTS cuidador CASCADE;
+drop table IF EXISTS ejercicio CASCADE;
+drop table IF EXISTS emocion CASCADE;
+drop table IF EXISTS emotion_axis_conf CASCADE;
+drop table IF EXISTS enriq CASCADE;
+drop table IF EXISTS estado_civil CASCADE;
+drop table IF EXISTS event_influence CASCADE;
+drop table IF EXISTS familiar CASCADE;
+drop table IF EXISTS familiares CASCADE;
+drop table IF EXISTS frase CASCADE;
+drop table IF EXISTS genero CASCADE;
+drop table IF EXISTS imagen CASCADE;
+drop table IF EXISTS joint CASCADE;
+drop table IF EXISTS nivel_educativo CASCADE;
+drop table IF EXISTS lista_tag CASCADE;
+drop table IF EXISTS perfil_medico CASCADE;
+drop table IF EXISTS perfil_preferencia CASCADE;
+drop table IF EXISTS perfil_pwa CASCADE;
+drop table IF EXISTS preferencia_x_baile CASCADE; 
+drop table IF EXISTS preferencia_x_cancion CASCADE;
+drop table IF EXISTS preferencia_x_cuento CASCADE;
+drop table IF EXISTS preferencia_x_rutina CASCADE;
+drop table IF EXISTS registro_actividad CASCADE;
+drop table IF EXISTS regla CASCADE;
+drop table IF EXISTS regla_x_antecedente CASCADE;
+drop table IF EXISTS robot CASCADE;
+drop table IF EXISTS rutina CASCADE;
+drop table IF EXISTS rutina_x_semana CASCADE;
+drop table IF EXISTS semana CASCADE;
+drop table IF EXISTS tag CASCADE;
+---------------------------------- NEW TABLE DROPS: -----------------------------
+drop table IF EXISTS categoria_entrenamiento CASCADE;
+drop table IF EXISTS categoria_entrenamiento_x_programa CASCADE;
+drop table IF EXISTS dia CASCADE;
+drop table IF EXISTS dia_x_programa_ejercicio CASCADE;
+drop table IF EXISTS dia_x_categoria_entrenamiento CASCADE;
+drop table IF EXISTS ejercicio CASCADE;
+drop table IF EXISTS intensidad CASCADE;
+drop table IF EXISTS perfil_ejercicio CASCADE;
+drop table IF EXISTS programa_ejercicio CASCADE;
+drop table IF EXISTS ejercicio_x_categoria CASCADE;
+drop table IF EXISTS perfil_ejercicio_x_ejercicio CASCADE;
+drop table IF EXISTS horario CASCADE;
+drop table IF EXISTS historial CASCADE;
+drop table IF EXISTS frase_inspiracional CASCADE;
+
+---------------------------------- CREACION DE TABLAS: --------------------------
+--- Accion: ---
+CREATE TABLE accion (
+    id         INTEGER NOT NULL,
+    nombre     VARCHAR (45) NOT NULL,
+    tipo       VARCHAR (45) NOT NULL,
+    emocion_id VARCHAR (45) NOT NULL
+);
+ALTER TABLE accion ADD CONSTRAINT accion_pk PRIMARY KEY ( id );
+
+--- AccionXJoint: ---
+CREATE TABLE accion_x_joint (
+    joint_id  INTEGER NOT NULL,
+    accion_id INTEGER NOT NULL
+);
+ALTER TABLE accion_x_joint ADD CONSTRAINT accion_x_joint_pk PRIMARY KEY ( joint_id, accion_id );
+
+--- ActividadPWA: ---
+CREATE TABLE actividad_pwa (
+    id       INTEGER NOT NULL,
+    nombre   VARCHAR (45) NOT NULL,
+    tipo     VARCHAR (45) NOT NULL,
+    duracion DOUBLE PRECISION NOT NULL
+);
+ALTER TABLE actividad_pwa ADD CONSTRAINT actividad_pwa_pk PRIMARY KEY ( id );
+--- ActividadRutinaria: ---
+CREATE TABLE actividad_rutinaria
+(
+    id	   INTEGER NOT NULL,
+  	nombre VARCHAR (45) NOT NULL,
+  	duracion DOUBLE PRECISION NOT NULL,
+  	hora 	DATE NOT NULL,
+  	medico_pwa_cedula VARCHAR (10) NOT NULL
+);
+ALTER TABLE actividad_rutinaria ADD CONSTRAINT actividad_rutinaria_pk 
+PRIMARY KEY ( id );
+--- ActividadXPreferencia: ---
+CREATE TABLE act_x_preferencia (
+    actividad_pwa_id                    INTEGER NOT NULL,
+    preferencia_pwa_cedula          VARCHAR (10) NOT NULL,
+    activa                             DOUBLE PRECISION NOT NULL,
+    gusto                              DOUBLE PRECISION NOT NULL,
+    enriq                              VARCHAR (45)
+  	-- CAMBIO: Eliminé perfil_preferencia. Es una redundancia.
+);
+ALTER TABLE act_x_preferencia ADD CONSTRAINT act_x_preferencia_pk PRIMARY KEY ( preferencia_pwa_cedula, actividad_pwa_id );
+
+--- Antecedente: ---
+CREATE TABLE antecedente (
+    id           INTEGER NOT NULL,
+    etiqueta     VARCHAR (45) NOT NULL,
+    valor        DOUBLE PRECISION NOT NULL
+);
+ALTER TABLE antecedente ADD CONSTRAINT antecedente_pk PRIMARY KEY ( id );
+
+--- Baile: ---
+CREATE TABLE baile (
+    id     INTEGER NOT NULL,
+    nombre VARCHAR (45) NOT NULL,
+  	genero VARCHAR (45) NOT NULL
+);
+ALTER TABLE baile ADD CONSTRAINT baile_pk PRIMARY KEY ( id );
+
+--- Cancion: ---
+CREATE TABLE cancion (
+    nombre        VARCHAR (45) NOT NULL,
+    url           VARCHAR (2048),
+    genero        VARCHAR (45) NOT NULL
+);
+ALTER TABLE cancion ADD CONSTRAINT cancion_pk PRIMARY KEY ( nombre );
+
+--- CausaDemencia: ---
+CREATE TABLE causa_demencia (
+    condicion VARCHAR (45) NOT NULL
+);
+ALTER TABLE causa_demencia ADD CONSTRAINT causa_demencia_pk PRIMARY KEY ( condicion );
+
+--- CDR: ---
+CREATE TABLE cdr (
+    memoria                        INTEGER NOT NULL,
+    orientacion                    INTEGER NOT NULL,
+    juicio                         INTEGER NOT NULL,
+    vida_social                    INTEGER NOT NULL,
+    hogar                          INTEGER NOT NULL,
+    cuidadopersonal                INTEGER NOT NULL,
+    medico_pwa_cedula		   VARCHAR (10) NOT NULL
+);
+
+CREATE UNIQUE INDEX cdr__idx ON
+    cdr (
+        medico_pwa_cedula
+    ASC );
+ALTER TABLE cdr ADD CONSTRAINT cdr_pk PRIMARY KEY ( medico_pwa_cedula );
+
+--- Cuento: ---
+CREATE TABLE cuento (
+    nombre        VARCHAR (45) NOT NULL,
+    autor         VARCHAR (45) NOT NULL,
+    genero        VARCHAR (45) NOT NULL
+);
+
+ALTER TABLE cuento ADD CONSTRAINT cuento_pk PRIMARY KEY ( nombre );
+
+--- Cuidador: ---
+CREATE TABLE cuidador (
+    nombre_usuario VARCHAR (45) NOT NULL,
+    contrasena     VARCHAR (128) NOT NULL,
+    nombre         VARCHAR (45) NOT NULL,
+    correo         VARCHAR (320) NOT NULL,
+    celular        VARCHAR (20) NOT NULL
+);
+ALTER TABLE cuidador ADD CONSTRAINT cuidador_pk PRIMARY KEY ( nombre_usuario );
+
+
+--- Emocion: ---
+CREATE TABLE emocion (
+    id            VARCHAR (45) NOT NULL,
+    imagen        VARCHAR (2048) NOT NULL,
+    emotional_tag VARCHAR (45),
+    robot_id      INTEGER NOT NULL
+);
+ALTER TABLE emocion ADD CONSTRAINT emocion_pk PRIMARY KEY ( id );
+
+--- EmotionAxisConfiguration: ---
+CREATE TABLE emotion_axis_conf (
+    id            INTEGER NOT NULL,
+    positive_name VARCHAR (45) NOT NULL,
+    negative_name VARCHAR (45) NOT NULL,
+    base_value    FLOAT NOT NULL,
+    forget_factor FLOAT NOT NULL
+);
+ALTER TABLE emotion_axis_conf ADD CONSTRAINT emotion_axis_conf_pk PRIMARY KEY ( id );
+
+--- Enriquecimiento: ---
+CREATE TABLE enriq (
+    params         VARCHAR (45) NOT NULL,
+    valor          VARCHAR (45) NOT NULL,
+    frase_orden   INTEGER NOT NULL,
+    frase_nombre  VARCHAR(45) NOT NULL,
+  	cancion_nombre VARCHAR (45) NOT NULL
+);
+
+ALTER TABLE enriq ADD CONSTRAINT enriq_pk PRIMARY KEY ( params );
+--- EstadoCivil: ---
+CREATE TABLE estado_civil (
+    tipo_ec CHAR(1) NOT NULL
+);
+ALTER TABLE estado_civil ADD CONSTRAINT estado_civil_pk PRIMARY KEY ( tipo_ec );
+
+--- EventInfluence: ---
+CREATE TABLE event_influence (
+    id                 	 	 INTEGER NOT NULL,
+    event_name          	 VARCHAR (45) NOT NULL,
+    event_influence     	 FLOAT NOT NULL,
+  	emotional_axis_config_id INTEGER NOT NULL
+);
+ALTER TABLE event_influence ADD CONSTRAINT event_influence_pk PRIMARY KEY ( id );
+
+--- Familiar: ---
+CREATE TABLE familiar (
+    id         INTEGER NOT NULL,
+    nombre     VARCHAR (45) NOT NULL, 
+    parentesco VARCHAR (45) NOT NULL,
+    interes    DOUBLE PRECISION,
+    esta_vivo  BOOLEAN,
+    nacimiento DATE
+);
+ALTER TABLE familiar ADD CONSTRAINT familiar_pk PRIMARY KEY ( id );
+
+--- Familiares: ---
+CREATE TABLE familiares (
+    perfil_pwa_cedula VARCHAR (10) NOT NULL,
+    familiar_id      INTEGER NOT NULL
+);
+ALTER TABLE familiares ADD CONSTRAINT familiares_pk PRIMARY KEY ( familiar_id, perfil_pwa_cedula );
+
+--- Frase: ---
+CREATE TABLE frase (
+    orden           INTEGER NOT NULL,
+    cuento_nombre   VARCHAR (45) NOT NULL,
+    contenido       TEXT NOT NULL,
+    emotional_event VARCHAR (45),
+    accion          VARCHAR (45),
+    url_imagen      VARCHAR (2048)
+);
+ALTER TABLE frase ADD CONSTRAINT frase_pk PRIMARY KEY ( orden, cuento_nombre );
+
+--- Genero: ---
+CREATE TABLE genero (
+    genero   VARCHAR (45) NOT NULL
+);
+ALTER TABLE genero ADD CONSTRAINT genero_pk PRIMARY KEY ( genero );
+
+--- Imagen: ---
+CREATE TABLE imagen (
+  	id		 VARCHAR(45) NOT NULL,
+  	nombre	 VARCHAR(45) NOT NULL,
+  	url		 VARCHAR(2048) NOT NULL
+  );
+ALTER TABLE imagen ADD CONSTRAINT imagen_pk PRIMARY KEY (id);
+
+--- Joint: ---
+CREATE TABLE joint (
+    id     INTEGER NOT NULL,
+    nombre VARCHAR (45) NOT NULL,
+    angulo DOUBLE PRECISION NOT NULL,
+    tiempo DOUBLE PRECISION NOT NULL
+);
+ALTER TABLE joint ADD CONSTRAINT joint_pk PRIMARY KEY ( id );
+
+--- NivelEducativo: ---
+CREATE TABLE nivel_educativo (
+    tipo_ne VARCHAR (45) NOT NULL
+);
+ALTER TABLE nivel_educativo ADD CONSTRAINT nivel_educativo_pk 
+PRIMARY KEY ( tipo_ne );
+
+--- ListaTag: ---
+CREATE TABLE lista_tag (
+    cancion_nombre VARCHAR (45) NOT NULL,
+  	tag_id		   INTEGER NOT NULL
+);
+ALTER TABLE lista_tag ADD CONSTRAINT lista_tag_pk 
+PRIMARY KEY ( cancion_nombre, tag_id );
+
+--- PerfilMedico: ---
+CREATE TABLE perfil_medico (
+    perfil_pwa_cedula     VARCHAR(10) NOT NULL,
+    toma_medicamentos     INTEGER NOT NULL,
+    discap_auditiva       INTEGER NOT NULL,
+    discap_visual         INTEGER NOT NULL,
+    discap_motora         INTEGER NOT NULL,
+  	estado_enfermedad     INTEGER NOT NULL,
+  	periodo_vigila        INTEGER NOT NULL,
+  	fast 				  INTEGER NOT NULL,
+    riesgo_caida          INTEGER,
+    sppb                  INTEGER,
+    causa_demencia_condicion VARCHAR (45) NOT NULL
+);
+CREATE UNIQUE INDEX perfil_medico__idx ON
+    perfil_medico (
+        perfil_pwa_cedula
+    ASC );
+ALTER TABLE perfil_medico ADD CONSTRAINT perfil_medico_pk PRIMARY KEY ( perfil_pwa_cedula );
+
+--- PerfilPreferencia: ---
+CREATE TABLE perfil_preferencia (
+    perfil_pwa_cedula     VARCHAR(10) NOT NULL,
+    nombre_preferido      VARCHAR (45) NOT NULL, 
+  	gusto_karaoke 		  DOUBLE PRECISION NOT NULL,
+  	gusto_musica		  DOUBLE PRECISION NOT NULL,
+  	gusto_baile 		  DOUBLE PRECISION NOT NULL,
+    brillo_preferido       INTEGER NOT NULL,
+    vol_preferido          INTEGER NOT NULL
+  	-- Eliminé "perfil_pwa": Es redundante.
+);
+ALTER TABLE perfil_preferencia ADD CONSTRAINT perfil_preferencia_pk PRIMARY KEY ( perfil_pwa_cedula );
+
+--- PerfilPWA: ---
+CREATE TABLE perfil_pwa (
+    cedula                 VARCHAR(10) NOT NULL,
+    nombre                 VARCHAR(45) NOT NULL, 
+    apellido               VARCHAR(45) NOT NULL, 
+    fecha_nacimiento       DATE NOT NULL,
+    pais_nacimiento        VARCHAR (73) NOT NULL, 
+    profesion              VARCHAR (45) NOT NULL,
+  	edad 				   DECIMAL NOT NULL,
+    estado_civil_tipo_ec   CHAR NOT NULL, 
+    cuidador_nombre_usuario VARCHAR (45) NOT NULL, 
+    nivel_educativo_tipo_ne VARCHAR (45) NOT NULL,
+    tiene_programa_ejercicio BOOLEAN NOT NULL
+);
+ALTER TABLE perfil_pwa ADD CONSTRAINT perfil_pwa_pk PRIMARY KEY ( cedula );
+
+--- PreferenciasXBaile: ---
+CREATE TABLE preferencia_x_baile (
+    baile_id                           INTEGER NOT NULL, 
+    preferencia_pwa_cedula				   VARCHAR (10) NOT NULL, 
+    gusto                              DOUBLE PRECISION NOT NULL
+);
+ALTER TABLE preferencia_x_baile ADD CONSTRAINT preferencia_x_baile_pk PRIMARY KEY ( baile_id, preferencia_pwa_cedula );
+
+--- PreferenciaXCancion: ---
+CREATE TABLE preferencia_x_cancion (
+    cancion_nombre                     VARCHAR (45) NOT NULL, 
+    preferencia_pwa_cedula				   VARCHAR (10) NOT NULL, 
+    gusto                              DOUBLE PRECISION NOT NULL,
+    reminiscencia                      INTEGER NOT NULL
+);
+ALTER TABLE preferencia_x_cancion ADD CONSTRAINT preferencia_x_cancion_pk 
+PRIMARY KEY ( cancion_nombre, preferencia_pwa_cedula );
+
+--- PreferenciaXCuento: ---
+CREATE TABLE preferencia_x_cuento (
+    cuento_nombre    VARCHAR (45) NOT NULL, 
+    preferencia_pwa_cedula VARCHAR (10) NOT NULL, 
+    gusto             DOUBLE PRECISION NOT NULL
+);
+ALTER TABLE preferencia_x_cuento
+    ADD CONSTRAINT preferencia_x_cuento_pk 
+    PRIMARY KEY (cuento_nombre, preferencia_pwa_cedula);
+
+--- RegistroActividad: ---
+CREATE TABLE registro_actividad (
+    fecha              DATE NOT NULL,
+    perfil_pwa_cedula  VARCHAR (10) NOT NULL,
+    tipo               VARCHAR (45) NOT NULL,
+    estado_inicial     VARCHAR (45) NOT NULL,
+    estado_final       VARCHAR (45) NOT NULL,
+    actividad_pwa_id   INTEGER NOT NULL
+);
+ALTER TABLE registro_actividad
+    ADD CONSTRAINT registro_actividad_pk 
+    PRIMARY KEY ( fecha, actividad_pwa_id, perfil_pwa_cedula, tipo);
+
+--- Regla: ---
+CREATE TABLE regla (
+    id       INTEGER NOT NULL,
+    feedback DOUBLE PRECISION NOT NULL,
+    etiqueta VARCHAR (45) NOT NULL 
+);
+ALTER TABLE regla ADD CONSTRAINT regla_pk PRIMARY KEY ( id );
+
+--- Regla_X_Antecedente: ---
+CREATE TABLE regla_x_antecedente (
+    regla_id       INTEGER NOT NULL,
+    antecedente_id INTEGER NOT NULL
+);
+ALTER TABLE regla_x_antecedente ADD CONSTRAINT regla_x_antecedente_pk 
+PRIMARY KEY ( regla_id, antecedente_id );
+
+--- Robot: ---
+CREATE TABLE robot (
+    id     INTEGER NOT NULL,
+    nombre VARCHAR (45)
+);
+ALTER TABLE robot ADD CONSTRAINT robot_pk PRIMARY KEY ( id );
+--- Tag: ---
+CREATE TABLE tag (
+    id                   	    INTEGER NOT NULL,
+    tag			                VARCHAR(45) NOT NULL
+);
+ALTER TABLE tag ADD CONSTRAINT tag_pk PRIMARY KEY (id);
+
+---------------------------------- Nuevas Tablas: ------------------------------
+--- CategoriaEntrenamiento: ---
+CREATE TABLE categoria_entrenamiento
+(
+    tipo                        VARCHAR (20) NOT NULL
+);
+ALTER TABLE categoria_entrenamiento
+    ADD CONSTRAINT categoria_entrenamiento_pk
+    PRIMARY KEY (tipo);
+--- CategoriaEntrenamientoXProgramaEjercicio: ---
+CREATE TABLE categoria_entrenamiento_x_programa
+(
+     tipo_categoria         VARCHAR (20) NOT NULL,
+     programa_ejercicio_nombre VARCHAR(10) NOT NULL
+);
+ALTER TABLE categoria_entrenamiento_x_programa
+    ADD CONSTRAINT categoria_entrenamiento_x_programa_pk
+    PRIMARY KEY (tipo_categoria, programa_ejercicio_nombre);
+--- Dia: ---
+CREATE TABLE dia
+(
+    nombre                      VARCHAR (20) NOT NULL  
+);
+ALTER TABLE dia
+    ADD CONSTRAINT dia_pk
+    PRIMARY KEY (nombre);
+    
+--- DiaXProgramaEjercicio ---
+CREATE TABLE dia_x_programa_ejercicio
+(
+    dia_nombre  VARCHAR(20) NOT NULL,
+    programa_ejercicio_nombre VARCHAR(10) NOT NULL,
+    indice_orden               INTEGER NOT NULL
+);
+ALTER TABLE dia_x_programa_ejercicio
+    ADD CONSTRAINT dia_x_programa_ejercicio_pk
+    PRIMARY KEY (dia_nombre, programa_ejercicio_nombre);
+--- DiaXCategoriaEntrenamiento: ---
+CREATE TABLE dia_x_categoria_entrenamiento
+(
+    dia_nombre  VARCHAR(20) NOT NULL,
+    categoria_tipo VARCHAR(20) NOT NULL,
+    indice_orden       INTEGER NOT NULL,
+    opcional           BOOL NOT NULL
+);
+ALTER TABLE dia_x_categoria_entrenamiento
+    ADD CONSTRAINT dia_x_categoria_entrenamiento_pk
+    PRIMARY KEY (dia_nombre, categoria_tipo, indice_orden);
+--- Ejercicio: ---
+CREATE TABLE ejercicio
+(
+    nombre                  VARCHAR (40) NOT NULL,
+    duracion                DOUBLE PRECISION NOT NULL,
+    necesita_peso           BOOLEAN NOT NULL,
+    url_video               VARCHAR (2048)
+);
+ALTER TABLE ejercicio
+    ADD CONSTRAINT ejercicio_pk
+    PRIMARY KEY (nombre);
+--- EjercicioXCategoria ---
+CREATE TABLE ejercicio_x_categoria
+(
+    ejercicio_nombre  VARCHAR(20) NOT NULL,
+    categoria_tipo VARCHAR(20) NOT NULL
+);
+ALTER TABLE ejercicio_x_categoria
+    ADD CONSTRAINT ejercicio_x_categoria_pk
+    PRIMARY KEY (ejercicio_nombre, categoria_tipo);
+  
+  --- FraseInspiracional ---
+
+CREATE TABLE frase_inspiracional
+(
+    id                  SERIAL      NOT NULL,
+    ejercicio           VARCHAR(40) NOT NULL,
+    contenidos          TEXT NOT NULL,
+    tiempo_ejecucion    DOUBLE PRECISION NOT NULL,
+    pwa_emocion         VARCHAR(20) NOT NULL
+
+);
+ALTER TABLE frase_inspiracional
+    ADD CONSTRAINT frase_inspiracional_pk
+    PRIMARY KEY (id, ejercicio);
+--- Intensidad: ---
+
+CREATE TABLE intensidad
+(
+    id                      VARCHAR(20) NOT NULL,
+    series                  INTEGER NOT NULL,
+    repeticiones            INTEGER NOT NULL,
+    duracion_ejercicio      INTEGER,
+    peso                    INTEGER,
+    categoria_entrenamiento_tipo VARCHAR (20) NOT NULL
+);
+ALTER TABLE intensidad
+    ADD CONSTRAINT intensidad_pk
+    PRIMARY KEY (id);
+ -- Historial: --
+    CREATE TABLE historial
+(
+    log_id                      SERIAL      NOT NULL,
+    pwa_cedula                  VARCHAR(10) NOT NULL,
+    ejercicio                   VARCHAR(40) NOT NULL,
+    repeticiones_hechas         INTEGER     NOT NULL,
+    retroalimentacion_gusto     INTEGER,
+    retroalimentacion_cansancio INTEGER,
+    notas                       TEXT
+    
+);
+ALTER TABLE historial
+    ADD CONSTRAINT historial_pk
+    PRIMARY KEY (log_id);
+--- Horario: ---
+CREATE TABLE horario
+(
+    indice              INTEGER NOT NULL,
+    hora             INTEGER NOT NULL,
+    cedula           VARCHAR(10) NOT NULL
+);  
+ALTER TABLE horario
+    ADD CONSTRAINT horario_pk
+    PRIMARY KEY (indice);
+--- PerfilEjercicio: ---
+CREATE TABLE perfil_ejercicio
+(
+    perfil_pwa_cedula       VARCHAR(10) NOT NULL,
+    index_intensidad_actual INTEGER NOT NULL,
+    fecha_prox              DATE NOT NULL,
+    hora_prox               INTEGER NOT NULL,
+    dias_hechos             INTEGER NOT NULL,
+    nombre_programa         VARCHAR(10) NOT NULL 
+);
+ALTER TABLE perfil_ejercicio 
+ADD CONSTRAINT perfil_ejercicio_pk PRIMARY KEY (perfil_pwa_cedula);
+
+--- PerfilEjercicioXEjercicio ---
+CREATE TABLE perfil_ejercicio_x_ejercicio
+(
+    perfil_pwa_cedula       VARCHAR(10) NOT NULL,
+    nombre_ejercicio         VARCHAR(40) NOT NULL
+);
+ALTER TABLE perfil_ejercicio_x_ejercicio 
+ADD CONSTRAINT perfil_ejercicio_x_ejercicio_pk
+PRIMARY KEY (perfil_pwa_cedula,nombre_ejercicio);
+
+--- ProgramaEjercicio: ---
+CREATE TABLE programa_ejercicio
+(
+    nombre      VARCHAR (10) NOT NULL
+);
+ALTER TABLE programa_ejercicio
+    ADD CONSTRAINT programa_ejercicio_pk
+    PRIMARY KEY (nombre);
+
+---------------------------------- Asignación de FKs: --------------------------
+-- Accion FKs: --
+ALTER TABLE accion
+    ADD CONSTRAINT accion_emocion_fk FOREIGN KEY (emocion_id)
+        REFERENCES emocion (id);
+        
+-- AccionXJoint FKs: --
+ALTER TABLE accion_x_joint
+    ADD CONSTRAINT accion_x_joint_accion_fk FOREIGN KEY ( accion_id )
+        REFERENCES accion ( id );
+ALTER TABLE accion_x_joint
+    ADD CONSTRAINT accion_x_joint_joint_fk FOREIGN KEY ( joint_id )
+        REFERENCES joint ( id );
+        
+-- ActividadRutinaria FKs: --
+ALTER TABLE actividad_rutinaria
+    ADD CONSTRAINT rutinaria_p_medico_fk FOREIGN KEY ( medico_pwa_cedula )
+        REFERENCES perfil_medico ( perfil_pwa_cedula );
+        
+-- ActXPreferencia FKs: --
+ALTER TABLE act_x_preferencia
+    ADD CONSTRAINT x_act_pwa_fk FOREIGN KEY ( actividad_pwa_id )
+        REFERENCES actividad_pwa ( id );
+ALTER TABLE act_x_preferencia
+    ADD CONSTRAINT x_p_preferencia_fk FOREIGN KEY ( preferencia_pwa_cedula )
+        REFERENCES perfil_preferencia ( perfil_pwa_cedula );
+        
+-- Baile FKs: --
+ALTER TABLE baile
+     ADD CONSTRAINT baile_genero_fk FOREIGN KEY ( genero )
+        REFERENCES genero ( genero );
+        
+-- Cancion FKs: --
+ALTER TABLE cancion
+    ADD CONSTRAINT cancion_genero_fk FOREIGN KEY ( genero )
+        REFERENCES genero ( genero );
+
+-- CDR FKs: --
+ALTER TABLE cdr
+    ADD CONSTRAINT cdr_p_medico_fk FOREIGN KEY ( medico_pwa_cedula )
+        REFERENCES perfil_medico ( perfil_pwa_cedula );
+
+-- Cuento FKs: --
+ALTER TABLE cuento
+    ADD CONSTRAINT cuento_genero_fk FOREIGN KEY ( genero )
+        REFERENCES genero ( genero );
+
+-- Emocion FKs: --
+ALTER TABLE emocion
+    ADD CONSTRAINT emocion_robot_fk FOREIGN KEY ( robot_id )
+        REFERENCES robot ( id );
+
+-- Enriq FKs: --
+ALTER TABLE enriq
+    ADD CONSTRAINT enriq_frase_fk FOREIGN KEY ( frase_orden, frase_nombre )
+        REFERENCES frase ( orden, cuento_nombre );
+ALTER TABLE enriq
+    ADD CONSTRAINT enriq_cancion_fk FOREIGN KEY ( cancion_nombre )
+        REFERENCES cancion ( nombre );
+        
+-- EventInfluence FKs: --
+ALTER TABLE event_influence
+    ADD CONSTRAINT influence_axis_fk FOREIGN KEY ( emotional_axis_config_id )
+        REFERENCES emotion_axis_conf ( id );
+        
+-- Familiares FKs: --
+ALTER TABLE familiares
+    ADD CONSTRAINT x_familiar_fk FOREIGN KEY ( familiar_id )
+        REFERENCES familiar ( id );
+ALTER TABLE familiares
+    ADD CONSTRAINT x_perfil_pwa_fk FOREIGN KEY ( perfil_pwa_cedula )
+        REFERENCES perfil_pwa ( cedula );
+
+-- Frases FKs: --
+ALTER TABLE frase
+    ADD CONSTRAINT frase_cuento_fk FOREIGN KEY ( cuento_nombre )
+        REFERENCES cuento ( nombre );
+        
+-- ListaTag FKs: --
+ALTER TABLE lista_tag
+    ADD CONSTRAINT x_tag_fk FOREIGN KEY ( tag_id )
+        REFERENCES tag ( id );
+ALTER TABLE lista_tag
+    ADD CONSTRAINT x_cancion_fk FOREIGN KEY ( cancion_nombre )
+        REFERENCES cancion ( nombre );
+
+-- PerfilMedico FKs: --
+ALTER TABLE perfil_medico
+    ADD CONSTRAINT medico_causa_fk FOREIGN KEY ( causa_demencia_condicion )
+        REFERENCES causa_demencia ( condicion );
+ALTER TABLE perfil_medico
+    ADD CONSTRAINT medico_p_pwa_fk FOREIGN KEY ( perfil_pwa_cedula )
+        REFERENCES perfil_pwa ( cedula );
+
+-- PerfilPreferencia FKs: --
+ALTER TABLE perfil_preferencia
+    ADD CONSTRAINT preferencia_p_pwa_fk FOREIGN KEY ( perfil_pwa_cedula )
+        REFERENCES perfil_pwa ( cedula );
+
+-- PerfilPWA FKs: --
+ALTER TABLE perfil_pwa
+    ADD CONSTRAINT pwa_cuidador_fk FOREIGN KEY ( cuidador_nombre_usuario )
+        REFERENCES cuidador ( nombre_usuario );
+ALTER TABLE perfil_pwa
+    ADD CONSTRAINT pwa_civil_fk FOREIGN KEY ( estado_civil_tipo_ec )
+        REFERENCES estado_civil ( tipo_ec );
+ALTER TABLE perfil_pwa
+    ADD CONSTRAINT pwa_nvl_educativo_fk FOREIGN KEY ( nivel_educativo_tipo_ne )
+        REFERENCES nivel_educativo ( tipo_ne );
+
+-- PreferenciaXBaile FKs: -- 
+ALTER TABLE preferencia_x_baile
+    ADD CONSTRAINT x_baile_fk FOREIGN KEY ( baile_id )
+        REFERENCES baile ( id );
+ALTER TABLE preferencia_x_baile
+    ADD CONSTRAINT x_p_preferencia_fk FOREIGN KEY ( preferencia_pwa_cedula )
+        REFERENCES perfil_preferencia ( perfil_pwa_cedula );
+        
+-- PreferenciaXCancion FKs: --
+ALTER TABLE preferencia_x_cancion
+    ADD CONSTRAINT x_cancion_fk FOREIGN KEY ( cancion_nombre )
+        REFERENCES cancion ( nombre );
+ALTER TABLE preferencia_x_cancion
+    ADD CONSTRAINT x_p_preferencia_fk FOREIGN KEY ( preferencia_pwa_cedula )
+        REFERENCES perfil_preferencia ( perfil_pwa_cedula );
+
+-- PreferenciaXCuento FKs: --
+ALTER TABLE preferencia_x_cuento
+    ADD CONSTRAINT x_cuento_fk FOREIGN KEY ( cuento_nombre )
+        REFERENCES cuento ( nombre );
+ALTER TABLE preferencia_x_cuento
+    ADD CONSTRAINT x_p_preferencia_fk FOREIGN KEY ( preferencia_pwa_cedula )
+        REFERENCES perfil_preferencia ( perfil_pwa_cedula );
+        
+-- RegistroActividad FKs: --
+ALTER TABLE registro_actividad
+    ADD CONSTRAINT registro_p_pwa_fk FOREIGN KEY ( perfil_pwa_cedula )
+        REFERENCES perfil_pwa ( cedula );
+ALTER TABLE registro_actividad
+    ADD CONSTRAINT registro_activ_pwa FOREIGN KEY ( actividad_pwa_id )
+        REFERENCES actividad_pwa ( id );
+        
+-- ReglaXAntecedente FKs: --
+ALTER TABLE regla_x_antecedente
+    ADD CONSTRAINT x_antecedente_fk FOREIGN KEY ( antecedente_id )
+        REFERENCES antecedente ( id );
+ALTER TABLE regla_x_antecedente
+    ADD CONSTRAINT x_regla_fk FOREIGN KEY ( regla_id )
+        REFERENCES regla ( id );
+
+---------------------------------------FKs Nuevos ---------------------------------
+-- CategoriaEntrenamientoXPrograma FKs: --
+ALTER TABLE categoria_entrenamiento_x_programa
+    ADD CONSTRAINT x_programa_fk FOREIGN KEY ( programa_ejercicio_nombre )
+    REFERENCES programa_ejercicio (nombre);
+ALTER TABLE categoria_entrenamiento_x_programa
+    ADD CONSTRAINT x_categoria_fk FOREIGN KEY ( tipo_categoria )
+    REFERENCES categoria_entrenamiento (tipo);  
+    
+-- DiaXProgramaEjercicio FKs: --
+ALTER TABLE dia_x_programa_ejercicio
+    ADD CONSTRAINT x_programa_fk FOREIGN KEY ( programa_ejercicio_nombre )
+    REFERENCES programa_ejercicio (nombre);
+ALTER TABLE dia_x_programa_ejercicio
+    ADD CONSTRAINT x_dia_fk FOREIGN KEY ( dia_nombre )
+    REFERENCES dia (nombre);  
+
+-- DiaXCategoriaEntrenamiento: --
+ALTER TABLE dia_x_categoria_entrenamiento
+    ADD CONSTRAINT x_categoria_fk FOREIGN KEY ( categoria_tipo  )
+    REFERENCES categoria_entrenamiento (tipo);  
+ALTER TABLE dia_x_categoria_entrenamiento
+    ADD CONSTRAINT x_dia_fk FOREIGN KEY ( dia_nombre )
+    REFERENCES dia (nombre);  
+    
+-- EjercicioXCategoria FKs: --
+ALTER TABLE ejercicio_x_categoria
+    ADD CONSTRAINT x_categoria_fk FOREIGN KEY ( categoria_tipo  )
+    REFERENCES categoria_entrenamiento (tipo);  
+ALTER TABLE ejercicio_x_categoria
+    ADD CONSTRAINT x_ejercicio_fk FOREIGN KEY ( ejercicio_nombre )
+    REFERENCES ejercicio (nombre);  
+-- Intensidad FKs: --
+ALTER TABLE intensidad
+     ADD CONSTRAINT intensidad_categoria_fk FOREIGN KEY ( categoria_entrenamiento_tipo )
+        REFERENCES categoria_entrenamiento (tipo); 
+        
+-- PerfilPreferencia FKs: --
+ALTER TABLE perfil_ejercicio 
+    ADD CONSTRAINT ejercicio_p_pwa_fk FOREIGN KEY ( perfil_pwa_cedula )
+        REFERENCES perfil_pwa ( cedula );
+ALTER TABLE perfil_ejercicio
+    ADD CONSTRAINT ejercicios_programa_fk FOREIGN KEY (nombre_programa)
+        REFERENCES programa_ejercicio (nombre);
+        
+--- PerfilEjercicioXEjercicio FKs: ---
+ALTER TABLE perfil_ejercicio_x_ejercicio
+    ADD CONSTRAINT x_perfil_ejercicio_fk FOREIGN KEY ( perfil_pwa_cedula  )
+    REFERENCES perfil_ejercicio (perfil_pwa_cedula);  
+ALTER TABLE perfil_ejercicio_x_ejercicio
+    ADD CONSTRAINT x_ejercicio_fk FOREIGN KEY ( nombre_ejercicio )
+    REFERENCES ejercicio (nombre);
+--- Horario Fks ---
+ALTER TABLE Horario
+    ADD CONSTRAINT horario_fk FOREIGN KEY (cedula)
+    REFERENCES perfil_ejercicio (perfil_pwa_cedula);
+--- Historial Fks ---
+ALTER TABLE Historial
+    ADD CONSTRAINT historial_fk FOREIGN KEY (pwa_cedula)
+    REFERENCES perfil_ejercicio (perfil_pwa_cedula);
+--- Frase Inspiracional Fks ---
+ALTER TABLE frase_inspiracional
+    ADD CONSTRAINT frase_inspiracional_fk FOREIGN KEY (ejercicio)
+    REFERENCES ejercicio (nombre);

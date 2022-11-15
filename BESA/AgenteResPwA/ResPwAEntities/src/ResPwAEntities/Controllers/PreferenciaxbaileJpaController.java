@@ -22,7 +22,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class PreferenciaXBaileJpaController implements Serializable {
 
@@ -39,8 +39,8 @@ public class PreferenciaXBaileJpaController implements Serializable {
         if (preferenciaXBaile.getPreferenciaXBailePK() == null) {
             preferenciaXBaile.setPreferenciaXBailePK(new PreferenciaXBailePK());
         }
-        preferenciaXBaile.getPreferenciaXBailePK().setPreferenciaPwaCedula(preferenciaXBaile.getPerfilPreferencia().getPerfilPwaCedula());
         preferenciaXBaile.getPreferenciaXBailePK().setBaileId(preferenciaXBaile.getBaile().getId());
+        preferenciaXBaile.getPreferenciaXBailePK().setPreferenciaPwaCedula(preferenciaXBaile.getPerfilPreferencia().getPerfilPwaCedula());
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -78,8 +78,8 @@ public class PreferenciaXBaileJpaController implements Serializable {
     }
 
     public void edit(PreferenciaXBaile preferenciaXBaile) throws NonexistentEntityException, Exception {
-        preferenciaXBaile.getPreferenciaXBailePK().setPreferenciaPwaCedula(preferenciaXBaile.getPerfilPreferencia().getPerfilPwaCedula());
         preferenciaXBaile.getPreferenciaXBailePK().setBaileId(preferenciaXBaile.getBaile().getId());
+        preferenciaXBaile.getPreferenciaXBailePK().setPreferenciaPwaCedula(preferenciaXBaile.getPerfilPreferencia().getPerfilPwaCedula());
         EntityManager em = null;
         try {
             em = getEntityManager();

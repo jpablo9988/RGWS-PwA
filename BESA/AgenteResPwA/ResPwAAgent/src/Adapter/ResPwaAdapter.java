@@ -17,6 +17,7 @@ public abstract class ResPwaAdapter extends AdapterBESA{
     protected ServiceAgentRESPwA rpa;
     protected final int robotPort=7896;
     protected final String IP= "127.0.0.1"; 
+    //protected final String IP= "10.195.22.60"; 
     protected ResPwaAdapterReceiver receiver;
     protected static int numPackage=0;
     protected static ServiceMapper serviceMapper;

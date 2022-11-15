@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -25,10 +26,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "cancion", catalog = "Res_PwADB", schema = "public")
+@Table(name = "cancion")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cancion.findAll", query = "SELECT c FROM Cancion c"),
@@ -46,14 +47,14 @@ public class Cancion implements Serializable {
     @JoinTable(name = "lista_tag", joinColumns = {
         @JoinColumn(name = "cancion_nombre", referencedColumnName = "nombre")}, inverseJoinColumns = {
         @JoinColumn(name = "tag_id", referencedColumnName = "id")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Tag> tagList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancionNombre")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancionNombre", fetch = FetchType.EAGER)
     private List<Enriq> enriqList;
     @JoinColumn(name = "genero", referencedColumnName = "genero")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Genero genero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancion", fetch = FetchType.EAGER)
     private List<PreferenciaXCancion> preferenciaXCancionList;
 
     public Cancion() {

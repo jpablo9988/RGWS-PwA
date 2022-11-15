@@ -15,6 +15,8 @@ class Robot:
         self.current_emomap = None
         print "INICIA ROBOT CARGADO Y LISTO"
         self.session = session
+        # Atributo para la vida autonoma del Robot
+
         self.aLAutonomousLife = session.service("ALAutonomousLife")
         self.aLAutonomousBlinking = session.service("ALAutonomousBlinking")
         self.aLAutonomousBlinking.setEnabled(False)
@@ -84,7 +86,9 @@ class Robot:
                                 "retroCancionTopic": topico_retroCancion,
                                 "saludarTopic": topico_saludable,
                                 "soundTopic": topico_sonido,
-                                "blankaTopic": topico_blank
+                                "blankaTopic": topico_blank,
+                                "Preparacion": topico_preparacion,
+                                "Retroejercicio": topico_retroEjercicio
                                 }
         self.path = {
             "VSAD": "boston_animation_library/Stand/cry",
@@ -215,7 +219,13 @@ class Robot:
 
     def run_animation(self, params):
         # Get the function
-        animation_name = params.get("TAGSDANCE")
+        flag = False;
+        animation_name = params.get("EXERCISE")
+        if animation_name != "":
+            flag = True
+            print "Ejecutando un ejercicio"
+        else:
+            animation_name = params.get("TAGSDANCE")
         # Get the params of the function
         # Invoke the function
         # animation_name(animation_factor)
@@ -225,7 +235,11 @@ class Robot:
             animation_function = self.animation.getAnimation(animation_name)
             names, times, keys = animation_function()
             # times = self.change_speed(animation_factor, times)
-            self.play_animation(names, times, keys)
+            if params.get("EXERCISE") == "GiRARTRONCO":
+                print "Estoy girando mi tronco."
+                self.play_animation(names, times, keys, True, 3)
+            else:
+                self.play_animation(names, times, keys, True, 1.5)
         except BaseException, err:
             print err
 
@@ -239,13 +253,21 @@ class Robot:
         # "fullyEngaged": attentionLevel >= 0.9
         return self.alMood.attention()
 
-    def play_animation(self, animation_names, animation_times, animation_keys):
+    def play_animation(self, animation_names, animation_times, animation_keys, excercise_flag, factor):
         try:
             # uncomment the following line and modify the IP if you use this script outside Choregraphe.
             # motion = ALProxy("ALMotion", IP, 9559)
-            self.alMotion.angleInterpolation(animation_names, animation_keys,
-                                             self.change_speed(self.emotionStateRobot.getFactorVelocity(),
-                                                               animation_times), True)
+            print animation_names, animation_times, animation_keys
+            print excercise_flag
+            if excercise_flag:
+                self.alMotion.angleInterpolation(animation_names, animation_keys,
+                                                 self.change_speed(factor,
+                                                                   animation_times), True)
+
+            else:
+                self.alMotion.angleInterpolation(animation_names, animation_keys,
+                                                 self.change_speed(self.emotionStateRobot.getFactorVelocity(),
+                                                                   animation_times), True)
 
         except BaseException, err:
             print err
@@ -445,8 +467,10 @@ class Robot:
     def initial_conf(self, prof_emotions):
         self.prof_emotions = prof_emotions["INITIALCONF"]
         print("VER IDENT ", self.prof_emotions)
+        print ("No Emociones? ->", len(self.prof_emotions))
         if len(self.prof_emotions) == 5:
             try:
+                print("Se activo(?) PepperModuleV2 en robot")
                 self.init_timers()
                 self.sensorsModule = PepperModuleV2.pepperModuleV2(self.session)
             except Exception, e:
@@ -463,8 +487,10 @@ class Robot:
             names.append(name)
             keys.append(action["key"])
             times.append(action["time"])
-
-        self.play_animation(names, times, keys)
+        if params.get("EXCERCISE")!= "":
+            self.play_animation(names, times, keys, True, 1.5)
+        else:
+            self.play_animation(names, times, keys, False,1.5)
 
     # The robot wakes up
     def wake_up(self):
@@ -510,7 +536,7 @@ class Robot:
         if "EmotionalTag" in params:
             # print "TIENE EMOTAG", params
             self.current_emomap = self.prof_emotions[params.get("EmotionalTag")]
-            self.show_image({"SHOWIMG": self.current_emomap["image"]})
+            # self.show_image({"SHOWIMG": self.current_emomap["image"]}) Error al llamar ["image"]
             emomapParams = {"ACTION": "POSTURA"}
             self.request_posture_change(emomapParams)
         self.change_led_color(self.emotionStateRobot.getLedColor(), self.emotionStateRobot.getRotationEyesColor())
@@ -558,6 +584,7 @@ class Robot:
 
     # Shows the image in the tablet for the user
     def show_image(self, params):
+        # print "Voy a mostrar mi imagen"
         self.alTabletService.showImage(params.get("SHOWIMG"))
 
     # Hide image currently displayed.

@@ -22,15 +22,16 @@ import rational.mapping.Plan;
  */
 public class MirarPersonaAlHablar extends GoalBDI 
 {
-    private static String descrip = "MirarPersonaAlHablar";
+    private static final String DESCRIPTION = "MirarPersonaAlHablar";
 
-    public static MirarPersonaAlHablar buildGoal() {
+    public static MirarPersonaAlHablar buildGoal() 
+    {
+        System.out.println("DEBUG - CONSTRUCCION META: Mirar Persona la Hablar.");
         MirarPersona mp = new MirarPersona();
         Plan rolePlan= new Plan();
         rolePlan.addTask(mp);
-        
-        RationalRole mirarPersonaRol = new RationalRole(descrip, rolePlan);
-        MirarPersonaAlHablar b = new MirarPersonaAlHablar(InitRESPwA.getPlanID(), mirarPersonaRol, descrip, GoalBDITypes.NEED);
+        RationalRole mirarPersonaRol = new RationalRole(DESCRIPTION, rolePlan);
+        MirarPersonaAlHablar b = new MirarPersonaAlHablar(InitRESPwA.getPlanID(), mirarPersonaRol, DESCRIPTION, GoalBDITypes.NEED);
         return b;
     }
     public MirarPersonaAlHablar(long id, RationalRole role, String description, GoalBDITypes type) {
@@ -41,10 +42,12 @@ public class MirarPersonaAlHablar extends GoalBDI
     public double detectGoal(Believes believes) throws KernellAgentEventExceptionBESA {
         System.out.println("DEBUG - DETECTAR META: Mirar Persona al Hablar");
         RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
-        if(!blvs.getbEstadoInteraccion().isSistemaSuspendidoInt() &&  blvs.getbEstadoInteraccion().isLogged())
+        if(!blvs.getbEstadoInteraccion().isSistemaSuspendidoInt())
         {
             if(!blvs.getbEstadoRobot().isActivadoMovHabla() && blvs.getbEstadoInteraccion().isEstaHablando())
             {
+                System.out.println("DEBUG - CONFIRMAR META (Mirar persona la hablar): "
+                        + "Las condiciones se han cumplido!");
                 return 1.0;
             }
         }
@@ -70,9 +73,10 @@ public class MirarPersonaAlHablar extends GoalBDI
         return true;
     }
     @Override
-    public boolean goalSucceeded(Believes believes) throws KernellAgentEventExceptionBESA {
+    public boolean goalSucceeded(Believes believes) throws KernellAgentEventExceptionBESA 
+    {
         RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
-        return blvs.getbEstadoRobot().isActivadoSenalesDeVida();
+        return !blvs.getbEstadoInteraccion().isEstaHablando();
     }
 
 

@@ -6,21 +6,20 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Embeddable
 public class PreferenciaXBailePK implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "baile_id")
-    private BigDecimal baileId;
+    private int baileId;
     @Basic(optional = false)
     @Column(name = "preferencia_pwa_cedula")
     private String preferenciaPwaCedula;
@@ -28,16 +27,16 @@ public class PreferenciaXBailePK implements Serializable {
     public PreferenciaXBailePK() {
     }
 
-    public PreferenciaXBailePK(BigDecimal baileId, String preferenciaPwaCedula) {
+    public PreferenciaXBailePK(int baileId, String preferenciaPwaCedula) {
         this.baileId = baileId;
         this.preferenciaPwaCedula = preferenciaPwaCedula;
     }
 
-    public BigDecimal getBaileId() {
+    public int getBaileId() {
         return baileId;
     }
 
-    public void setBaileId(BigDecimal baileId) {
+    public void setBaileId(int baileId) {
         this.baileId = baileId;
     }
 
@@ -52,7 +51,7 @@ public class PreferenciaXBailePK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (baileId != null ? baileId.hashCode() : 0);
+        hash += (int) baileId;
         hash += (preferenciaPwaCedula != null ? preferenciaPwaCedula.hashCode() : 0);
         return hash;
     }
@@ -64,7 +63,7 @@ public class PreferenciaXBailePK implements Serializable {
             return false;
         }
         PreferenciaXBailePK other = (PreferenciaXBailePK) object;
-        if ((this.baileId == null && other.baileId != null) || (this.baileId != null && !this.baileId.equals(other.baileId))) {
+        if (this.baileId != other.baileId) {
             return false;
         }
         if ((this.preferenciaPwaCedula == null && other.preferenciaPwaCedula != null) || (this.preferenciaPwaCedula != null && !this.preferenciaPwaCedula.equals(other.preferenciaPwaCedula))) {

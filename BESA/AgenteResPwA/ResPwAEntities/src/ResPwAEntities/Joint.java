@@ -6,11 +6,11 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -21,10 +21,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "joint", catalog = "Res_PwADB", schema = "public")
+@Table(name = "joint")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Joint.findAll", query = "SELECT j FROM Joint j"),
@@ -35,11 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Joint implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private BigDecimal id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
@@ -48,29 +47,29 @@ public class Joint implements Serializable {
     private double angulo;
     @Basic(optional = false)
     @Column(name = "tiempo")
-    private BigDecimal tiempo;
-    @ManyToMany(mappedBy = "jointList")
+    private double tiempo;
+    @ManyToMany(mappedBy = "jointList", fetch = FetchType.EAGER)
     private List<Accion> accionList;
 
     public Joint() {
     }
 
-    public Joint(BigDecimal id) {
+    public Joint(Integer id) {
         this.id = id;
     }
 
-    public Joint(BigDecimal id, String nombre, double angulo, BigDecimal tiempo) {
+    public Joint(Integer id, String nombre, double angulo, double tiempo) {
         this.id = id;
         this.nombre = nombre;
         this.angulo = angulo;
         this.tiempo = tiempo;
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -90,11 +89,11 @@ public class Joint implements Serializable {
         this.angulo = angulo;
     }
 
-    public BigDecimal getTiempo() {
+    public double getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(BigDecimal tiempo) {
+    public void setTiempo(double tiempo) {
         this.tiempo = tiempo;
     }
 

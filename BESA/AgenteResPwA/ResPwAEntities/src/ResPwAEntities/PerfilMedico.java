@@ -6,12 +6,12 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,10 +25,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "perfil_medico", catalog = "Res_PwADB", schema = "public")
+@Table(name = "perfil_medico")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PerfilMedico.findAll", query = "SELECT p FROM PerfilMedico p"),
@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PerfilMedico.findByEstadoEnfermedad", query = "SELECT p FROM PerfilMedico p WHERE p.estadoEnfermedad = :estadoEnfermedad"),
     @NamedQuery(name = "PerfilMedico.findByPeriodoVigila", query = "SELECT p FROM PerfilMedico p WHERE p.periodoVigila = :periodoVigila"),
     @NamedQuery(name = "PerfilMedico.findByFast", query = "SELECT p FROM PerfilMedico p WHERE p.fast = :fast"),
-    @NamedQuery(name = "PerfilMedico.findByRiesgoCaida", query = "SELECT p FROM PerfilMedico p WHERE p.riesgoCaida = :riesgoCaida")})
+    @NamedQuery(name = "PerfilMedico.findByRiesgoCaida", query = "SELECT p FROM PerfilMedico p WHERE p.riesgoCaida = :riesgoCaida"),
+    @NamedQuery(name = "PerfilMedico.findBySppb", query = "SELECT p FROM PerfilMedico p WHERE p.sppb = :sppb")})
 public class PerfilMedico implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,37 +51,38 @@ public class PerfilMedico implements Serializable {
     private String perfilPwaCedula;
     @Basic(optional = false)
     @Column(name = "toma_medicamentos")
-    private BigDecimal tomaMedicamentos;
+    private int tomaMedicamentos;
     @Basic(optional = false)
     @Column(name = "discap_auditiva")
-    private BigDecimal discapAuditiva;
+    private int discapAuditiva;
     @Basic(optional = false)
     @Column(name = "discap_visual")
-    private BigDecimal discapVisual;
+    private int discapVisual;
     @Basic(optional = false)
     @Column(name = "discap_motora")
-    private BigDecimal discapMotora;
+    private int discapMotora;
     @Basic(optional = false)
     @Column(name = "estado_enfermedad")
-    private BigDecimal estadoEnfermedad;
+    private int estadoEnfermedad;
     @Basic(optional = false)
     @Column(name = "periodo_vigila")
-    private BigDecimal periodoVigila;
+    private int periodoVigila;
     @Basic(optional = false)
     @Column(name = "fast")
     private int fast;
-    @Basic(optional = false)
     @Column(name = "riesgo_caida")
-    private BigDecimal riesgoCaida;
+    private Integer riesgoCaida;
+    @Column(name = "sppb")
+    private Integer sppb;
     @JoinColumn(name = "causa_demencia_condicion", referencedColumnName = "condicion")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private CausaDemencia causaDemenciaCondicion;
     @JoinColumn(name = "perfil_pwa_cedula", referencedColumnName = "cedula", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     private PerfilPwa perfilPwa;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "medicoPwaCedula")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "medicoPwaCedula", fetch = FetchType.EAGER)
     private List<ActividadRutinaria> actividadRutinariaList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilMedico")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilMedico", fetch = FetchType.EAGER)
     private Cdr cdr;
 
     public PerfilMedico() {
@@ -90,7 +92,7 @@ public class PerfilMedico implements Serializable {
         this.perfilPwaCedula = perfilPwaCedula;
     }
 
-    public PerfilMedico(String perfilPwaCedula, BigDecimal tomaMedicamentos, BigDecimal discapAuditiva, BigDecimal discapVisual, BigDecimal discapMotora, BigDecimal estadoEnfermedad, BigDecimal periodoVigila, int fast, BigDecimal riesgoCaida) {
+    public PerfilMedico(String perfilPwaCedula, int tomaMedicamentos, int discapAuditiva, int discapVisual, int discapMotora, int estadoEnfermedad, int periodoVigila, int fast) {
         this.perfilPwaCedula = perfilPwaCedula;
         this.tomaMedicamentos = tomaMedicamentos;
         this.discapAuditiva = discapAuditiva;
@@ -99,7 +101,6 @@ public class PerfilMedico implements Serializable {
         this.estadoEnfermedad = estadoEnfermedad;
         this.periodoVigila = periodoVigila;
         this.fast = fast;
-        this.riesgoCaida = riesgoCaida;
     }
 
     public String getPerfilPwaCedula() {
@@ -110,51 +111,51 @@ public class PerfilMedico implements Serializable {
         this.perfilPwaCedula = perfilPwaCedula;
     }
 
-    public BigDecimal getTomaMedicamentos() {
+    public int getTomaMedicamentos() {
         return tomaMedicamentos;
     }
 
-    public void setTomaMedicamentos(BigDecimal tomaMedicamentos) {
+    public void setTomaMedicamentos(int tomaMedicamentos) {
         this.tomaMedicamentos = tomaMedicamentos;
     }
 
-    public BigDecimal getDiscapAuditiva() {
+    public int getDiscapAuditiva() {
         return discapAuditiva;
     }
 
-    public void setDiscapAuditiva(BigDecimal discapAuditiva) {
+    public void setDiscapAuditiva(int discapAuditiva) {
         this.discapAuditiva = discapAuditiva;
     }
 
-    public BigDecimal getDiscapVisual() {
+    public int getDiscapVisual() {
         return discapVisual;
     }
 
-    public void setDiscapVisual(BigDecimal discapVisual) {
+    public void setDiscapVisual(int discapVisual) {
         this.discapVisual = discapVisual;
     }
 
-    public BigDecimal getDiscapMotora() {
+    public int getDiscapMotora() {
         return discapMotora;
     }
 
-    public void setDiscapMotora(BigDecimal discapMotora) {
+    public void setDiscapMotora(int discapMotora) {
         this.discapMotora = discapMotora;
     }
 
-    public BigDecimal getEstadoEnfermedad() {
+    public int getEstadoEnfermedad() {
         return estadoEnfermedad;
     }
 
-    public void setEstadoEnfermedad(BigDecimal estadoEnfermedad) {
+    public void setEstadoEnfermedad(int estadoEnfermedad) {
         this.estadoEnfermedad = estadoEnfermedad;
     }
 
-    public BigDecimal getPeriodoVigila() {
+    public int getPeriodoVigila() {
         return periodoVigila;
     }
 
-    public void setPeriodoVigila(BigDecimal periodoVigila) {
+    public void setPeriodoVigila(int periodoVigila) {
         this.periodoVigila = periodoVigila;
     }
 
@@ -166,12 +167,20 @@ public class PerfilMedico implements Serializable {
         this.fast = fast;
     }
 
-    public BigDecimal getRiesgoCaida() {
+    public Integer getRiesgoCaida() {
         return riesgoCaida;
     }
 
-    public void setRiesgoCaida(BigDecimal riesgoCaida) {
+    public void setRiesgoCaida(Integer riesgoCaida) {
         this.riesgoCaida = riesgoCaida;
+    }
+
+    public Integer getSppb() {
+        return sppb;
+    }
+
+    public void setSppb(Integer sppb) {
+        this.sppb = sppb;
     }
 
     public CausaDemencia getCausaDemenciaCondicion() {

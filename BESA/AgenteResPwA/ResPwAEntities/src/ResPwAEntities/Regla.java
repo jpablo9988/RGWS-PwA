@@ -6,11 +6,11 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -21,10 +21,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "regla", catalog = "Res_PwADB", schema = "public")
+@Table(name = "regla")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Regla.findAll", query = "SELECT r FROM Regla r"),
@@ -34,38 +34,37 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Regla implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private BigDecimal id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "feedback")
     private double feedback;
     @Basic(optional = false)
     @Column(name = "etiqueta")
     private String etiqueta;
-    @ManyToMany(mappedBy = "reglaList")
+    @ManyToMany(mappedBy = "reglaList", fetch = FetchType.EAGER)
     private List<Antecedente> antecedenteList;
 
     public Regla() {
     }
 
-    public Regla(BigDecimal id) {
+    public Regla(Integer id) {
         this.id = id;
     }
 
-    public Regla(BigDecimal id, double feedback, String etiqueta) {
+    public Regla(Integer id, double feedback, String etiqueta) {
         this.id = id;
         this.feedback = feedback;
         this.etiqueta = etiqueta;
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

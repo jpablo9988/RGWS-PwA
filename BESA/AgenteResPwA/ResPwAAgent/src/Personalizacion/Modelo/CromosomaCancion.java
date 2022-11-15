@@ -23,7 +23,7 @@ public class CromosomaCancion extends Cromosoma{
     protected void calculateObjectiveValue() {
         objectiveValue = (float) this.cancion.getGusto();
         
-        if ( cancion.getReminiscencia().floatValue()==1f){
+        if ( cancion.getReminiscencia()==1f){
             objectiveValue += 0.4;
         }
     }

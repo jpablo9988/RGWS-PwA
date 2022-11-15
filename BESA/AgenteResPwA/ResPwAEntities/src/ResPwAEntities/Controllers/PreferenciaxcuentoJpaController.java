@@ -22,7 +22,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class PreferenciaXCuentoJpaController implements Serializable {
 
@@ -39,8 +39,8 @@ public class PreferenciaXCuentoJpaController implements Serializable {
         if (preferenciaXCuento.getPreferenciaXCuentoPK() == null) {
             preferenciaXCuento.setPreferenciaXCuentoPK(new PreferenciaXCuentoPK());
         }
-        preferenciaXCuento.getPreferenciaXCuentoPK().setCuentoNombre(preferenciaXCuento.getCuento().getNombre());
         preferenciaXCuento.getPreferenciaXCuentoPK().setPreferenciaPwaCedula(preferenciaXCuento.getPerfilPreferencia().getPerfilPwaCedula());
+        preferenciaXCuento.getPreferenciaXCuentoPK().setCuentoNombre(preferenciaXCuento.getCuento().getNombre());
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -78,8 +78,8 @@ public class PreferenciaXCuentoJpaController implements Serializable {
     }
 
     public void edit(PreferenciaXCuento preferenciaXCuento) throws NonexistentEntityException, Exception {
-        preferenciaXCuento.getPreferenciaXCuentoPK().setCuentoNombre(preferenciaXCuento.getCuento().getNombre());
         preferenciaXCuento.getPreferenciaXCuentoPK().setPreferenciaPwaCedula(preferenciaXCuento.getPerfilPreferencia().getPerfilPwaCedula());
+        preferenciaXCuento.getPreferenciaXCuentoPK().setCuentoNombre(preferenciaXCuento.getCuento().getNombre());
         EntityManager em = null;
         try {
             em = getEntityManager();

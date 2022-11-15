@@ -25,7 +25,8 @@
 topico_emocional = (
      'topic: ~emoTopic()\n'
      'language: spe\n'
-    'concept: (emociones_positivas) [feliz alegre alegria genial bacano bacana chevere rico] \n'
+    'concept: (emociones_positivas) [feliz alegre alegria genia.
+    acano bacana chevere rico] \n'
     'concept: (emociones_tristes) [triste tristeza achantado dolor mal melancolia melancolico aburrido miedo] \n'
     'concept: (emociones_enojo) [ira enojo piedra molestia rabia molesto molesta joda jode jodes mamado mamada quiero azare ] \n'
     'concept: (emociones_normales) [Bien bueno ok alegra agradable "como quiera" nada normal] \n'
@@ -122,13 +123,17 @@ topico_normal = "/data/home/nao/topics/normalTopic.top"
 topico_ayuda = "/data/home/nao/topics/ayudaTopic.top"
 topico_retroCancion = "/data/home/nao/topics/retroCancionTopic.top"
 topico_retroCuento = "/data/home/nao/topics/retroCuentoTopic.top"
+topico_retroEjercicio = "/data/home/nao/topics/Retroejercicio.top"
 topico_saludable = "/data/home/nao/topics/saludaTopic.top"
 topico_sonido = "/data/home/nao/topics/soundTopic.top"
 topico_blank = "/data/home/nao/topics/blankaTopic.top"
+topico_preparacion = "/data/home/nao/topics/Preparacion.top"
+
 
 #topicorron = "/data/home/nao/topics/superTopico.top"
 
 #topic_list = [topic_content_1, topico_alegre, topico_triste, topico_ira, topico_normal, conversacion_musica]
 
-topic_list = [topico_alegre, topico_ira, topic_content_1,topico_ayuda,topico_retroCancion,topico_retroCuento,topico_saludable,topico_triste, topico_blank]
+topic_list = [topico_alegre, topico_ira, topic_content_1,topico_ayuda,topico_retroCancion,topico_retroCuento,
+              topico_retroEjercicio, topico_saludable,topico_triste, topico_blank, topico_preparacion]
 

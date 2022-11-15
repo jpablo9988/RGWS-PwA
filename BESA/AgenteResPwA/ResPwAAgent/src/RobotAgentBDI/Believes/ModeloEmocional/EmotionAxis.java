@@ -4,19 +4,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import javax.persistence.Entity;
 
 public class EmotionAxis {
 
     private final String positiveName;
     private final String negativeName;
-    private float currentValue;
-    private float baseValue;
-    private final Map<String, Float> eventInfluence;
-    private Float forgetFactor = 0.0f;
+    private double currentValue;
+    private double baseValue;
+    private final Map<String, Double> eventInfluence;
+    private double forgetFactor = 0.0f;
     private Date lastForgetUpdateTime;
 
-    public EmotionAxis(String positiveName, String negativeName, float currentValue, float baseValue, Float forgetFactor) {
+    public EmotionAxis(String positiveName, String negativeName, double currentValue, double baseValue, double forgetFactor) {
         this.positiveName = positiveName;
         this.negativeName = negativeName;
         this.forgetFactor = forgetFactor;
@@ -33,69 +32,69 @@ public class EmotionAxis {
         return negativeName;
     }
 
-    public float getCurrentValue() {
-        float newValue = applyForgetFactor(getBaseValue(), currentValue, lastForgetUpdateTime, forgetFactor);
+    public double getCurrentValue() {
+        double newValue = applyForgetFactor(getBaseValue(), currentValue, lastForgetUpdateTime, forgetFactor);
         this.setCurrentValue(newValue);
         return currentValue;
     }
 
-    public float getBaseValue() {
+    public double getBaseValue() {
         return baseValue;
     }
 
-    public float getActivationValue() {
+    public double getActivationValue() {
         return Math.abs(baseValue - getCurrentValue());
     }
 
-    public Float getForgetFactor() {
+    public double getForgetFactor() {
         return forgetFactor;
     }
 
-    public void setForgetFactor(Float forgetFactor) {
+    public void setForgetFactor(double forgetFactor) {
         this.forgetFactor = forgetFactor;
     }
 
-    public final void setCurrentValue(float value) {
+    public final void setCurrentValue(double value) {
         this.currentValue = Utils.checkNegativeOneToOneLimits(value);
         this.lastForgetUpdateTime = new Date();
     }
 
-    public final void setBaseValue(float value) {
+    public final void setBaseValue(double value) {
         this.baseValue = Utils.checkNegativeOneToOneLimits(value);
     }
 
-    public void setEventInfluence(String eventName, float influence) {
+    public void setEventInfluence(String eventName, double influence) {
         eventInfluence.put(eventName, Utils.checkZeroToOneLimits(influence));
     }
 
-    public void setEventInfluences(Map<String, Float> evInfluences) {
+    public void setEventInfluences(Map<String, Double> evInfluences) {
         if (evInfluences != null) {
             Iterator itr = evInfluences.keySet().iterator();
             if (itr != null) {
                 while (itr.hasNext()) {
                     String key = (String) itr.next();
-                    Float value = evInfluences.get(key);
+                    double value = evInfluences.get(key);
                     setEventInfluence(key, value);
                 }
             }
         }
     }
 
-    public Float getEventInfluence(String eventName) {
+    public Double getEventInfluence(String eventName) {
         return eventInfluence.get(eventName);
     }
 
-    public Map<String, Float> getEventInfluences() {
+    public Map<String, Double> getEventInfluences() {
         return eventInfluence;
     }
     public void printEventInfluences(){
-        for (String object : eventInfluence.keySet()) {
-//            System.out.println("Event: "+object+" Object: "+eventInfluence.get(object));
-        }
+        eventInfluence.keySet().forEach(object -> {
+            System.out.println("Event: "+object+" Object: "+eventInfluence.get(object));
+        });
     }
 
-    public void updateIntensity(String event, float intensity) {
-        Float influence = getEventInfluence(event);
+    public void updateIntensity(String event, double intensity) {
+        Double influence = getEventInfluence(event);
         if (influence != null) {
             intensity = influence * intensity;
             setCurrentValue(getCurrentValue() + intensity);
@@ -117,19 +116,19 @@ public class EmotionAxis {
         if (itr != null) {
             while (itr.hasNext()) {
                 String key = (String) itr.next();
-                Float value = eventInfluence.get(key);
+                double value = eventInfluence.get(key);
                 e.setEventInfluence(key, value);
             }
         }
         return e;
     }
 
-    private static float applyForgetFactor(float _baseValue, float _currentValue, Date lastUpdateTime, Float forgetFactor) {
+    private static double applyForgetFactor(double _baseValue, double _currentValue, Date lastUpdateTime, Double forgetFactor) {
         if (forgetFactor != null) {
             Date now = new Date();
             long tDif = now.getTime() - lastUpdateTime.getTime();
-            float slope = ((_baseValue - _currentValue > 0) ? 1 : -1) * forgetFactor / 1000;
-            float value = (slope * tDif) + _currentValue;
+            double slope = ((_baseValue - _currentValue > 0) ? 1 : -1) * forgetFactor / 1000;
+            double value = (slope * tDif) + _currentValue;
 
             if (slope > 0) {
                 if (value > _baseValue) {

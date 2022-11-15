@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -21,10 +22,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "genero", catalog = "Res_PwADB", schema = "public")
+@Table(name = "genero")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Genero.findAll", query = "SELECT g FROM Genero g"),
@@ -36,11 +37,11 @@ public class Genero implements Serializable {
     @Basic(optional = false)
     @Column(name = "genero")
     private String genero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genero")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genero", fetch = FetchType.EAGER)
     private List<Cuento> cuentoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genero")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genero", fetch = FetchType.EAGER)
     private List<Baile> baileList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genero")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genero", fetch = FetchType.EAGER)
     private List<Cancion> cancionList;
 
     public Genero() {

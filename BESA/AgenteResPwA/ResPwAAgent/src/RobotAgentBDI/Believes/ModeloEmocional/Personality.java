@@ -45,7 +45,7 @@ public class Personality {
         eventDesirability.put(event, desirability);
     }
 
-    public Float getElementSemanticValue(EmotionElementType t, String name) {
+    public Double getElementSemanticValue(EmotionElementType t, String name) {
         String val = (String)getList(t).get(name);
         if (val != null) {
             return SemanticDictionary.getInstance().getSemanticValue(t, val);

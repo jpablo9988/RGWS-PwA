@@ -38,11 +38,22 @@ public class TestTask2 extends Task
     @Override
     public void executeTask(Believes parameters)
     {
-        System.out.println("--- Prueba Animacion ---");
+        
+        System.out.println("--- DEBUG: Task ejecutado TestTask2: Prueba Animacion ---");
         RobotAgentBelieves blvs = (RobotAgentBelieves) parameters;
-        infoServicio.put("TAGSDANCE", "SAD");
+
+        //infoServicio.put("SAY", "Estoy ejecutando mi ejercicio.");
+        //ServiceDataRequest srb = null;
+        //srb = ServiceRequestBuilder.buildRequest(VoiceServiceRequestType.SAY, infoServicio);
+        //ResPwaUtils.requestService(srb, blvs);
+        System.out.println("LLAME LA FUNCION.");
+        blvs.getbEstadoInteraccion().setTestPlanDone(true);
+        infoServicio = new HashMap<>();
+        infoServicio.put("TAGSDANCE", "SENTADILLA");
         ServiceDataRequest data = ServiceRequestBuilder.buildRequest(ActivityServiceRequestType.RUNANIMATION, infoServicio);
         ResPwaUtils.requestService(data, blvs);
+        
+        
     }
     @Override
     public void interruptTask(Believes believes) {
@@ -56,7 +67,13 @@ public class TestTask2 extends Task
 
     @Override
     public boolean checkFinish(Believes believes) {
-
+        //Revisar que esté terminado el movimiento.
+        RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
+        if (blvs.getbEstadoInteraccion().getTestPlanDone())
+        {
+            System.out.print("DEBUG: Se está moviendo. Terminado TestTask2");
+            return true;
+        }
         return false;
     }
 

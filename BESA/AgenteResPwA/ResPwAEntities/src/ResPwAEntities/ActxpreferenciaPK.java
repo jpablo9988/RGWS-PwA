@@ -6,21 +6,20 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Embeddable
 public class ActXPreferenciaPK implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "actividad_pwa_id")
-    private BigDecimal actividadPwaId;
+    private int actividadPwaId;
     @Basic(optional = false)
     @Column(name = "preferencia_pwa_cedula")
     private String preferenciaPwaCedula;
@@ -28,16 +27,16 @@ public class ActXPreferenciaPK implements Serializable {
     public ActXPreferenciaPK() {
     }
 
-    public ActXPreferenciaPK(BigDecimal actividadPwaId, String preferenciaPwaCedula) {
+    public ActXPreferenciaPK(int actividadPwaId, String preferenciaPwaCedula) {
         this.actividadPwaId = actividadPwaId;
         this.preferenciaPwaCedula = preferenciaPwaCedula;
     }
 
-    public BigDecimal getActividadPwaId() {
+    public int getActividadPwaId() {
         return actividadPwaId;
     }
 
-    public void setActividadPwaId(BigDecimal actividadPwaId) {
+    public void setActividadPwaId(int actividadPwaId) {
         this.actividadPwaId = actividadPwaId;
     }
 
@@ -52,7 +51,7 @@ public class ActXPreferenciaPK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (actividadPwaId != null ? actividadPwaId.hashCode() : 0);
+        hash += (int) actividadPwaId;
         hash += (preferenciaPwaCedula != null ? preferenciaPwaCedula.hashCode() : 0);
         return hash;
     }
@@ -64,7 +63,7 @@ public class ActXPreferenciaPK implements Serializable {
             return false;
         }
         ActXPreferenciaPK other = (ActXPreferenciaPK) object;
-        if ((this.actividadPwaId == null && other.actividadPwaId != null) || (this.actividadPwaId != null && !this.actividadPwaId.equals(other.actividadPwaId))) {
+        if (this.actividadPwaId != other.actividadPwaId) {
             return false;
         }
         if ((this.preferenciaPwaCedula == null && other.preferenciaPwaCedula != null) || (this.preferenciaPwaCedula != null && !this.preferenciaPwaCedula.equals(other.preferenciaPwaCedula))) {

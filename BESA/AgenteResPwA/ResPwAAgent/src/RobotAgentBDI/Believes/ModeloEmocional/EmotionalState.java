@@ -24,7 +24,7 @@ public class EmotionalState {
         }
     }
 
-    protected void updateEmotions(String event, float intensity) {
+    protected void updateEmotions(String event, double intensity) {
         for (EmotionAxis e : emotions) {
             e.updateIntensity(event, intensity);
         }

@@ -6,11 +6,11 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,10 +23,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "actividad_rutinaria", catalog = "Res_PwADB", schema = "public")
+@Table(name = "actividad_rutinaria")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ActividadRutinaria.findAll", query = "SELECT a FROM ActividadRutinaria a"),
@@ -37,44 +37,43 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ActividadRutinaria implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private BigDecimal id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
     @Column(name = "duracion")
-    private BigDecimal duracion;
+    private double duracion;
     @Basic(optional = false)
     @Column(name = "hora")
     @Temporal(TemporalType.DATE)
     private Date hora;
     @JoinColumn(name = "medico_pwa_cedula", referencedColumnName = "perfil_pwa_cedula")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private PerfilMedico medicoPwaCedula;
 
     public ActividadRutinaria() {
     }
 
-    public ActividadRutinaria(BigDecimal id) {
+    public ActividadRutinaria(Integer id) {
         this.id = id;
     }
 
-    public ActividadRutinaria(BigDecimal id, String nombre, BigDecimal duracion, Date hora) {
+    public ActividadRutinaria(Integer id, String nombre, double duracion, Date hora) {
         this.id = id;
         this.nombre = nombre;
         this.duracion = duracion;
         this.hora = hora;
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -86,11 +85,11 @@ public class ActividadRutinaria implements Serializable {
         this.nombre = nombre;
     }
 
-    public BigDecimal getDuracion() {
+    public double getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(BigDecimal duracion) {
+    public void setDuracion(double duracion) {
         this.duracion = duracion;
     }
 

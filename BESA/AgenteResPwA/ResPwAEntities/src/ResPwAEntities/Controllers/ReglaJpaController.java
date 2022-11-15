@@ -14,7 +14,6 @@ import ResPwAEntities.Antecedente;
 import ResPwAEntities.Controllers.exceptions.NonexistentEntityException;
 import ResPwAEntities.Controllers.exceptions.PreexistingEntityException;
 import ResPwAEntities.Regla;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -22,7 +21,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class ReglaJpaController implements Serializable {
 
@@ -99,7 +98,7 @@ public class ReglaJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                BigDecimal id = regla.getId();
+                Integer id = regla.getId();
                 if (findRegla(id) == null) {
                     throw new NonexistentEntityException("The regla with id " + id + " no longer exists.");
                 }
@@ -112,7 +111,7 @@ public class ReglaJpaController implements Serializable {
         }
     }
 
-    public void destroy(BigDecimal id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -162,7 +161,7 @@ public class ReglaJpaController implements Serializable {
         }
     }
 
-    public Regla findRegla(BigDecimal id) {
+    public Regla findRegla(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Regla.class, id);

@@ -1,0 +1,966 @@
+-----------------------FUNDAMENTALES----------------------------
+-- ACTIVIDAD_PWA: --
+INSERT INTO actividad_pwa
+(
+    id,
+    nombre,
+    tipo, --¿Qué se guarda en tipo?
+    duracion
+)
+VALUES
+(
+    1,
+    'cuenteria',
+    'entretenimiento',
+    5.0
+);
+-- ANTECEDENTE: --
+INSERT INTO antecedente
+(
+    id,
+    etiqueta,
+    valor
+)
+VALUES
+(
+    1,
+    'antecedente_prueba',
+    1
+);
+
+-- CUIDADOR: --
+INSERT INTO cuidador
+(
+    nombre_usuario,
+    contrasena,
+    nombre,
+    correo,
+    celular
+)
+VALUES
+(
+    'juan_cuidador',
+    'jpablo98',
+    'Juan Pablo',
+    'jamorocho98@gmail.com',
+    '3007682470'
+);
+
+-- EMOTIONAXISCONF: --
+INSERT INTO emotion_axis_conf
+(
+    id,
+    positive_name,
+    negative_name,
+    base_value,
+    forget_factor
+)
+VALUES
+(
+    1,
+    'felicidad',
+    'tristeza',
+    10.0,
+    5.0
+);
+
+-- ESTADOCIVIL: --
+INSERT INTO estado_civil
+(
+    tipo_ec
+)
+VALUES
+(
+    's' --Soltero
+);
+-----------------------------
+INSERT INTO estado_civil
+(
+    tipo_ec
+)
+VALUES
+(
+    'c' --Casado
+);
+
+-- FAMILIAR: --
+INSERT INTO familiar
+(
+    id,
+    nombre,
+    parentesco,
+    interes,
+    esta_vivo,
+    nacimiento
+)
+VALUES
+(
+    10909,
+    'Persho Nade-pruh Eva',
+    'Que es parentesco',
+    10.5,
+    TRUE,
+    '19960101'
+);
+
+-- GENERO: --
+INSERT INTO genero
+(
+    genero
+)
+VALUES
+(
+    'Vallenato'
+);
+
+-- JOINT: --
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (0, 'HeadPitch',0.333358,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (1, 'HeadYaw',0.0173742,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (2, 'HipPitch',-0.726057,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (3, 'HipRoll',-0.00359941,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (4, 'KneePitch',-0.00905603,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (5, 'LElbowRoll',-0.110514,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (6, 'LElbowYaw',-1.71537,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (7, 'LHand',0.6942,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (8, 'LShoulderPitch',1.20428,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (9, 'LShoulderRoll',0.113541,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (10, 'LWristYaw',0.0345809,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (11, 'RElbowRoll',0.0923345,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (12, 'RElbowYaw',1.68466,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (13, 'RHand',0.688049,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (14, 'RShoulderPitch',1.20446,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (15, 'RShoulderRoll',-0.117913,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (16, 'RWristYaw',-0.0225847,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (17, 'HeadPitch',-0.22017,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (18, 'HeadYaw',0,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (19, 'HipPitch',0.0733038,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (20, 'HipRoll',0,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (21, 'KneePitch',0,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (22, 'LElbowRoll',-1.22173,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (23, 'LElbowYaw',-1.71042,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (24, 'LHand',0.7,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (25, 'LShoulderPitch',1.51669,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (26, 'LShoulderRoll',0.10821,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (27, 'LWristYaw',0.0349066,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (28, 'RElbowRoll',1.22173,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (29, 'RElbowYaw',1.67552,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (30, 'RHand',0.7,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (31, 'RShoulderPitch',1.53589,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (32, 'RShoulderRoll',-0.115192,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (33, 'RWristYaw',-0.0244346,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (34, 'LElbowRoll',-1.22173,0.36); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (35, 'LShoulderPitch',1.02974,0.36); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (36, 'LShoulderPitch',2.08567,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (37, 'LShoulderPitch',1.02974,1.16); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (38, 'LShoulderPitch',2.08567,1.56); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (39, 'RElbowRoll',1.22173,0.36); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (40, 'RShoulderPitch',2.74312,0.36); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (41, 'RShoulderPitch',1.02974,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (42, 'RShoulderPitch',2.74312,1.16); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (43, 'RShoulderPitch',1.02974,1.56); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (44, 'LElbowRoll',-0.698132,0.36); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (45, 'RElbowRoll',0.698132,0.36); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (46, 'HeadPitch',0.174533,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (47, 'HipPitch',-0.436332,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (48, 'LShoulderPitch',1.309,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (49, 'RShoulderPitch',1.309,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (50, 'HeadPitch',-0.122173,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (51, 'HipPitch',0.0349066,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (52, 'LElbowRoll',-0.959931,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (53, 'RElbowRoll',0.959931,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (54, 'HeadPitch',0,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (55, 'HipPitch',0,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (56, 'LElbowRoll',-0.349066,0.76); 
+INSERT INTO Joint (id,nombre,angulo,tiempo) VALUES (57, 'RElbowRoll',0.349066,0.76);
+
+-- NIVELEDUCATIVO: --
+INSERT INTO nivel_educativo
+(
+    tipo_ne
+)
+VALUES
+(
+    'Alta Educación'
+);
+
+-- REGLA: --
+INSERT INTO regla
+(
+    id,
+    feedback,
+    etiqueta
+)
+VALUES
+(
+    1,
+    1,
+    'Regla prueba'
+);
+
+-- ROBOT: --
+INSERT INTO robot
+(
+    id,
+    nombre
+)
+VALUES
+(
+    1,
+    'pepper'
+);
+
+-- TAG: --
+INSERT INTO tag
+(
+    id,
+    tag
+)
+VALUES
+(
+    1,
+    'tag de prueba'
+);
+-----------------------COMPOSITES----------------------------
+-- EMOCION: --
+INSERT INTO emocion
+(
+    id,
+    imagen,
+    emotional_tag,
+    robot_id
+)
+VALUES
+(
+    0,
+    'VHAPPY',
+    'VHAPPY',
+    1
+);
+
+INSERT INTO emocion
+(
+    id,
+    imagen,
+    emotional_tag,
+    robot_id
+)
+VALUES
+(
+    1,
+    'HAPPY',
+    'HAPPY',
+    1
+);
+
+INSERT INTO emocion
+(
+    id,
+    imagen,
+    emotional_tag,
+    robot_id
+)
+VALUES
+(
+    2,
+    'NORMAL',
+    'NORMAL',
+    1
+);
+
+INSERT INTO emocion
+(
+    id,
+    imagen,
+    emotional_tag,
+    robot_id
+)
+VALUES
+(
+    3,
+    'SAD',
+    'SAD',
+    1
+);
+
+INSERT INTO emocion
+(
+    id,
+    imagen,
+    emotional_tag,
+    robot_id
+)
+VALUES
+(
+    4,
+    'VSAD',
+    'VSAD',
+    1
+);
+
+-- CAUSADEMENCIA: --
+INSERT INTO causa_demencia
+(
+    condicion
+)
+VALUES
+(
+    'alzheimer'
+);
+-- PERFILPWA: --
+INSERT INTO perfil_pwa
+(
+    cedula,
+    nombre,
+    apellido,
+    fecha_nacimiento,
+    pais_nacimiento,
+    profesion,
+    edad,
+    estado_civil_tipo_ec,
+    cuidador_nombre_usuario,
+    nivel_educativo_tipo_ne,
+    tiene_programa_ejercicio
+)
+VALUES
+(
+    '00000001',
+    'Zoiuna',
+    'Pruu-eva',
+    '19400101',
+    'Colombia',
+    'Retirada',
+    80,
+    'c',
+    'juan_cuidador',
+    'Alta Educación',
+    false
+);
+
+-- PERFILMEDICO: --
+INSERT INTO perfil_medico
+(
+    perfil_pwa_cedula,
+    toma_medicamentos,
+    discap_auditiva,
+    discap_visual,
+    discap_motora,
+    estado_enfermedad,
+    periodo_vigila,
+    fast,
+    riesgo_caida,
+    sppb,
+    causa_demencia_condicion
+)
+VALUES
+(
+    '00000001',
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    NULL,
+    NULL,
+    'alzheimer'
+);
+
+-- PERFILPREFERENCIA: --
+INSERT INTO perfil_preferencia
+(
+    perfil_pwa_cedula,
+    nombre_preferido,
+    gusto_karaoke,
+    gusto_musica,
+    gusto_baile,
+    brillo_preferido,
+    vol_preferido
+)
+VALUES
+(
+    '00000001',
+    'Pruehbita',
+    1,
+    3,
+    1,
+    80,
+    80
+);
+--ACCION--
+INSERT INTO accion (id,nombre,emocion_id,tipo) VALUES (0, 'POSTURA',4, 'postura'); 
+INSERT INTO accion (id,nombre,emocion_id,tipo) VALUES (1, 'POSTURA',0, 'postura'); 
+INSERT INTO accion (id,nombre,emocion_id,tipo) VALUES (2, 'caminar',4, 'comando'); 
+INSERT INTO accion (id,nombre,emocion_id,tipo) VALUES (3, 'caminar',0, 'comando'); 
+INSERT INTO accion (id,nombre,emocion_id,tipo) VALUES (4, 'POSTURA',3, 'postura'); 
+INSERT INTO accion (id,nombre,emocion_id,tipo) VALUES (5, 'POSTURA',1, 'postura'); 
+INSERT INTO accion (id,nombre,emocion_id,tipo) VALUES (6, 'POSTURA ',2, 'postura'); 
+-- ACCIONRUTINARIA: --
+INSERT INTO actividad_rutinaria
+(
+    id,
+    nombre,
+    duracion,
+    hora,
+    medico_pwa_cedula
+)
+VALUES
+(
+    1,
+    'cuenteria',
+    5,
+    '20220808',
+    '00000001'
+);
+--ACCIONXJOINT--
+INSERT INTO accion_x_joint
+(
+    joint_id,
+    accion_id
+)
+VALUES
+(
+    1,
+    1
+);
+
+-- ACTXPREFERENCIA: --
+INSERT INTO act_x_preferencia
+(
+    actividad_pwa_id,
+    preferencia_pwa_cedula,
+    activa,
+    gusto,
+    enriq
+)
+VALUES
+(
+    1,
+    '00000001',
+    0,
+    2,
+    'Este campo no esta siendo usado!!!'
+);
+
+-- BAILE: --
+INSERT INTO baile
+(
+    id,
+    nombre,
+    genero
+)
+VALUES
+(
+    1,
+    'Baile prueba',
+    'Vallenato'
+);
+
+-- CANCION: --
+INSERT INTO cancion
+(
+    nombre,
+    url,
+    genero
+)
+VALUES
+(
+    'test song',
+    'https://www.youtube.com/watch?v=vJZp6awlL58',
+    'Vallenato'
+);
+
+-- CDR: --
+INSERT INTO cdr
+(
+    memoria,
+    orientacion,
+    juicio,
+    vida_social,
+    hogar,
+    cuidadopersonal,
+    medico_pwa_cedula
+)
+VALUES
+(
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    '00000001'
+);
+
+-- CUENTO: --
+INSERT INTO cuento
+(
+    autor,
+    nombre,
+    genero
+)
+VALUES
+(
+    'Libro Phalsoh',
+    'Augh-Thor Phalsoh',
+    'Vallenato'
+);
+-- FRASES: --
+INSERT INTO frase
+(
+    orden,
+    cuento_nombre,
+    contenido,
+    emotional_event,
+    accion,
+    url_imagen
+)
+VALUES
+(
+    1,
+    'Augh-Thor Phalsoh',
+    'Hola. Esta este libro esta bajo construcción. El fin!',
+    'Que es emotionalevent?',
+    'Que es accion?',
+    'https://commons.wikimedia.org/wiki/File:Mr._Smiley_Face.svg'
+);
+
+-- ENRIQ: --
+INSERT INTO enriq
+(
+    params,
+    valor,
+    frase_orden,
+    frase_nombre,
+    cancion_nombre
+)
+VALUES
+(
+    'Params?',
+    'Valor es un string??',
+    1,
+    'Augh-Thor Phalsoh',
+    'test song'
+);
+
+-- EVENTINFLUENCE: --
+INSERT INTO event_influence
+(
+    id,
+    event_name,
+    event_influence,
+    emotional_axis_config_id
+)
+VALUES
+(
+    1,
+    'evento_de_prueba',
+    1.0,
+    1
+);
+
+-- FAMILIARES: --
+INSERT INTO familiares
+(
+    perfil_pwa_cedula,
+    familiar_id
+)
+VALUES
+(
+    '00000001',
+    10909
+);
+
+
+-- LISTATAG: --
+INSERT INTO lista_tag
+(
+    cancion_nombre,
+    tag_id
+)
+VALUES
+(
+    'test song',
+    1
+);
+
+-- PREFERENCIAXBAILE: --
+INSERT INTO preferencia_x_baile
+(
+    baile_id,
+    preferencia_pwa_cedula,
+    gusto
+)
+VALUES
+(
+    1,
+    '00000001',
+    2.0
+);
+
+-- PREFERENCIAXCANCION: --
+INSERT INTO preferencia_x_cancion
+(
+    cancion_nombre,
+    preferencia_pwa_cedula,
+    gusto,
+    reminiscencia
+)
+VALUES
+(
+    'test song',
+    '00000001',
+    2.0,
+    1
+);
+
+-- PREFERENCIAXBAILE: --
+INSERT INTO preferencia_x_cuento
+(
+    cuento_nombre,
+    preferencia_pwa_cedula,
+    gusto
+)
+VALUES
+(
+    'Augh-Thor Phalsoh',
+    '00000001',
+    2.0
+);
+
+
+
+-- REGISTROACTIVIDAD: --
+INSERT INTO registro_actividad
+(
+    fecha,
+    perfil_pwa_cedula,
+    tipo,
+    estado_inicial,
+    estado_final,
+    actividad_pwa_id
+)
+VALUES
+(
+    '20220101',
+    '00000001',
+    'entretenimiento',
+    'true',
+    'true',
+    1
+);
+
+-- REGLAXANTECEDENTE: --
+INSERT INTO regla_x_antecedente
+(
+    regla_id,
+    antecedente_id
+)
+VALUES
+(
+    1,
+    1
+);
+
+
+----------------------------------- NUEVOS VALORES: --------------------------------
+-- CATEGORIAENTRENAMIENTO --
+INSERT INTO categoria_entrenamiento(tipo) VALUES ('FuerzaC1');
+INSERT INTO categoria_entrenamiento(tipo) VALUES ('CardiovascularC1');
+INSERT INTO categoria_entrenamiento (tipo) VALUES ('EquilibrioC1');
+INSERT INTO categoria_entrenamiento (tipo) VALUES ('FlexibilidadC1');
+INSERT INTO categoria_entrenamiento(tipo) VALUES ('FuerzaBrazosC1');
+INSERT INTO categoria_entrenamiento(tipo) VALUES ('FuerzaPiernasC1');
+-- DIA --
+INSERT INTO dia (nombre) VALUES('LunesC1');
+INSERT INTO dia (nombre) VALUES('MartesC1');
+INSERT INTO dia (nombre) VALUES('MiercolesC1');
+INSERT INTO dia (nombre) VALUES('JuevesC1');
+INSERT INTO dia (nombre) VALUES('ViernesC1');
+INSERT INTO dia (nombre) VALUES('SabadoC1');
+INSERT INTO dia (nombre) VALUES('DomingoC1');
+-- EJERCICIO --
+----- FUERZA ------
+INSERT INTO Ejercicio (nombre, duracion, necesita_peso, url_video) 
+    VALUES ('MANCUERNA', 10.0, TRUE, 'http://10.195.40.154:49152/content/media/object_id/19/res_id/0');
+INSERT INTO Ejercicio (nombre, duracion, necesita_peso, url_video) 
+    VALUES ('CRUZADO', 10.0, TRUE, 'http://10.195.40.154:49152/content/media/object_id/22/res_id/0');
+INSERT INTO Ejercicio (nombre, duracion,necesita_peso, url_video) 
+    VALUES ('SENTADILLA', 10.0, FALSE, NULL);
+INSERT INTO Ejercicio (nombre, duracion,necesita_peso, url_video) 
+    VALUES ('LIGAH', 15.0, FALSE, NULL);
+--INSERT INTO Ejercicio (nombre, duracion,necesita_peso, url_video) 
+    --VALUES ('LIGAC', 10.0,FALSE, NULL);
+INSERT INTO Ejercicio (nombre, duracion,necesita_peso, url_video) 
+    VALUES ('GIRARTOALLA', 10.0,FALSE, NULL);
+----- CARDIO ----
+INSERT INTO Ejercicio (nombre, duracion,necesita_peso, url_video) 
+    VALUES ('WALK', 10.0,FALSE, NULL);
+----- FLEXIBILIDAD ----
+INSERT INTO Ejercicio (nombre, duracion,necesita_peso, url_video) 
+    VALUES ('ELEVACIONH', 10.0,FALSE, NULL);
+INSERT INTO Ejercicio (nombre, duracion,necesita_peso, url_video) 
+    VALUES ('ELEVACIONV', 15.0,FALSE, NULL);
+INSERT INTO Ejercicio (nombre, duracion,necesita_peso, url_video) 
+    VALUES ('GiRARTRONCO', 10.0,FALSE, NULL);
+INSERT INTO Ejercicio (nombre, duracion,necesita_peso, url_video) 
+    VALUES ('GIRARCABEZA', 10.0,FALSE, NULL);
+    
+ 
+select * from Ejercicio;
+--- INTENSIDAD ---
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('12_Fuerza_C1', 2, 10, NULL, 5, 'FuerzaC1');
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('34_Fuerza_C1', 2, 12, NULL, 5, 'FuerzaC1');
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('56_Fuerza_C1', 3, 12, NULL, 5, 'FuerzaC1');
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('78_Fuerza_C1', 2, 10, NULL, 10, 'FuerzaC1');
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('910_Fuerza_C1', 2, 12, NULL, 10, 'FuerzaC1');
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('1112_Fuerza_C1', 3, 12, NULL, 10, 'FuerzaC1');
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('12_Flexibilidad_C1', 3, 3, NULL, NULL, 'FlexibilidadC1');
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('34_Flexibilidad_C1', 3, 4, NULL, NULL, 'FlexibilidadC1');
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('12_FuerzaBrazos_C1', 3, 3, NULL, NULL, 'FuerzaBrazosC1');
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('34_FuerzaBrazos_C1', 3, 4, NULL, NULL, 'FuerzaBrazosC1');
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('12_Cardiovascular_C1', 2, 1, 20, NULL, 'CardiovascularC1');
+INSERT INTO Intensidad (id, series, repeticiones, duracion_ejercicio, peso, categoria_entrenamiento_tipo)
+    VALUES ('34_Cardiovascular_C1', 2, 1, 300, NULL, 'CardiovascularC1');
+-- PROGRAMAEJERCICIO --
+INSERT INTO programa_ejercicio (nombre) VALUES ('C1');
+-- CATEGORIAENTRENAMIENTOXPROGRAMA --
+INSERT INTO categoria_entrenamiento_x_programa (tipo_categoria,programa_ejercicio_nombre)
+    VALUES('FuerzaC1', 'C1');
+INSERT INTO categoria_entrenamiento_x_programa (tipo_categoria,programa_ejercicio_nombre)
+    VALUES('FuerzaBrazosC1', 'C1');
+INSERT INTO categoria_entrenamiento_x_programa (tipo_categoria,programa_ejercicio_nombre)
+    VALUES('FuerzaPiernasC1', 'C1');
+INSERT INTO categoria_entrenamiento_x_programa (tipo_categoria,programa_ejercicio_nombre)
+    VALUES('CardiovascularC1', 'C1');
+INSERT INTO categoria_entrenamiento_x_programa (tipo_categoria,programa_ejercicio_nombre)
+    VALUES('EquilibrioC1', 'C1');
+INSERT INTO categoria_entrenamiento_x_programa (tipo_categoria,programa_ejercicio_nombre)
+    VALUES('FlexibilidadC1', 'C1');
+-- DIAXPROGRAMAEJERCICIO --
+INSERT INTO dia_x_programa_ejercicio (dia_nombre, programa_ejercicio_nombre, indice_orden)
+    VALUES('LunesC1', 'C1', 1);
+INSERT INTO dia_x_programa_ejercicio (dia_nombre, programa_ejercicio_nombre, indice_orden)
+    VALUES('MartesC1', 'C1', 2);
+INSERT INTO dia_x_programa_ejercicio (dia_nombre, programa_ejercicio_nombre, indice_orden)
+    VALUES('MiercolesC1', 'C1', 3);
+INSERT INTO dia_x_programa_ejercicio (dia_nombre, programa_ejercicio_nombre, indice_orden)
+    VALUES('JuevesC1', 'C1', 4);
+INSERT INTO dia_x_programa_ejercicio (dia_nombre, programa_ejercicio_nombre, indice_orden)
+    VALUES('ViernesC1', 'C1', 5);
+INSERT INTO dia_x_programa_ejercicio (dia_nombre, programa_ejercicio_nombre, indice_orden)
+    VALUES('SabadoC1', 'C1', 6);
+INSERT INTO dia_x_programa_ejercicio (dia_nombre, programa_ejercicio_nombre, indice_orden)
+    VALUES('DomingoC1', 'C1', 7);
+-- DIAXCATEGORIAENTRENAMIENTO --
+-- Lunes --
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('LunesC1', 'FuerzaC1', 1, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('LunesC1', 'FlexibilidadC1', 2, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('LunesC1', 'EquilibrioC1', 3, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('LunesC1', 'CardiovascularC1', 4, false);
+-- Martes --
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('MartesC1', 'EquilibrioC1', 1, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('MartesC1', 'FlexibilidadC1', 2, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('MartesC1', 'CardiovascularC1', 3, false);
+-- Miercoles --
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('MiercolesC1', 'FuerzaC1', 1, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('MiercolesC1', 'FlexibilidadC1', 2, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('MiercolesC1', 'EquilibrioC1', 3, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('MiercolesC1', 'CardiovascularC1', 4, false);
+-- Jueves --
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('JuevesC1', 'EquilibrioC1', 1, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('JuevesC1', 'FlexibilidadC1', 2, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('JuevesC1', 'CardiovascularC1', 3, false);
+-- Viernes --
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('ViernesC1', 'FuerzaBrazosC1', 1, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('ViernesC1', 'FlexibilidadC1', 2, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('ViernesC1', 'CardiovascularC1', 3, false);
+-- Sabado -- 
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('SabadoC1', 'FuerzaPiernasC1', 1, true);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('SabadoC1', 'FlexibilidadC1', 2, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('SabadoC1', 'CardiovascularC1', 3, false);
+-- Domingo --    
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('DomingoC1', 'EquilibrioC1', 1, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('DomingoC1', 'FlexibilidadC1', 2, false);
+INSERT INTO dia_x_categoria_entrenamiento (dia_nombre, categoria_tipo, indice_orden, opcional)
+    VALUES('DomingoC1', 'CardiovascularC1', 3, false);
+    
+-- EJERCICIOXCATEGORIA --
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('MANCUERNA', 'FuerzaC1');
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('MANCUERNA', 'FuerzaBrazosC1');
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('SENTADILLA', 'FuerzaC1');
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('SENTADILLA', 'FuerzaPiernasC1');
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('CRUZADO', 'FuerzaC1');
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('CRUZADO', 'FuerzaBrazosC1');
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('LIGAH', 'FuerzaC1');
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('LIGAH', 'FuerzaBrazosC1');
+--INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    --VALUES('LIGAC', 'FuerzaC1');
+--INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    --VALUES('LIGAC', 'FuerzaBrazosC1');
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('GIRARTOALLA', 'FuerzaC1');
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('GIRARTOALLA', 'FuerzaBrazosC1');
+    
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('WALK', 'CardiovascularC1');
+    
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('ELEVACIONH', 'FlexibilidadC1');    
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('ELEVACIONV', 'FlexibilidadC1');   
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('GiRARTRONCO', 'FlexibilidadC1');    
+INSERT INTO ejercicio_x_categoria (ejercicio_nombre, categoria_tipo)
+    VALUES('GIRARCABEZA', 'FlexibilidadC1');    
+    
+-- FRASEINSPIRACIONAL --
+-- MANCUERNA --
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('MANCUERNA', 'Sube esos brazos!', 1.5, 'happy');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('MANCUERNA', 'Vamos, tu puedes! Lo estas haciendo bien!', 0, 'sad');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('MANCUERNA', 'Hasta me estoy cansando yo!', 3, 'neutral');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('MANCUERNA', 'Con paciencia, subiendo esas mancuernas!', 0, 'angry');
+-- SENTADILLA --
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('SENTADILLA', 'Bajemos el cuerpo!', 0, 'happy');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('SENTADILLA', 'Con toda!', 3, 'sad');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('SENTADILLA', 'Manten tu coro derecho!', 0, 'neutral');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('SENTADILLA', 'Nosotros podemos!', 6, 'angry');
+-- CRUZADO --
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('CRUZADO', 'Cruzemos esos brazos!', 0, 'happy');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('CRUZADO', 'Fuerza y determinacion!', 3, 'sad');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('CRUZADO', 'Uff, uff! Así es!', 6, 'neutral');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('CRUZADO', 'Esto es genial para los brazos!', 0, 'angry');
+    
+-- LIGAH --
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('LIGAH', 'Agarra esa liga con fuerza!', 0, 'happy');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('LIGAH', 'Un gran movimiento horizontal!', 6, 'sad');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+   VALUES ('LIGAH', 'Listo, y un, y dos!', 0, 'neutral');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('LIGAH', 'Somos campeones!', 0, 'angry');
+    
+-- LIGAC --
+--INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    --VALUES ('LIGAC', 'Agarra esa liga con fuerza!', 0, 'happy');
+--INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+   -- VALUES ('LIGAC', 'Super duper, con todo!', 1, 'sad');
+--INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+   -- VALUES ('LIGAC', 'Yo se que tu puedes!', 0, 'neutral');
+--INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+   -- VALUES ('LIGAC', 'Que bien lo haces!', 0, 'angry');
+
+-- GIRARTOALLA --
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('GIRARTOALLA', 'Giremos esa toalla!', 0, 'happy');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('GIRARTOALLA', 'Te mueves como un cisne!', 1, 'sad');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('GIRARTOALLA', 'Estos movimientos son fundamentales', 0, 'neutral');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('GIRARTOALLA', 'Sigue mi paso y todo estará bien!', 0, 'angry');
+    
+-- WALK --
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('WALK', 'Y un, y dos, y tres, y cua!', 0, 'happy');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('WALK', 'Vamos!', 1, 'sad');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('WALK', 'Con ritmo!', 0, 'neutral');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('WALK', 'Usa esas piernas!', 0, 'angry');
+        
+-- ELEVACIONH --
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('ELEVACIONH', 'Elevemonos horizontalmente!', 0, 'happy');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('ELEVACIONH', 'Sigueme!', 1, 'sad');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('ELEVACIONH', 'Esto nos servirá a nuestra flexibilidad!', 0, 'neutral');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('ELEVACIONH', 'Que gran servicio!', 0, 'angry');
+            
+-- ELEVACIONV --
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('ELEVACIONV', 'Elevemonos verticalmente!', 0, 'happy');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('ELEVACIONV', 'Lo estas haciendo del chiras!', 1, 'sad');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('ELEVACIONV', 'Lentamente se gana la carrera!', 0, 'neutral');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('ELEVACIONV', 'Wuhu!', 0, 'angry');
+            
+-- GiRARTRONCO --
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('GiRARTRONCO', 'Giremos ese tronco!', 0, 'happy');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('GiRARTRONCO', 'No como los arboles, nuestro tronco es flexible!', 0, 'sad');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+VALUES ('GiRARTRONCO', 'Que grandes movimientos estamos haciendo!', 0, 'neutral');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('GiRARTRONCO', 'Yahu!', 0, 'angry');
+    
+-- GIRARCABEZA --
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('GIRARCABEZA', 'Giremos esa cabeza!', 0, 'happy');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('GIRARCABEZA', 'Mueve esa cabeza como yo! mira!', 0, 'sad');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('GIRARCABEZA', 'Guau, ni me siento mareado. Tu?', 0, 'neutral');
+INSERT INTO frase_inspiracional (ejercicio, contenidos, tiempo_ejecucion, pwa_emocion) 
+    VALUES ('GIRARCABEZA', 'Encabezante!', 0, 'angry');

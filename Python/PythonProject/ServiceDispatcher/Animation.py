@@ -5,7 +5,7 @@ class Animation:
             # ActivityServices-------------------------------------------------------
             "MACARENA": self.dance_macarena,
             "LAMBADA": self.dance_lambada,
-            "WALK": self.walk_animation,
+                "WALK": self.walk_animation,
             "CELEBRATE": self.celebrate_animation,
             "COMPLETECONV": self.complete_conversation,
             "HAPPINESS": self.happiness_animation,
@@ -29,11 +29,480 @@ class Animation:
             "PENGUIN": self.penguin_animation,
             "FEROCIOUS": self.ferocious_animation,
             "HAPPINESSDANCE": self.happiness_dance_animation,
-            "SAD": self.sad_animation
+            "SAD": self.sad_animation,
+            "SADDER": self.sadder_animation,
+            #ejercicios de fuerza
+            "SENTADILLA": self.sentadilla_animation,
+            "MANCUERNA": self.mancuerna_animation,
+            "CRUZADO": self.cruce_animation,
+            "LIGAH": self.liga_horizontal_animation,
+            "LIGAC": self.liga_cruzado_animation,
+            "GIRARTOALLA": self.girar_toalla_animation,
+            #ejercicios cardio
+            "CAMINATA": self.caminata_animation,
+            #ejercicios estiramiento
+            "ELEVACIONH": self.elevacion_horizontal_animation,
+            "ELEVACIONV": self.elevacion_vertical_animation,
+            "GiRARTRONCO": self.girar_troco_animation,
+            "GIRARCABEZA": self.girar_cabeza_animation,
+            "BRAZOCRUZADO": self.estirar_brazo_animation
         }
 
     def getAnimation(self, animation):
-        return self.__modules.get( animation )
+
+        return self.__modules.get(animation)
+
+
+    #animacion ejercicios de fuerza
+
+    def mancuerna_animation(self, factor=1):
+        names = list()
+        times = list()
+        keys = list()
+
+        names.append("HeadPitch")
+        times.append([4.8])
+        keys.append([0])
+
+        names.append("LElbowRoll")
+        times.append([5.4, 6])
+        keys.append([-1.45735, -0.0261799])
+
+        names.append("LHand")
+        times.append([5.4, 6])
+        keys.append([0, 0.98])
+
+        names.append("LShoulderRoll")
+        times.append([5.4, 6])
+        keys.append([0.270526, 0.0855211])
+
+        names.append("LWristYaw")
+        times.append([5.4, 6])
+        keys.append([-1.0821, 0.0174533])
+
+        names.append("RElbowRoll")
+        times.append([5.4, 6])
+        keys.append([1.45735, 0.0261799])
+
+        names.append("RHand")
+        times.append([5.4, 6])
+        keys.append([0, 0.98])
+
+        names.append("RShoulderRoll")
+        times.append([5.4, 6])
+        keys.append([-0.270526, -0.0855211])
+
+        names.append("RWristYaw")
+        times.append([5.4, 6])
+        keys.append([1.0821, -0.0174533])
+
+        return names, times, keys
+
+    def liga_horizontal_animation(self, factor=1):
+        names = list()
+        times = list()
+        keys = list()
+
+        #establecer posicion
+
+        names.append("LElbowRoll")
+        times.append([0.96])
+        keys.append([-0.0942478])
+
+        names.append("LElbowYaw")
+        times.append([0.96])
+        keys.append([-1.68948])
+
+        names.append("LWristYaw")
+        times.append([0.96])
+        keys.append([0.0261799])
+
+        names.append("RElbowRoll")
+        times.append([0.96])
+        keys.append([0.0942478])
+
+        names.append("RElbowYaw")
+        times.append([0.96])
+        keys.append([1.68948])
+
+        names.append("RWristYaw")
+        times.append([0.96])
+        keys.append([-0.0261799])
+
+        #animacion
+
+        names.append("HeadPitch")
+        times.append([0.96, 4.8])
+        keys.append([-0.00698132, -0.0139626])
+
+        names.append("LHand")
+        times.append([0.96, 6.8])
+        keys.append([0.98, 0.02])
+
+        names.append("LShoulderPitch")
+        times.append([0.96, 7.8, 10.8])
+        keys.append([1.75406, -0.0698132, 1.5708])
+
+        names.append("LShoulderRoll")
+        times.append([0.96, 5.8, 8.8, 9.8])
+        keys.append([0.277507, 0.328122, 1.1397, 0.301942])
+
+        names.append("RHand")
+        times.append([0.96, 6.8])
+        keys.append([0.97, 0.02])
+
+        names.append("RShoulderPitch")
+        times.append([0.96, 7.8, 10.8])
+        keys.append([1.75406, -0.0698132, 1.5708])
+
+        names.append("RShoulderRoll")
+        times.append([0.96, 5.8, 8.8, 9.8])
+        keys.append([-0.277507, -0.328122, -1.1397, -0.301942])
+
+        return names, times, keys
+
+    def liga_cruzado_animation(self, factor=1):
+        names = list()
+        times = list()
+        keys = list()
+
+        names.append("HeadPitch")
+        times.append([4.8])
+        keys.append([0])
+
+        names.append("LElbowRoll")
+        times.append([5.4])
+        keys.append([-0.120428])
+
+        names.append("LHand")
+        times.append([5, 5.4])
+        keys.append([0, 0.98])
+
+        names.append("LShoulderPitch")
+        times.append([5, 5.2, 5.3, 5.4])
+        keys.append([0, -0.565487, 0.45, 1.47306])
+
+        names.append("LShoulderRoll")
+        times.append([5, 5.3, 5.4])
+        keys.append([0.270526, 0.15708, 0.16057])
+
+        names.append("RElbowRoll")
+        times.append([5.2])
+        keys.append([0.0436332])
+
+        names.append("RElbowYaw")
+        times.append([5.2, 5.4])
+        keys.append([0.5, 0.5])
+
+        names.append("RHand")
+        times.append([5, 5.2, 5.4])
+        keys.append([0, 0.02, 0.98])
+
+        names.append("RShoulderPitch")
+        times.append([5, 5.2, 5.3, 5.4])
+        keys.append([0, 0.715585, -0.633555, 1.47131])
+
+        names.append("RShoulderRoll")
+        times.append([5, 5.2, 5.4])
+        keys.append([-0.270526, -0.244346, -0.16057])
+
+        names.append("RWristYaw")
+        times.append([5.2])
+        keys.append([0.0401426])
+
+        return names, times, keys
+
+    def girar_toalla_animation(self, factor=1):
+        names = list()
+        times = list()
+        keys = list()
+
+        names.append("LElbowRoll")
+        times.append([5.8])
+        keys.append([-0.148353])
+
+        names.append("LHand")
+        times.append([5.6])
+        keys.append([0])
+
+        names.append("LShoulderPitch")
+        times.append([5.2, 5.6])
+        keys.append([0.0872665, 0.0820305])
+
+        names.append("LShoulderRoll")
+        times.append([5.2, 5.6])
+        keys.append([0.270526, 0.0733038])
+
+        names.append("LWristYaw")
+        times.append([5.6])
+        keys.append([0.842994])
+
+        names.append("RElbowRoll")
+        times.append([5.8])
+        keys.append([0.148353])
+
+        names.append("RHand")
+        times.append([5.6])
+        keys.append([0])
+
+        names.append("RShoulderPitch")
+        times.append([5.2, 5.6])
+        keys.append([0.0872665, 0.0820305])
+
+        names.append("RShoulderRoll")
+        times.append([5.2, 5.6])
+        keys.append([-0.270526, -0.0733038])
+
+        names.append("RWristYaw")
+        times.append([5.6])
+        keys.append([-1.01753])
+
+        return names, times, keys
+
+    def sentadilla_animation(self, factor=1):
+        names = list()
+        times = list()
+        keys = list()
+
+        names.append("HipPitch")
+        times.append([4.8, 5.2])
+        keys.append([-1.03847, 0.11])
+
+        names.append("KneePitch")
+        times.append([4.8])
+        keys.append([-0.514872])
+
+        # finalizar movimiento
+
+        return names, times, keys
+
+    def cruce_animation(self, factor=1):
+        names = list()
+        times = list()
+        keys = list()
+
+        names.append("LElbowRoll")
+        times.append([2.4, 2.8, 3.6])
+        keys.append([-1.56207, -0.18326, -0.10472])
+
+        names.append("LHand")
+        times.append([2.4])
+        keys.append([0.02])
+
+        names.append("LShoulderPitch")
+        times.append([2])
+        keys.append([1.37881])
+
+        names.append("LShoulderRoll")
+        times.append([1.6, 3.6])
+        keys.append([0.279253, -0.0471239])
+
+        names.append("LWristYaw")
+        times.append([1.2, 3.6])
+        keys.append([-1.32121, 0.00872665])
+
+        names.append("RElbowRoll")
+        times.append([2.4, 2.8, 3.6])
+        keys.append([1.56207, 0.18326, 0.471239])
+
+        names.append("RHand")
+        times.append([2.4])
+        keys.append([0.02])
+
+        names.append("RShoulderPitch")
+        times.append([2])
+        keys.append([1.37881])
+
+        names.append("RShoulderRoll")
+        times.append([1.6])
+        keys.append([-0.279253])
+
+        names.append("RWristYaw")
+        times.append([1.2])
+        keys.append([1.32121])
+
+        return names, times, keys
+
+    #ejercicios cardio
+
+    def caminata_animation(self, factor=1):
+        names = list()
+        times = list()
+        keys = list()
+
+        names.append("HeadPitch")
+        times.append([2.8])
+        keys.append([0.010472])
+
+        names.append("LElbowRoll")
+        times.append([2.8])
+        keys.append([-0.619592])
+
+        names.append("LShoulderPitch")
+        times.append([4.8, 5.8, 7.8, 8.8, 9.8])
+        keys.append([2.08567, 0.898845, 1.75929, 0.694641, 1.74533])
+
+        names.append("LShoulderRoll")
+        times.append([2.8])
+        keys.append([0.258309])
+
+        names.append("RElbowRoll")
+        times.append([2.8])
+        keys.append([0.619592])
+
+        names.append("RShoulderPitch")
+        times.append([3.8, 6.8, 7.8, 8.8])
+        keys.append([0.844739, 1.68424, 0.706858, 1.75755])
+
+        names.append("RShoulderRoll")
+        times.append([2.8])
+        keys.append([-0.258309])
+
+        return names, times, keys
+
+
+    #ejercicios flexibilidad
+
+    def elevacion_horizontal_animation(self, factor=1):
+        names = list()
+        times = list()
+        keys = list()
+
+        names.append("HeadPitch")
+        times.append([3.8])
+        keys.append([0.00174533])
+
+        names.append("LShoulderRoll")
+        times.append([4.8, 5.8, 6.8, 7.8])
+        keys.append([1.56207, 0.253073, 1.56207, 0.165806])
+
+        names.append("RShoulderPitch")
+        times.append([4.8])
+        keys.append([1.75406])
+
+        names.append("RShoulderRoll")
+        times.append([4.8, 5.8, 6.8, 7.8])
+        keys.append([-1.56207, -0.253073, -1.56207, -0.165806])
+
+        return names, times, keys
+
+    def elevacion_vertical_animation(self, factor=1):
+        names = list()
+        times = list()
+        keys = list()
+
+        names.append("HeadPitch")
+        times.append([4.8])
+        keys.append([0.010472])
+
+        names.append("LShoulderPitch")
+        times.append([6.8, 7.8, 8.8, 9.8])
+        keys.append([-0.010472, -1.14494, 0.0244346, 1.57778])
+
+        names.append("LShoulderRoll")
+        times.append([5.8])
+        keys.append([0.261799])
+
+        names.append("RShoulderPitch")
+        times.append([6.8, 7.8, 8.8, 9.8])
+        keys.append([-0.010472, -1.14494, 0.0244346, 1.57778])
+
+        names.append("RShoulderRoll")
+        times.append([5.8])
+        keys.append([-0.261799])
+
+        return names, times, keys
+
+    def girar_troco_animation(self, factor=1):
+
+        names = list()
+        times = list()
+        keys = list()
+
+        # inicio movimiento
+
+        names.append("HeadPitch")
+        times.append([0.96])
+        keys.append([-0.00698132])
+
+        names.append("HipRoll")
+        times.append([1.16, 1.36, 1.56, 1.76, 1.96, 2.16, 2.36, 2.56])
+        keys.append([0.261799, 0.514872, 0.270526, 0.00872665, -0.270526, -0.514872, -0.270526, 0.00872665])
+
+        return names, times, keys
+
+        # finalizar movimiento
+
+    def girar_cabeza_animation(self, factor=1):
+
+        names = list()
+        times = list()
+        keys = list()
+
+        names.append("HeadPitch")
+        times.append([4.8])
+        keys.append([-0.0471239])
+
+        names.append("HeadYaw")
+        times.append([5.2, 5.6, 6, 6.4])
+        keys.append([1.39626, 0, -1.41372, 0])
+
+        return names, times, keys
+
+    def estirar_brazo_animation(self, factor=1):
+
+        names = list()
+        times = list()
+        keys = list()
+
+        names.append("HeadPitch")
+        times.append([0.56, 1.56])
+        keys.append([0.00523599, 0.406662])
+
+        names.append("LElbowRoll")
+        times.append([3.16, 3.36])
+        keys.append([-1.18682, -0.139626])
+
+        names.append("LElbowYaw")
+        times.append([2.96, 3.56])
+        keys.append([-0.230383, -1.57429])
+
+        names.append("LHand")
+        times.append([0.76])
+        keys.append([0.02])
+
+        names.append("LShoulderPitch")
+        times.append([2.36, 2.56, 2.76, 3.76, 3.96])
+        keys.append([1.73311, -0.0122173, -1.89717, 0.00523599, 1.57603])
+
+        names.append("LShoulderRoll")
+        times.append([0.96])
+        keys.append([0.328122])
+
+        names.append("RElbowRoll")
+        times.append([1.72, 1.96])
+        keys.append([1.14843, 0.0488692])
+
+        names.append("RElbowYaw")
+        times.append([1.72, 1.96])
+        keys.append([0.218166, 1.57952])
+
+        names.append("RHand")
+        times.append([0.76])
+        keys.append([0.02])
+
+        names.append("RShoulderPitch")
+        times.append([1.16, 1.36, 1.72, 2.16, 2.36])
+        keys.append([-0.00872665, -1.68424, -1.85005, 0, 1.5708])
+
+        names.append("RShoulderRoll")
+        times.append([0.96])
+        keys.append([-0.328122])
+
+        return names, times, keys
+
+
+    #animaciones generales
 
     def dance_lambada(self, factor=1):
         pass
@@ -112,6 +581,84 @@ class Animation:
         keys.append([0.0296706, 1.33518, 1.33518, 0.0296706])
 
         return names, times, keys
+
+
+    def sadder_animation(self, factor=1):
+        names = list()
+        times = list()
+        keys = list()
+
+        names.append("HeadPitch")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([-0.216421, 0.331613, 0.331613, -0.216421])
+
+        names.append("HeadYaw")
+        times.append([1, 4.96])
+        keys.append([0, 0])
+
+        names.append("HipPitch")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([-0.0261799, -0.162316, -0.162316, -0.0261799])
+
+        names.append("HipRoll")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([0, 0, 0, 0])
+
+        names.append("KneePitch")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([0, 0, 0, 0])
+
+        names.append("LElbowRoll")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([-0.514872, -1.46259, -1.46259, -0.514872])
+
+        names.append("LElbowYaw")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([-1.22173, -1.08734, -1.08734, -1.22173])
+
+        names.append("LHand")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([0.59, 0.9, 0.9, 0.59])
+
+        names.append("LShoulderPitch")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([1.5708, 0.279253, 0.279253, 1.5708])
+
+        names.append("LShoulderRoll")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([0.118682, 0.0925025, 0.0925025, 0.118682])
+
+        names.append("LWristYaw")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([-0.0296706, -1.33518, -1.33518, -0.0296706])
+
+        names.append("RElbowRoll")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([0.514872, 1.46259, 1.46259, 0.514872])
+
+        names.append("RElbowYaw")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([1.22173, 1.08734, 1.08734, 1.22173])
+
+        names.append("RHand")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([0.59, 0.9, 0.9, 0.59])
+
+        names.append("RShoulderPitch")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([1.5708, 0.279253, 0.279253, 1.5708])
+
+        names.append("RShoulderRoll")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([-0.118682, -0.0925025, -0.0925025, -0.118682])
+
+        names.append("RWristYaw")
+        times.append([1, 1.96, 2.96, 4.96])
+        keys.append([0.0296706, 1.33518, 1.33518, 0.0296706])
+
+        return names, times, keys
+
+
 
     def happiness_animation(self, factor=1):
         names = list()
@@ -1804,6 +2351,22 @@ class Animation:
         times = list()
         keys = list()
 
+        names.append("RHand")
+        times.append([0.52, 1.8, 3.52])
+        keys.append([0.469323, 0.18, 0.424699])
+
+        names.append("RShoulderPitch")
+        times.append([0.52, 1.8, 3.52])
+        keys.append([-1.54113, -1.45037, 1.72155])
+
+        names.append("RShoulderRoll")
+        times.append([0.52, 1.8, 3.52])
+        keys.append([-0.0891729, -0.528835, -0.110002])
+
+        names.append("RWristYaw")
+        times.append([0.52, 1.8, 3.52])
+        keys.append([0.567859, -0.00872665, 0.720498])
+
         names.append("LElbowRoll")
         times.append([0.52, 1.8, 3.52])
         keys.append([-0.241403, -0.757473, -0.199155])
@@ -1836,20 +2399,8 @@ class Animation:
         times.append([0.52, 1.8, 3.52])
         keys.append([1.33531, 0.95295, 1.24597])
 
-        names.append("RHand")
-        times.append([0.52, 1.8, 3.52])
-        keys.append([0.469323, 0.18, 0.424699])
 
-        names.append("RShoulderPitch")
-        times.append([0.52, 1.8, 3.52])
-        keys.append([-1.54113, -1.45037, 1.72155])
 
-        names.append("RShoulderRoll")
-        times.append([0.52, 1.8, 3.52])
-        keys.append([-0.0891729, -0.528835, -0.110002])
 
-        names.append("RWristYaw")
-        times.append([0.52, 1.8, 3.52])
-        keys.append([0.567859, -0.00872665, 0.720498])
 
         return names, times, keys

@@ -6,13 +6,12 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,10 +22,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "actividad_pwa", catalog = "Res_PwADB", schema = "public")
+@Table(name = "actividad_pwa")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ActividadPwa.findAll", query = "SELECT a FROM ActividadPwa a"),
@@ -37,11 +36,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class ActividadPwa implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private BigDecimal id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
@@ -50,31 +48,31 @@ public class ActividadPwa implements Serializable {
     private String tipo;
     @Basic(optional = false)
     @Column(name = "duracion")
-    private BigDecimal duracion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "actividadPwa")
+    private double duracion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "actividadPwa", fetch = FetchType.EAGER)
     private List<RegistroActividad> registroActividadList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "actividadPwa")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "actividadPwa", fetch = FetchType.EAGER)
     private List<ActXPreferencia> actXPreferenciaList;
 
     public ActividadPwa() {
     }
 
-    public ActividadPwa(BigDecimal id) {
+    public ActividadPwa(Integer id) {
         this.id = id;
     }
 
-    public ActividadPwa(BigDecimal id, String nombre, String tipo, BigDecimal duracion) {
+    public ActividadPwa(Integer id, String nombre, String tipo, double duracion) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
         this.duracion = duracion;
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -94,11 +92,11 @@ public class ActividadPwa implements Serializable {
         this.tipo = tipo;
     }
 
-    public BigDecimal getDuracion() {
+    public double getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(BigDecimal duracion) {
+    public void setDuracion(double duracion) {
         this.duracion = duracion;
     }
 

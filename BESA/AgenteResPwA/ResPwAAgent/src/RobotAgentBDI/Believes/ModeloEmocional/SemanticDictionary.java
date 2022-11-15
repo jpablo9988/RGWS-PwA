@@ -48,7 +48,7 @@ public class SemanticDictionary {
         return getList(t).values();
     }
 
-    public Float getSemanticValue(EmotionElementType t, String name) {
+    public Double getSemanticValue(EmotionElementType t, String name) {
         Object o = getList(t).get(name);
         if (o != null) {
             return ((SemanticValue) o).getValue();

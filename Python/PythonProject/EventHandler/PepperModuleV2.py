@@ -12,6 +12,7 @@ class pepperModuleV2(object):
     """python class myModule test auto documentation: comment needed to create a new python module"""
 
     def __init__(self, session):
+        print("__init__ de Robot PepperModuleV2 esta corriendo!")
         super(pepperModuleV2, self).__init__()
         self.session = session
 
@@ -155,6 +156,9 @@ class pepperModuleV2(object):
         self.distanceOfTrackedHumanS = self.alProxy.subscriber("Launchpad/DistanceOfTrackedHuman")
         self.distanceOfTrackedHumanS.signal.connect(self.distanceOfTrackedHuman)
 
+        self.closeObjectDetectedS = self.alProxy.subscriber("ALTracker/CloseObjectDetected")
+        self.closeObjectDetectedS.signal.connect(self.closeObjectDetected)
+
         self.obstacleDetectedS = self.alProxy.subscriber("Navigation/AvoidanceNavigator/ObstacleDetected")
         self.obstacleDetectedS.signal.connect(self.obstacleDetected)
 
@@ -234,6 +238,12 @@ class pepperModuleV2(object):
         # The value should be True
         json_params["goToLost"] = value
         send(-1, "rob", json_params, False)
+
+    def closeObjectDetected(self, value):
+        json_params = {}
+        # 1 for detected, 0 for not?
+        json_params["closeObjectDetected"] = value
+        send(-1, "int",json_params,False)
 
     def localizeSuccess(self, value):
         json_params = {}
@@ -461,6 +471,7 @@ class pepperModuleV2(object):
     def distanceOfTrackedHuman(self, value):
         json_params = {}
         # The value is the distance in meters to the tracked human. -1.0 if no one is tracked.
+        # print value
         if (value is not -1):
 
             json_params["distanceOfTrackedHuman"] = value
@@ -519,6 +530,10 @@ class pepperModuleV2(object):
         if sirve:
             if "ayuda" in resultValue:
                 json_params = {"ayudaValue": resultValue}
+            elif "no" in resultValue:
+                json_params = {"preparacionNegacion": resultValue}
+            elif "listo" in resultValue:
+                json_params = {"listoValue": resultValue}
             else:
                 json_params = {"DialogInput": resultValue}
         else:
@@ -547,12 +562,11 @@ class pepperModuleV2(object):
 
     def retroalimentacionFilter(self, value):
 
-        if value == 'uno' or value == 'dos' or value == 'tres' or value == 'cuatro' or  value == 'cinco':
+        if value == 'uno' or value == 'dos' or value == 'tres' or value == 'cuatro' or value == 'cinco':
             self.retroalimentacionCompleta += " " + value
 
         # EL 8 VARIA SEGuN LA CANTIDAD DE PREGUNTAS DE RETROALIMENTACION
-        if (len(self.retroalimentacionCompleta.split()) == 3):
-
+        if len(self.retroalimentacionCompleta.split()) == 3 or len(self.retroalimentacionCompleta.split()) == 2:
             return (True, self.retroalimentacionCompleta)
         else:
             return (False, "")

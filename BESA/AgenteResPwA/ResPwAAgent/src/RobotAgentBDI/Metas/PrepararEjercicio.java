@@ -26,19 +26,21 @@ import java.util.List;
  */
 public class PrepararEjercicio extends GoalBDI {
  
-    private static String descrip = "PrepararEjercicio";
-    public static PrepararEjercicio buildGoal() {
+    private static final String DESCRIP = "PrepararEjercicio";
+    public static PrepararEjercicio buildGoal() 
+    {
 
-        PreguntarPreparacion prg1 = new PreguntarPreparacion("Hola! Voy a hacerte unas preguntas para"
-        + "asegurarme que todo esté listo para hacer nuestro ejercicio de hoy! Estas confortable con la ropa que tienes?");
-        PreguntarPreparacion prg2 = new PreguntarPreparacion("Nuestro cuidador está presente?");
+        PreguntarPreparacion prg = new PreguntarPreparacion("Hola! Voy a hacerte unas preguntas para"
+        + "asegurarme que todo esté listo para hacer nuestro ejercicio de hoy!");
+        List<Task> tarea;
+        tarea = new ArrayList<>();
         Plan rolePlan= new Plan();
-        List<Task> taskList = new ArrayList<>();
-        rolePlan.addTask(prg1);
-        taskList.add(prg1);
-        rolePlan.addTask(prg2,taskList);  
-        RationalRole convEmpRole = new RationalRole(descrip, rolePlan);
-        PrepararEjercicio b= new PrepararEjercicio(InitRESPwA.getPlanID(), convEmpRole, descrip, GoalBDITypes.REQUIREMENT);
+        
+        rolePlan.addTask(prg);
+        tarea.add(prg);
+        
+        RationalRole convEmpRole = new RationalRole(DESCRIP, rolePlan);
+        PrepararEjercicio b = new PrepararEjercicio(InitRESPwA.getPlanID(), convEmpRole, DESCRIP, GoalBDITypes.REQUIREMENT);
         return b;
     }
     public PrepararEjercicio (int id, RationalRole role, String description, GoalBDITypes type) {
@@ -54,9 +56,15 @@ public class PrepararEjercicio extends GoalBDI {
 
     @Override
     public double detectGoal(Believes believes) throws KernellAgentEventExceptionBESA {
-        System.out.println("DEBUG - DETECTAR META: Asegurar preparacion ejercicio.");
+        //System.out.println("DEBUG - DETECTAR META: Asegurar preparacion ejercicio.");
         //TODO: Revisar que se hayan activado los requierimientos de la preparacion de ejercicio.
-        return 100;
+        //TODO: Asegurar funcionalidad de LOGIN -> blvs.getbEstadoInteraccion().isLogged()
+        RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
+        if (!blvs.getbEstadoInteraccion().isSistemaSuspendidoInt() && !blvs.getbEstadoInteraccion().getPreparadoEjercicio()) {
+            //System.out.println("Detecté al ejercicio");
+            return 1;
+        }
+        return 0;
     }
 
     @Override
@@ -68,9 +76,9 @@ public class PrepararEjercicio extends GoalBDI {
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         //System.out.println("Meta ConversarEmpaticamente evaluateContribution");
-        
-        RobotAgentBelieves blvs = (RobotAgentBelieves)stateBDI.getBelieves();
-        return blvs.getbEstadoEmocionalPwA().getTiempoEmocionPredominante() + 1;
+        //TODO: Ver que significa esta evaluación de contribución...?
+        //RobotAgentBelieves blvs = (RobotAgentBelieves)stateBDI.getBelieves();
+        return 1.0;
     }
 
     @Override
@@ -83,6 +91,17 @@ public class PrepararEjercicio extends GoalBDI {
     public boolean goalSucceeded(Believes believes) throws KernellAgentEventExceptionBESA {
         //System.out.println("Meta ConversarEmpaticamente goalSucceeded");
         //TODO: Verificar que se hayan acertado todas las preguntas.
-        return true;
+        RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
+        blvs.getbEstadoInteraccion().resetPreparacionNegada();
+        if ((blvs.getbEstadoInteraccion().getPreparacionNegada())
+                || (blvs.getbEstadoInteraccion().getPreparadoEjercicio()))
+        {
+            blvs.getbEstadoInteraccion().resetPreparacionNegada();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

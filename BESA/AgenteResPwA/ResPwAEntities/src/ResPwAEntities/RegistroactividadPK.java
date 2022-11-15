@@ -6,7 +6,6 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,7 +15,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Embeddable
 public class RegistroActividadPK implements Serializable {
@@ -33,18 +32,18 @@ public class RegistroActividadPK implements Serializable {
     private String tipo;
     @Basic(optional = false)
     @Column(name = "actividad_pwa_id")
-    private BigDecimal actividadPwaId;
+    private int actividadPwaId;
 
     public RegistroActividadPK() {
     }
 
-    public RegistroActividadPK(Date fecha, String perfilPwaCedula, String tipo, BigDecimal actividadPwaId) {
+    public RegistroActividadPK(Date fecha, String perfilPwaCedula, String tipo, int actividadPwaId) {
         this.fecha = fecha;
         this.perfilPwaCedula = perfilPwaCedula;
         this.tipo = tipo;
         this.actividadPwaId = actividadPwaId;
     }
-    public RegistroActividadPK(Date fecha, String tipo) {
+    public RegistroActividadPK(Date fecha,  String tipo) {
         this.fecha = fecha;
         this.tipo = tipo;
     }
@@ -73,11 +72,11 @@ public class RegistroActividadPK implements Serializable {
         this.tipo = tipo;
     }
 
-    public BigDecimal getActividadPwaId() {
+    public int getActividadPwaId() {
         return actividadPwaId;
     }
 
-    public void setActividadPwaId(BigDecimal actividadPwaId) {
+    public void setActividadPwaId(int actividadPwaId) {
         this.actividadPwaId = actividadPwaId;
     }
 
@@ -87,7 +86,7 @@ public class RegistroActividadPK implements Serializable {
         hash += (fecha != null ? fecha.hashCode() : 0);
         hash += (perfilPwaCedula != null ? perfilPwaCedula.hashCode() : 0);
         hash += (tipo != null ? tipo.hashCode() : 0);
-        hash += (actividadPwaId != null ? actividadPwaId.hashCode() : 0);
+        hash += (int) actividadPwaId;
         return hash;
     }
 
@@ -107,7 +106,7 @@ public class RegistroActividadPK implements Serializable {
         if ((this.tipo == null && other.tipo != null) || (this.tipo != null && !this.tipo.equals(other.tipo))) {
             return false;
         }
-        if ((this.actividadPwaId == null && other.actividadPwaId != null) || (this.actividadPwaId != null && !this.actividadPwaId.equals(other.actividadPwaId))) {
+        if (this.actividadPwaId != other.actividadPwaId) {
             return false;
         }
         return true;

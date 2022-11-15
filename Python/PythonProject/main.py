@@ -7,7 +7,7 @@ import sys
 import argparse
 from Utils.Message import messageManager
 from ServiceDispatcher.Robot import Robot
-from Utils.Utils import activities_running, send, callbacks_running
+from Utils.Utils import activities_running, send, callbacks_running, KeyboardThread
 
 
 # ------------------------------------- -------------Functions-----------------------------------------------------------------------
@@ -90,6 +90,7 @@ def my_callback(choice, robot_1):
 
 
 def callFunction(jsonObj):
+    print (jsonObj["methodName"])
     function = robot.getFunction(jsonObj["methodName"])
     params = jsonObj["params"]
 
@@ -121,7 +122,7 @@ def callFunction(jsonObj):
 """---------------------------------------------------------------------------MAIN---------------------------------------------------------------------------------------------"""
 # ----------------------------------------------------------------------------MAIN---------------------------------------------------------------------------------------------
 print("Server starting...pop")
-HOST = '10.195.22.105'  # socket.gethostbyname(socket.gethostname()) # Standard loopback interface             address (localhost)
+HOST = '10.195.22.60'  # socket.gethostbyname(socket.gethostname()) # Standard loopback interface             address (localhost)
 HOST_LOCAL = '127.0.0.1'
 print("Server starting on", HOST_LOCAL)
 PORT = 7896  # Port to listen on (non-privileged ports are > 1023)
@@ -172,5 +173,5 @@ t = threading.Timer(10.0, timer_activities)
 t.start()
 """ Robot class declaration"""
 robot = Robot(app, session)
-kthread = Utils.KeyboardThread(input_cbk=my_callback, robot=robot)
+kthread = KeyboardThread(input_cbk=my_callback, robot=robot)
 receive_request(robot)

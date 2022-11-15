@@ -24,7 +24,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class CuentoJpaController implements Serializable {
 

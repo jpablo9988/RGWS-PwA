@@ -19,7 +19,7 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class ImagenJpaController implements Serializable {
 

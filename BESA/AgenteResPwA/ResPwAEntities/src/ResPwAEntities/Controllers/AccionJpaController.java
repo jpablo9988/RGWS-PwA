@@ -15,7 +15,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import ResPwAEntities.Emocion;
 import ResPwAEntities.Joint;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -23,7 +22,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class AccionJpaController implements Serializable {
 
@@ -123,7 +122,7 @@ public class AccionJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                BigDecimal id = accion.getId();
+                Integer id = accion.getId();
                 if (findAccion(id) == null) {
                     throw new NonexistentEntityException("The accion with id " + id + " no longer exists.");
                 }
@@ -136,7 +135,7 @@ public class AccionJpaController implements Serializable {
         }
     }
 
-    public void destroy(BigDecimal id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -191,7 +190,7 @@ public class AccionJpaController implements Serializable {
         }
     }
 
-    public Accion findAccion(BigDecimal id) {
+    public Accion findAccion(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Accion.class, id);

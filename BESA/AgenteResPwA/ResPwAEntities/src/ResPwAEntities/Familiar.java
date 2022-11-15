@@ -6,12 +6,12 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -26,10 +26,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "familiar", catalog = "Res_PwADB", schema = "public")
+@Table(name = "familiar")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Familiar.findAll", query = "SELECT f FROM Familiar f"),
@@ -42,17 +42,17 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Familiar implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private BigDecimal id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
     @Column(name = "parentesco")
     private String parentesco;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "interes")
     private Double interes;
     @Column(name = "esta_vivo")
@@ -63,27 +63,27 @@ public class Familiar implements Serializable {
     @JoinTable(name = "familiares", joinColumns = {
         @JoinColumn(name = "familiar_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "perfil_pwa_cedula", referencedColumnName = "cedula")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<PerfilPwa> perfilPwaList;
 
     public Familiar() {
     }
 
-    public Familiar(BigDecimal id) {
+    public Familiar(Integer id) {
         this.id = id;
     }
 
-    public Familiar(BigDecimal id, String nombre, String parentesco) {
+    public Familiar(Integer id, String nombre, String parentesco) {
         this.id = id;
         this.nombre = nombre;
         this.parentesco = parentesco;
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -64,7 +64,7 @@ public class PedirAyuda extends GoalBDI {
         if (!blvs.getbEstadoInteraccion().isSistemaSuspendidoInt() && blvs.getbEstadoInteraccion().isLogged() && blvs.getbEstadoInteraccion().isAyudaActividadSolicitada()) {
             return 1;
         }
-        return 0;
+        return 0; //PRUEBA: Detectar siempre meta.
     }
 
     @Override

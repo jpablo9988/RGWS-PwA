@@ -6,10 +6,10 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
@@ -20,10 +20,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "cdr", catalog = "Res_PwADB", schema = "public")
+@Table(name = "cdr")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cdr.findAll", query = "SELECT c FROM Cdr c"),
@@ -39,28 +39,28 @@ public class Cdr implements Serializable {
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @Column(name = "memoria")
-    private BigDecimal memoria;
+    private int memoria;
     @Basic(optional = false)
     @Column(name = "orientacion")
-    private BigDecimal orientacion;
+    private int orientacion;
     @Basic(optional = false)
     @Column(name = "juicio")
-    private BigDecimal juicio;
+    private int juicio;
     @Basic(optional = false)
     @Column(name = "vida_social")
-    private BigDecimal vidaSocial;
+    private int vidaSocial;
     @Basic(optional = false)
     @Column(name = "hogar")
-    private BigDecimal hogar;
+    private int hogar;
     @Basic(optional = false)
     @Column(name = "cuidadopersonal")
-    private BigDecimal cuidadopersonal;
+    private int cuidadopersonal;
     @Id
     @Basic(optional = false)
     @Column(name = "medico_pwa_cedula")
     private String medicoPwaCedula;
     @JoinColumn(name = "medico_pwa_cedula", referencedColumnName = "perfil_pwa_cedula", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     private PerfilMedico perfilMedico;
 
     public Cdr() {
@@ -70,7 +70,7 @@ public class Cdr implements Serializable {
         this.medicoPwaCedula = medicoPwaCedula;
     }
 
-    public Cdr(String medicoPwaCedula, BigDecimal memoria, BigDecimal orientacion, BigDecimal juicio, BigDecimal vidaSocial, BigDecimal hogar, BigDecimal cuidadopersonal) {
+    public Cdr(String medicoPwaCedula, int memoria, int orientacion, int juicio, int vidaSocial, int hogar, int cuidadopersonal) {
         this.medicoPwaCedula = medicoPwaCedula;
         this.memoria = memoria;
         this.orientacion = orientacion;
@@ -80,51 +80,51 @@ public class Cdr implements Serializable {
         this.cuidadopersonal = cuidadopersonal;
     }
 
-    public BigDecimal getMemoria() {
+    public int getMemoria() {
         return memoria;
     }
 
-    public void setMemoria(BigDecimal memoria) {
+    public void setMemoria(int memoria) {
         this.memoria = memoria;
     }
 
-    public BigDecimal getOrientacion() {
+    public int getOrientacion() {
         return orientacion;
     }
 
-    public void setOrientacion(BigDecimal orientacion) {
+    public void setOrientacion(int orientacion) {
         this.orientacion = orientacion;
     }
 
-    public BigDecimal getJuicio() {
+    public int getJuicio() {
         return juicio;
     }
 
-    public void setJuicio(BigDecimal juicio) {
+    public void setJuicio(int juicio) {
         this.juicio = juicio;
     }
 
-    public BigDecimal getVidaSocial() {
+    public int getVidaSocial() {
         return vidaSocial;
     }
 
-    public void setVidaSocial(BigDecimal vidaSocial) {
+    public void setVidaSocial(int vidaSocial) {
         this.vidaSocial = vidaSocial;
     }
 
-    public BigDecimal getHogar() {
+    public int getHogar() {
         return hogar;
     }
 
-    public void setHogar(BigDecimal hogar) {
+    public void setHogar(int hogar) {
         this.hogar = hogar;
     }
 
-    public BigDecimal getCuidadopersonal() {
+    public int getCuidadopersonal() {
         return cuidadopersonal;
     }
 
-    public void setCuidadopersonal(BigDecimal cuidadopersonal) {
+    public void setCuidadopersonal(int cuidadopersonal) {
         this.cuidadopersonal = cuidadopersonal;
     }
 

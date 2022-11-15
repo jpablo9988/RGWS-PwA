@@ -6,11 +6,11 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -21,10 +21,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "tag", catalog = "Res_PwADB", schema = "public")
+@Table(name = "tag")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tag.findAll", query = "SELECT t FROM Tag t"),
@@ -33,34 +33,33 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Tag implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private BigDecimal id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "tag")
     private String tag;
-    @ManyToMany(mappedBy = "tagList")
+    @ManyToMany(mappedBy = "tagList", fetch = FetchType.EAGER)
     private List<Cancion> cancionList;
 
     public Tag() {
     }
 
-    public Tag(BigDecimal id) {
+    public Tag(Integer id) {
         this.id = id;
     }
 
-    public Tag(BigDecimal id, String tag) {
+    public Tag(Integer id, String tag) {
         this.id = id;
         this.tag = tag;
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

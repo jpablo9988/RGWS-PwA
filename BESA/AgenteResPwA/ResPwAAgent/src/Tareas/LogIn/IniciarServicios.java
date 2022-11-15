@@ -36,10 +36,10 @@ public class IniciarServicios extends Task {
         System.out.println("--- Execute Task Iniciar Servicios ---");
         ServiceDataRequest srb = null;
         RobotAgentBelieves blvs = (RobotAgentBelieves) parameters;
-
+        /*
         infoServicio.put("SAY", "Iniciando servicios");
         srb = ServiceRequestBuilder.buildRequest(VoiceServiceRequestType.SAY, infoServicio);
-        ResPwaUtils.requestService(srb, blvs);
+        ResPwaUtils.requestService(srb, blvs);*/
 
         infoServicio = new HashMap<>();
         infoServicio.put("ACTIVATE", true);
@@ -124,7 +124,7 @@ public class IniciarServicios extends Task {
         infoServicio.put("SETTABLETVOL", blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getVolPreferido());//depende perfil del usuario 1-15
         srb = ServiceRequestBuilder.buildRequest(TabletServiceRequestType.SETTABLETVOL, infoServicio);
         ResPwaUtils.requestService(srb,blvs);
-        infoServicio = new HashMap<>();
+        infoServicio = new HashMap<>(); // servicio error por python.
         
         infoServicio = new HashMap<>();
         infoServicio.put("SETSAYVOLUMEN", blvs.getbPerfilPwA().getPerfil().getPerfilPreferencia().getVolPreferido());//depende perfil del usuario 0-1.0
@@ -136,7 +136,7 @@ public class IniciarServicios extends Task {
         srb = ServiceRequestBuilder.buildRequest(VoiceServiceRequestType.ACTIVATEVOICEEMOANAL, infoServicio);
         ResPwaUtils.requestService(srb,blvs);
 
-        ResPwaUtils.activateTopic(PepperTopicsNames.SALUDARTOPIC, parameters);
+        // -- ResPwaUtils.activateTopic(PepperTopicsNames.SALUDARTOPIC, parameters);
 
         blvs.getbEstadoInteraccion().setConfirmarActServicios(true);
 

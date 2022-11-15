@@ -9,18 +9,19 @@ import ResPwAEntities.Controllers.exceptions.NonexistentEntityException;
 import ResPwAEntities.Controllers.exceptions.PreexistingEntityException;
 import ResPwAEntities.Familiar;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import ResPwAEntities.PerfilPwa;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class FamiliarJpaController implements Serializable {
 
@@ -34,11 +35,24 @@ public class FamiliarJpaController implements Serializable {
     }
 
     public void create(Familiar familiar) throws PreexistingEntityException, Exception {
+        if (familiar.getPerfilPwaList() == null) {
+            familiar.setPerfilPwaList(new ArrayList<PerfilPwa>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            List<PerfilPwa> attachedPerfilPwaList = new ArrayList<PerfilPwa>();
+            for (PerfilPwa perfilPwaListPerfilPwaToAttach : familiar.getPerfilPwaList()) {
+                perfilPwaListPerfilPwaToAttach = em.getReference(perfilPwaListPerfilPwaToAttach.getClass(), perfilPwaListPerfilPwaToAttach.getCedula());
+                attachedPerfilPwaList.add(perfilPwaListPerfilPwaToAttach);
+            }
+            familiar.setPerfilPwaList(attachedPerfilPwaList);
             em.persist(familiar);
+            for (PerfilPwa perfilPwaListPerfilPwa : familiar.getPerfilPwaList()) {
+                perfilPwaListPerfilPwa.getFamiliarList().add(familiar);
+                perfilPwaListPerfilPwa = em.merge(perfilPwaListPerfilPwa);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findFamiliar(familiar.getId()) != null) {
@@ -57,12 +71,34 @@ public class FamiliarJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Familiar persistentFamiliar = em.find(Familiar.class, familiar.getId());
+            List<PerfilPwa> perfilPwaListOld = persistentFamiliar.getPerfilPwaList();
+            List<PerfilPwa> perfilPwaListNew = familiar.getPerfilPwaList();
+            List<PerfilPwa> attachedPerfilPwaListNew = new ArrayList<PerfilPwa>();
+            for (PerfilPwa perfilPwaListNewPerfilPwaToAttach : perfilPwaListNew) {
+                perfilPwaListNewPerfilPwaToAttach = em.getReference(perfilPwaListNewPerfilPwaToAttach.getClass(), perfilPwaListNewPerfilPwaToAttach.getCedula());
+                attachedPerfilPwaListNew.add(perfilPwaListNewPerfilPwaToAttach);
+            }
+            perfilPwaListNew = attachedPerfilPwaListNew;
+            familiar.setPerfilPwaList(perfilPwaListNew);
             familiar = em.merge(familiar);
+            for (PerfilPwa perfilPwaListOldPerfilPwa : perfilPwaListOld) {
+                if (!perfilPwaListNew.contains(perfilPwaListOldPerfilPwa)) {
+                    perfilPwaListOldPerfilPwa.getFamiliarList().remove(familiar);
+                    perfilPwaListOldPerfilPwa = em.merge(perfilPwaListOldPerfilPwa);
+                }
+            }
+            for (PerfilPwa perfilPwaListNewPerfilPwa : perfilPwaListNew) {
+                if (!perfilPwaListOld.contains(perfilPwaListNewPerfilPwa)) {
+                    perfilPwaListNewPerfilPwa.getFamiliarList().add(familiar);
+                    perfilPwaListNewPerfilPwa = em.merge(perfilPwaListNewPerfilPwa);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                BigDecimal id = familiar.getId();
+                Integer id = familiar.getId();
                 if (findFamiliar(id) == null) {
                     throw new NonexistentEntityException("The familiar with id " + id + " no longer exists.");
                 }
@@ -75,7 +111,7 @@ public class FamiliarJpaController implements Serializable {
         }
     }
 
-    public void destroy(BigDecimal id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -86,6 +122,11 @@ public class FamiliarJpaController implements Serializable {
                 familiar.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The familiar with id " + id + " no longer exists.", enfe);
+            }
+            List<PerfilPwa> perfilPwaList = familiar.getPerfilPwaList();
+            for (PerfilPwa perfilPwaListPerfilPwa : perfilPwaList) {
+                perfilPwaListPerfilPwa.getFamiliarList().remove(familiar);
+                perfilPwaListPerfilPwa = em.merge(perfilPwaListPerfilPwa);
             }
             em.remove(familiar);
             em.getTransaction().commit();
@@ -120,7 +161,7 @@ public class FamiliarJpaController implements Serializable {
         }
     }
 
-    public Familiar findFamiliar(BigDecimal id) {
+    public Familiar findFamiliar(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Familiar.class, id);

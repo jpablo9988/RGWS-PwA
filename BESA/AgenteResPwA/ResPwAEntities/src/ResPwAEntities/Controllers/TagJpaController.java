@@ -14,7 +14,6 @@ import ResPwAEntities.Cancion;
 import ResPwAEntities.Controllers.exceptions.NonexistentEntityException;
 import ResPwAEntities.Controllers.exceptions.PreexistingEntityException;
 import ResPwAEntities.Tag;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -22,7 +21,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class TagJpaController implements Serializable {
 
@@ -99,7 +98,7 @@ public class TagJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                BigDecimal id = tag.getId();
+                Integer id = tag.getId();
                 if (findTag(id) == null) {
                     throw new NonexistentEntityException("The tag with id " + id + " no longer exists.");
                 }
@@ -112,7 +111,7 @@ public class TagJpaController implements Serializable {
         }
     }
 
-    public void destroy(BigDecimal id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -162,7 +161,7 @@ public class TagJpaController implements Serializable {
         }
     }
 
-    public Tag findTag(BigDecimal id) {
+    public Tag findTag(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Tag.class, id);

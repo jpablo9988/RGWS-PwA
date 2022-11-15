@@ -36,14 +36,21 @@ public class TestTask extends Task {
     @Override
     public void executeTask(Believes parameters)
     {
-        System.out.println("--- Execute Task - Test Task ---");
+        System.out.println("--- DEBUG: Execute Task - Test Task ---");
+        System.out.println("--- DEBUG: -- Se repitio??? ---");
         RobotAgentBelieves blvs = (RobotAgentBelieves) parameters;
-        ResPwaUtils.activateTopic( PepperTopicsNames.ALEGRETOPIC, blvs); //Cambiar a Topico de Prueba
-        ServiceDataRequest srb = null;
+        infoServicio = new HashMap<>();
+        infoServicio.put("TAGSDANCE", "MANCUERNA");
+        ServiceDataRequest data = ServiceRequestBuilder.buildRequest(ActivityServiceRequestType.RUNANIMATION, infoServicio);
+        ResPwaUtils.requestService(data, blvs);
         // Decir oración terminada!
-        infoServicio.put("SAY", "Ahem. He terminado mi primera tarea! Guau!");
+        infoServicio.put("SAY", "Oh dios mio santisimo y virgen, estoy haciendo un ejercicio. Un. dos. tres. c u a t r o.");
+        ServiceDataRequest srb = null;
         srb = ServiceRequestBuilder.buildRequest(VoiceServiceRequestType.SAY, infoServicio);
+        ResPwaUtils.activateTopic( PepperTopicsNames.AYUDATOPIC, blvs); //Cambiar a Topico de Prueba
+        infoServicio = new HashMap<>(); //Reset infoServicio...
         ResPwaUtils.requestService(srb, blvs);
+        
     }
     @Override
     public void interruptTask(Believes believes) {
@@ -59,10 +66,24 @@ public class TestTask extends Task {
 
     @Override
     public boolean checkFinish(Believes believes) {
+        //System.out.println("--- DEBUG: TestTask Revisado. ---");
         RobotAgentBelieves blvs = (RobotAgentBelieves) believes;
-        if (!blvs.getbEstadoInteraccion().isEstaHablando())
+        
+        System.out.println("Sigue el Topico Activado:" + (blvs.getbEstadoInteraccion().isTopicoActivo(PepperTopicsNames.AYUDATOPIC)));
+        System.out.println("---------------------------------");
+        /*
+        System.out.println("He recibido respuestadePWA?" + blvs.getbEstadoInteraccion().isRecibirRespuestaPwA());
+        System.out.println("---------------------------------");
+        System.out.println("Estas son mis respuestas por contexto" +  blvs.getbEstadoInteraccion().getRespuestasPorContexto());
+        System.out.println("---------------------------------");
+        */
+        if (!blvs.getbEstadoInteraccion().isEstaHablando() && ((blvs.getbEstadoInteraccion().isTopicoActivo(PepperTopicsNames.AYUDATOPIC)))
+                && blvs.getbEstadoInteraccion().isRecibirRespuestaPwA() && blvs.getbEstadoInteraccion().getRespuestasPorContexto() >= 1)
         {
-            ResPwaUtils.deactivateTopic(PepperTopicsNames.ALEGRETOPIC, believes);
+            ResPwaUtils.deactivateTopic(PepperTopicsNames.AYUDATOPIC, believes);
+            blvs.getbEstadoInteraccion().setRespuestasPorContexto(0);
+            blvs.getbEstadoInteraccion().setRecibirRespuestaPwA(false);
+            System.out.println("--- TESTASK_1_Terminado ---");
             return true;
         }
         return false;

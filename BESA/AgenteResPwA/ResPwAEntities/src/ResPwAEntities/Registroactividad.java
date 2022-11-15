@@ -6,12 +6,12 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -21,10 +21,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "registro_actividad", catalog = "Res_PwADB", schema = "public")
+@Table(name = "registro_actividad")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RegistroActividad.findAll", query = "SELECT r FROM RegistroActividad r"),
@@ -46,10 +46,10 @@ public class RegistroActividad implements Serializable {
     @Column(name = "estado_final")
     private String estadoFinal;
     @JoinColumn(name = "actividad_pwa_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private ActividadPwa actividadPwa;
     @JoinColumn(name = "perfil_pwa_cedula", referencedColumnName = "cedula", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private PerfilPwa perfilPwa;
 
     public RegistroActividad() {
@@ -65,7 +65,7 @@ public class RegistroActividad implements Serializable {
         this.estadoFinal = estadoFinal;
     }
 
-    public RegistroActividad(Date fecha, String perfilPwaCedula, String tipo, BigDecimal actividadPwaId) {
+    public RegistroActividad(Date fecha, String perfilPwaCedula, String tipo, int actividadPwaId) {
         this.registroActividadPK = new RegistroActividadPK(fecha, perfilPwaCedula, tipo, actividadPwaId);
     }
 

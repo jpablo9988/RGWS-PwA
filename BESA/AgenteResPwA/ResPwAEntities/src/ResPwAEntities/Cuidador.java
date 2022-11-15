@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -21,10 +22,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "cuidador", catalog = "Res_PwADB", schema = "public")
+@Table(name = "cuidador")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cuidador.findAll", query = "SELECT c FROM Cuidador c"),
@@ -52,7 +53,7 @@ public class Cuidador implements Serializable {
     @Basic(optional = false)
     @Column(name = "celular")
     private String celular;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuidadorNombreUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuidadorNombreUsuario", fetch = FetchType.EAGER)
     private List<PerfilPwa> perfilPwaList;
 
     public Cuidador() {

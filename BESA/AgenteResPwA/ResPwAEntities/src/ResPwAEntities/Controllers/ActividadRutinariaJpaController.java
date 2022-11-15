@@ -14,14 +14,13 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import ResPwAEntities.PerfilMedico;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class ActividadRutinariaJpaController implements Serializable {
 
@@ -87,7 +86,7 @@ public class ActividadRutinariaJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                BigDecimal id = actividadRutinaria.getId();
+                Integer id = actividadRutinaria.getId();
                 if (findActividadRutinaria(id) == null) {
                     throw new NonexistentEntityException("The actividadRutinaria with id " + id + " no longer exists.");
                 }
@@ -100,7 +99,7 @@ public class ActividadRutinariaJpaController implements Serializable {
         }
     }
 
-    public void destroy(BigDecimal id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -150,7 +149,7 @@ public class ActividadRutinariaJpaController implements Serializable {
         }
     }
 
-    public ActividadRutinaria findActividadRutinaria(BigDecimal id) {
+    public ActividadRutinaria findActividadRutinaria(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(ActividadRutinaria.class, id);

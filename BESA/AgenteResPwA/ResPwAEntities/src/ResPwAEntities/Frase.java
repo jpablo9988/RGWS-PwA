@@ -6,13 +6,13 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -24,10 +24,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "frase", catalog = "Res_PwADB", schema = "public")
+@Table(name = "frase")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Frase.findAll", query = "SELECT f FROM Frase f"),
@@ -51,14 +51,11 @@ public class Frase implements Serializable {
     private String accion;
     @Column(name = "url_imagen")
     private String urlImagen;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frase")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "frase", fetch = FetchType.EAGER)
     private List<Enriq> enriqList;
     @JoinColumn(name = "cuento_nombre", referencedColumnName = "nombre", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Cuento cuento;
-    @JoinColumn(name = "rutina_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Rutina rutinaId;
 
     public Frase() {
     }
@@ -72,7 +69,7 @@ public class Frase implements Serializable {
         this.contenido = contenido;
     }
 
-    public Frase(BigDecimal orden, String cuentoNombre) {
+    public Frase(int orden, String cuentoNombre) {
         this.frasePK = new FrasePK(orden, cuentoNombre);
     }
 
@@ -131,14 +128,6 @@ public class Frase implements Serializable {
 
     public void setCuento(Cuento cuento) {
         this.cuento = cuento;
-    }
-
-    public Rutina getRutinaId() {
-        return rutinaId;
-    }
-
-    public void setRutinaId(Rutina rutinaId) {
-        this.rutinaId = rutinaId;
     }
 
     @Override

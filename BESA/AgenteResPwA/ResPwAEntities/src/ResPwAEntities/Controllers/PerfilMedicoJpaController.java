@@ -11,6 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import ResPwAEntities.CausaDemencia;
+import ResPwAEntities.PerfilPwa;
 import ResPwAEntities.Cdr;
 import ResPwAEntities.ActividadRutinaria;
 import ResPwAEntities.Controllers.exceptions.IllegalOrphanException;
@@ -24,7 +25,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class PerfilMedicoJpaController implements Serializable {
 
@@ -37,9 +38,23 @@ public class PerfilMedicoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(PerfilMedico perfilMedico) throws PreexistingEntityException, Exception {
+    public void create(PerfilMedico perfilMedico) throws IllegalOrphanException, PreexistingEntityException, Exception {
         if (perfilMedico.getActividadRutinariaList() == null) {
             perfilMedico.setActividadRutinariaList(new ArrayList<ActividadRutinaria>());
+        }
+        List<String> illegalOrphanMessages = null;
+        PerfilPwa perfilPwaOrphanCheck = perfilMedico.getPerfilPwa();
+        if (perfilPwaOrphanCheck != null) {
+            PerfilMedico oldPerfilMedicoOfPerfilPwa = perfilPwaOrphanCheck.getPerfilMedico();
+            if (oldPerfilMedicoOfPerfilPwa != null) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("The PerfilPwa " + perfilPwaOrphanCheck + " already has an item of type PerfilMedico whose perfilPwa column cannot be null. Please make another selection for the perfilPwa field.");
+            }
+        }
+        if (illegalOrphanMessages != null) {
+            throw new IllegalOrphanException(illegalOrphanMessages);
         }
         EntityManager em = null;
         try {
@@ -49,6 +64,11 @@ public class PerfilMedicoJpaController implements Serializable {
             if (causaDemenciaCondicion != null) {
                 causaDemenciaCondicion = em.getReference(causaDemenciaCondicion.getClass(), causaDemenciaCondicion.getCondicion());
                 perfilMedico.setCausaDemenciaCondicion(causaDemenciaCondicion);
+            }
+            PerfilPwa perfilPwa = perfilMedico.getPerfilPwa();
+            if (perfilPwa != null) {
+                perfilPwa = em.getReference(perfilPwa.getClass(), perfilPwa.getCedula());
+                perfilMedico.setPerfilPwa(perfilPwa);
             }
             Cdr cdr = perfilMedico.getCdr();
             if (cdr != null) {
@@ -65,6 +85,10 @@ public class PerfilMedicoJpaController implements Serializable {
             if (causaDemenciaCondicion != null) {
                 causaDemenciaCondicion.getPerfilMedicoList().add(perfilMedico);
                 causaDemenciaCondicion = em.merge(causaDemenciaCondicion);
+            }
+            if (perfilPwa != null) {
+                perfilPwa.setPerfilMedico(perfilMedico);
+                perfilPwa = em.merge(perfilPwa);
             }
             if (cdr != null) {
                 PerfilMedico oldPerfilMedicoOfCdr = cdr.getPerfilMedico();
@@ -105,11 +129,22 @@ public class PerfilMedicoJpaController implements Serializable {
             PerfilMedico persistentPerfilMedico = em.find(PerfilMedico.class, perfilMedico.getPerfilPwaCedula());
             CausaDemencia causaDemenciaCondicionOld = persistentPerfilMedico.getCausaDemenciaCondicion();
             CausaDemencia causaDemenciaCondicionNew = perfilMedico.getCausaDemenciaCondicion();
+            PerfilPwa perfilPwaOld = persistentPerfilMedico.getPerfilPwa();
+            PerfilPwa perfilPwaNew = perfilMedico.getPerfilPwa();
             Cdr cdrOld = persistentPerfilMedico.getCdr();
             Cdr cdrNew = perfilMedico.getCdr();
             List<ActividadRutinaria> actividadRutinariaListOld = persistentPerfilMedico.getActividadRutinariaList();
             List<ActividadRutinaria> actividadRutinariaListNew = perfilMedico.getActividadRutinariaList();
             List<String> illegalOrphanMessages = null;
+            if (perfilPwaNew != null && !perfilPwaNew.equals(perfilPwaOld)) {
+                PerfilMedico oldPerfilMedicoOfPerfilPwa = perfilPwaNew.getPerfilMedico();
+                if (oldPerfilMedicoOfPerfilPwa != null) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("The PerfilPwa " + perfilPwaNew + " already has an item of type PerfilMedico whose perfilPwa column cannot be null. Please make another selection for the perfilPwa field.");
+                }
+            }
             if (cdrOld != null && !cdrOld.equals(cdrNew)) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
@@ -131,6 +166,10 @@ public class PerfilMedicoJpaController implements Serializable {
                 causaDemenciaCondicionNew = em.getReference(causaDemenciaCondicionNew.getClass(), causaDemenciaCondicionNew.getCondicion());
                 perfilMedico.setCausaDemenciaCondicion(causaDemenciaCondicionNew);
             }
+            if (perfilPwaNew != null) {
+                perfilPwaNew = em.getReference(perfilPwaNew.getClass(), perfilPwaNew.getCedula());
+                perfilMedico.setPerfilPwa(perfilPwaNew);
+            }
             if (cdrNew != null) {
                 cdrNew = em.getReference(cdrNew.getClass(), cdrNew.getMedicoPwaCedula());
                 perfilMedico.setCdr(cdrNew);
@@ -150,6 +189,14 @@ public class PerfilMedicoJpaController implements Serializable {
             if (causaDemenciaCondicionNew != null && !causaDemenciaCondicionNew.equals(causaDemenciaCondicionOld)) {
                 causaDemenciaCondicionNew.getPerfilMedicoList().add(perfilMedico);
                 causaDemenciaCondicionNew = em.merge(causaDemenciaCondicionNew);
+            }
+            if (perfilPwaOld != null && !perfilPwaOld.equals(perfilPwaNew)) {
+                perfilPwaOld.setPerfilMedico(null);
+                perfilPwaOld = em.merge(perfilPwaOld);
+            }
+            if (perfilPwaNew != null && !perfilPwaNew.equals(perfilPwaOld)) {
+                perfilPwaNew.setPerfilMedico(perfilMedico);
+                perfilPwaNew = em.merge(perfilPwaNew);
             }
             if (cdrNew != null && !cdrNew.equals(cdrOld)) {
                 PerfilMedico oldPerfilMedicoOfCdr = cdrNew.getPerfilMedico();
@@ -222,6 +269,11 @@ public class PerfilMedicoJpaController implements Serializable {
             if (causaDemenciaCondicion != null) {
                 causaDemenciaCondicion.getPerfilMedicoList().remove(perfilMedico);
                 causaDemenciaCondicion = em.merge(causaDemenciaCondicion);
+            }
+            PerfilPwa perfilPwa = perfilMedico.getPerfilPwa();
+            if (perfilPwa != null) {
+                perfilPwa.setPerfilMedico(null);
+                perfilPwa = em.merge(perfilPwa);
             }
             em.remove(perfilMedico);
             em.getTransaction().commit();

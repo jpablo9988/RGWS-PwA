@@ -1,0 +1,8 @@
+topic: ~Retroejercicio()
+         language: spe
+         concept: (califica) [uno dos tres]
+         u: (e:Dialog/NotSpeaking5) Hemos terminado nuestra 
+        rutina de hoy,felicitaciones. Si no te molesta, te 
+        tengo unas preguntas para tí. De uno a tres ¿Te ha gustado la rutina de hoy?
+                   u1:(_~califica) Perfecto. De uno a tres, ¿Que tan cansado te sentiste realizando el ejercicio?
+                       	u2:(_~califica) Gracias por tus respuestas. Las usare para tratar de mejorar.

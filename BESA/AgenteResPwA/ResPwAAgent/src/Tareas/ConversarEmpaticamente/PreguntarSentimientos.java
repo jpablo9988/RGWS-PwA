@@ -36,12 +36,12 @@ public class PreguntarSentimientos extends Task {
         System.out.println("--- Execute Task Preguntar Sentimientos ---");
         RobotAgentBelieves blvs = (RobotAgentBelieves) parameters;
 
-       
+
 
         infoServicio.put("SAY", "¿Como te sientes hoy?");
         ServiceDataRequest srb = ServiceRequestBuilder.buildRequest(VoiceServiceRequestType.SAY, infoServicio);
-        ResPwaUtils.requestService(srb, (RobotAgentBelieves) parameters);
         ResPwaUtils.activateTopic(PepperTopicsNames.ALEGRETOPIC, parameters);
+        ResPwaUtils.requestService(srb, (RobotAgentBelieves) parameters);
     }
 
     @Override

@@ -1,0 +1,9 @@
+----------Sesion del dia Fri Nov 11 12:11:48 CST 2022---------
+ -----------------------
+Nombre del Ejercicio: GiRARTRONCO.
+Repeticiones realizadas : 9.
+Retroalimentación de Gusto(1 - 3): 3
+Retroalimentación de Cansancio (1 - 3): 2
+Peso usado: N/A.
+Notas: -- Cambiar este campo para agregar notas personalizadas. --.
+-------------------------------------------

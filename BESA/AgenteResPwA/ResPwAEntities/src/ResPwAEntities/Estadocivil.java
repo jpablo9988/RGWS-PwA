@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -21,10 +22,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "estado_civil", catalog = "Res_PwADB", schema = "public")
+@Table(name = "estado_civil")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EstadoCivil.findAll", query = "SELECT e FROM EstadoCivil e"),
@@ -36,7 +37,7 @@ public class EstadoCivil implements Serializable {
     @Basic(optional = false)
     @Column(name = "tipo_ec")
     private String tipoEc;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadoCivilTipoEc")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadoCivilTipoEc", fetch = FetchType.EAGER)
     private List<PerfilPwa> perfilPwaList;
 
     public EstadoCivil() {

@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Embeddable
 public class PreferenciaXCancionPK implements Serializable {

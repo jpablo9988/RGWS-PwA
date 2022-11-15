@@ -14,7 +14,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import ResPwAEntities.Cuento;
-import ResPwAEntities.Rutina;
 import ResPwAEntities.Enriq;
 import ResPwAEntities.Frase;
 import ResPwAEntities.FrasePK;
@@ -25,7 +24,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class FraseJpaController implements Serializable {
 
@@ -55,11 +54,6 @@ public class FraseJpaController implements Serializable {
                 cuento = em.getReference(cuento.getClass(), cuento.getNombre());
                 frase.setCuento(cuento);
             }
-            Rutina rutinaId = frase.getRutinaId();
-            if (rutinaId != null) {
-                rutinaId = em.getReference(rutinaId.getClass(), rutinaId.getId());
-                frase.setRutinaId(rutinaId);
-            }
             List<Enriq> attachedEnriqList = new ArrayList<Enriq>();
             for (Enriq enriqListEnriqToAttach : frase.getEnriqList()) {
                 enriqListEnriqToAttach = em.getReference(enriqListEnriqToAttach.getClass(), enriqListEnriqToAttach.getParams());
@@ -70,10 +64,6 @@ public class FraseJpaController implements Serializable {
             if (cuento != null) {
                 cuento.getFraseList().add(frase);
                 cuento = em.merge(cuento);
-            }
-            if (rutinaId != null) {
-                rutinaId.getFraseList().add(frase);
-                rutinaId = em.merge(rutinaId);
             }
             for (Enriq enriqListEnriq : frase.getEnriqList()) {
                 Frase oldFraseOfEnriqListEnriq = enriqListEnriq.getFrase();
@@ -106,8 +96,6 @@ public class FraseJpaController implements Serializable {
             Frase persistentFrase = em.find(Frase.class, frase.getFrasePK());
             Cuento cuentoOld = persistentFrase.getCuento();
             Cuento cuentoNew = frase.getCuento();
-            Rutina rutinaIdOld = persistentFrase.getRutinaId();
-            Rutina rutinaIdNew = frase.getRutinaId();
             List<Enriq> enriqListOld = persistentFrase.getEnriqList();
             List<Enriq> enriqListNew = frase.getEnriqList();
             List<String> illegalOrphanMessages = null;
@@ -126,10 +114,6 @@ public class FraseJpaController implements Serializable {
                 cuentoNew = em.getReference(cuentoNew.getClass(), cuentoNew.getNombre());
                 frase.setCuento(cuentoNew);
             }
-            if (rutinaIdNew != null) {
-                rutinaIdNew = em.getReference(rutinaIdNew.getClass(), rutinaIdNew.getId());
-                frase.setRutinaId(rutinaIdNew);
-            }
             List<Enriq> attachedEnriqListNew = new ArrayList<Enriq>();
             for (Enriq enriqListNewEnriqToAttach : enriqListNew) {
                 enriqListNewEnriqToAttach = em.getReference(enriqListNewEnriqToAttach.getClass(), enriqListNewEnriqToAttach.getParams());
@@ -145,14 +129,6 @@ public class FraseJpaController implements Serializable {
             if (cuentoNew != null && !cuentoNew.equals(cuentoOld)) {
                 cuentoNew.getFraseList().add(frase);
                 cuentoNew = em.merge(cuentoNew);
-            }
-            if (rutinaIdOld != null && !rutinaIdOld.equals(rutinaIdNew)) {
-                rutinaIdOld.getFraseList().remove(frase);
-                rutinaIdOld = em.merge(rutinaIdOld);
-            }
-            if (rutinaIdNew != null && !rutinaIdNew.equals(rutinaIdOld)) {
-                rutinaIdNew.getFraseList().add(frase);
-                rutinaIdNew = em.merge(rutinaIdNew);
             }
             for (Enriq enriqListNewEnriq : enriqListNew) {
                 if (!enriqListOld.contains(enriqListNewEnriq)) {
@@ -209,11 +185,6 @@ public class FraseJpaController implements Serializable {
             if (cuento != null) {
                 cuento.getFraseList().remove(frase);
                 cuento = em.merge(cuento);
-            }
-            Rutina rutinaId = frase.getRutinaId();
-            if (rutinaId != null) {
-                rutinaId.getFraseList().remove(frase);
-                rutinaId = em.merge(rutinaId);
             }
             em.remove(frase);
             em.getTransaction().commit();

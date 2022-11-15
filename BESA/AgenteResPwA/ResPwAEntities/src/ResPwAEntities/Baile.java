@@ -6,12 +6,12 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,10 +24,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "baile", catalog = "Res_PwADB", schema = "public")
+@Table(name = "baile")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Baile.findAll", query = "SELECT b FROM Baile b"),
@@ -36,37 +36,36 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Baile implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private BigDecimal id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
     @JoinColumn(name = "genero", referencedColumnName = "genero")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Genero genero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "baile")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "baile", fetch = FetchType.EAGER)
     private List<PreferenciaXBaile> preferenciaXBaileList;
 
     public Baile() {
     }
 
-    public Baile(BigDecimal id) {
+    public Baile(Integer id) {
         this.id = id;
     }
 
-    public Baile(BigDecimal id, String nombre) {
+    public Baile(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

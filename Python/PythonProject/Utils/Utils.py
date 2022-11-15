@@ -2,6 +2,9 @@
 import json
 from datetime import datetime
 from socket import socket, AF_INET, SOCK_STREAM
+import threading
+#import easygui as easygui
+
 
 activities_running = {}
 callbacks_running = {}
@@ -99,5 +102,6 @@ class KeyboardThread(threading.Thread):
         listChoices.append("Aumentar Atencion")
         listChoices.append("Bajar Atencion")
         s = "Escoger: "
-        while True:
-            self.input_cbk(str(easygui.buttonbox(msg= s, choices=listChoices, title="Simular Evento Emocional")),self.robot)
+        #while True:
+            #self.input_cbk(str(easygui.buttonbox(msg= s, choices=listChoices, title="Simular Evento Emocional")),self.robot)
+

@@ -22,7 +22,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class EmotionAxisConfJpaController implements Serializable {
 
@@ -115,7 +115,7 @@ public class EmotionAxisConfJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = emotionAxisConf.getId();
+                Integer id = emotionAxisConf.getId();
                 if (findEmotionAxisConf(id) == null) {
                     throw new NonexistentEntityException("The emotionAxisConf with id " + id + " no longer exists.");
                 }
@@ -128,7 +128,7 @@ public class EmotionAxisConfJpaController implements Serializable {
         }
     }
 
-    public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -184,7 +184,7 @@ public class EmotionAxisConfJpaController implements Serializable {
         }
     }
 
-    public EmotionAxisConf findEmotionAxisConf(Long id) {
+    public EmotionAxisConf findEmotionAxisConf(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(EmotionAxisConf.class, id);

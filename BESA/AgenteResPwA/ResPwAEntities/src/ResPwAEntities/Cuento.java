@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,10 +24,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "cuento", catalog = "Res_PwADB", schema = "public")
+@Table(name = "cuento")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cuento.findAll", query = "SELECT c FROM Cuento c"),
@@ -42,12 +43,12 @@ public class Cuento implements Serializable {
     @Basic(optional = false)
     @Column(name = "autor")
     private String autor;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuento")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuento", fetch = FetchType.EAGER)
     private List<PreferenciaXCuento> preferenciaXCuentoList;
     @JoinColumn(name = "genero", referencedColumnName = "genero")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Genero genero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuento")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuento", fetch = FetchType.EAGER)
     private List<Frase> fraseList;
 
     public Cuento() {

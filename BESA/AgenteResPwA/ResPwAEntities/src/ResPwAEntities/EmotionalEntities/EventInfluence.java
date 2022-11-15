@@ -9,6 +9,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,10 +20,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author juan.amorocho y andres.cacique
+ * @author tesispepper
  */
 @Entity
-@Table(name = "event_influence", catalog = "Res_PwADB", schema = "public")
+@Table(name = "event_influence")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EventInfluence.findAll", query = "SELECT e FROM EventInfluence e"),
@@ -35,7 +36,7 @@ public class EventInfluence implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "event_name")
     private String eventName;
@@ -43,27 +44,27 @@ public class EventInfluence implements Serializable {
     @Column(name = "event_influence")
     private double eventInfluence;
     @JoinColumn(name = "emotional_axis_config_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private EmotionAxisConf emotionalAxisConfigId;
 
     public EventInfluence() {
     }
 
-    public EventInfluence(Long id) {
+    public EventInfluence(Integer id) {
         this.id = id;
     }
 
-    public EventInfluence(Long id, String eventName, double eventInfluence) {
+    public EventInfluence(Integer id, String eventName, double eventInfluence) {
         this.id = id;
         this.eventName = eventName;
         this.eventInfluence = eventInfluence;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

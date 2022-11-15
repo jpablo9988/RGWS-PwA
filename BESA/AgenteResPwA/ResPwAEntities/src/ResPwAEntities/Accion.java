@@ -6,11 +6,11 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -24,10 +24,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "accion", catalog = "Res_PwADB", schema = "public")
+@Table(name = "accion")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Accion.findAll", query = "SELECT a FROM Accion a"),
@@ -37,11 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Accion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    private BigDecimal id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
@@ -51,30 +50,30 @@ public class Accion implements Serializable {
     @JoinTable(name = "accion_x_joint", joinColumns = {
         @JoinColumn(name = "accion_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "joint_id", referencedColumnName = "id")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Joint> jointList;
     @JoinColumn(name = "emocion_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Emocion emocionId;
 
     public Accion() {
     }
 
-    public Accion(BigDecimal id) {
+    public Accion(Integer id) {
         this.id = id;
     }
 
-    public Accion(BigDecimal id, String nombre, String tipo) {
+    public Accion(Integer id, String nombre, String tipo) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

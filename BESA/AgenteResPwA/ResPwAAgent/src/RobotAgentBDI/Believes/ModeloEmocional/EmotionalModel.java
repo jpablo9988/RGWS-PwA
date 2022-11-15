@@ -7,14 +7,10 @@ import BESA.Kernel.System.Directory.AgHandlerBESA;
 import EmotionalAnalyzerAgent.Guards.EmotionalData;
 import Init.InitRESPwA;
 import RobotAgentBDI.Believes.ModeloEmocional.Personality.EmotionElementType;
-import Utils.ResPwaUtils;
-
-import ServiceAgentResPwA.Guard.ServiceDataRequest;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import rational.guards.InformationFlowGuard;
-import rational.services.ActivateAsynchronousServiceGuard;
 
 public abstract class EmotionalModel {
 
@@ -51,7 +47,7 @@ public abstract class EmotionalModel {
     }
 
     public void processEmotionalEvent(EmotionalEvent ev) {
-        float i = estimateEmotionIntensity(ev);
+        double i = estimateEmotionIntensity(ev);
         if(ev.getPerson()!=null){
           System.out.println("XEREVENTO: "+ev + " Valencia"+i);
         }
@@ -60,16 +56,16 @@ public abstract class EmotionalModel {
         emotionalStateChanged();
     }
 
-    private float estimateEmotionIntensity(EmotionalEvent ev) {
-        Float person = personality.getElementSemanticValue(EmotionElementType.Person, ev.getPerson());
-        Float event = personality.getElementSemanticValue(EmotionElementType.Event, ev.getEvent());
-        Float object = personality.getElementSemanticValue(EmotionElementType.Object, ev.getObject());
+    private double estimateEmotionIntensity(EmotionalEvent ev) {
+        Double person = personality.getElementSemanticValue(EmotionElementType.Person, ev.getPerson());
+        Double event = personality.getElementSemanticValue(EmotionElementType.Event, ev.getEvent());
+        Double object = personality.getElementSemanticValue(EmotionElementType.Object, ev.getObject());
 
         person = (person == null) ? 0 : person;
         event = (event == null) ? 0 : event;
         object = (object == null) ? 0 : object;
 
-        float intensity = Utils.Config.PersonWeight * Math.abs(person)
+        double intensity = Utils.Config.PersonWeight * Math.abs(person)
                 + Utils.Config.EventWeight * Math.abs(event)
                 + Utils.Config.ObjectWeight * Math.abs(object);
         boolean valence = estimateValence(person, event, object);
@@ -79,7 +75,7 @@ public abstract class EmotionalModel {
         return intensity;
     }
 
-    private boolean estimateValence(Float person, Float event, Float object) {
+    private boolean estimateValence(Double person, Double event, Double object) {
         boolean v = false;
 
         person = (person == null || person == 0) ? 1 : person;
@@ -116,7 +112,7 @@ public abstract class EmotionalModel {
     }
 
     private void checkItemInSemanticDictionary(EmotionElementType type, String key) {
-        Float v = SemanticDictionary.getInstance().getSemanticValue(type, key);
+        Double v = SemanticDictionary.getInstance().getSemanticValue(type, key);
         if (v == null) {
             String typeName = "Personas";
             if (type == EmotionElementType.Event) {

@@ -6,13 +6,14 @@
 package ResPwAEntities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -29,10 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 @Entity
-@Table(name = "perfil_pwa", catalog = "Res_PwADB", schema = "public")
+@Table(name = "perfil_pwa")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PerfilPwa.findAll", query = "SELECT p FROM PerfilPwa p"),
@@ -42,7 +43,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PerfilPwa.findByFechaNacimiento", query = "SELECT p FROM PerfilPwa p WHERE p.fechaNacimiento = :fechaNacimiento"),
     @NamedQuery(name = "PerfilPwa.findByPaisNacimiento", query = "SELECT p FROM PerfilPwa p WHERE p.paisNacimiento = :paisNacimiento"),
     @NamedQuery(name = "PerfilPwa.findByProfesion", query = "SELECT p FROM PerfilPwa p WHERE p.profesion = :profesion"),
-    @NamedQuery(name = "PerfilPwa.findByEdad", query = "SELECT p FROM PerfilPwa p WHERE p.edad = :edad")})
+    @NamedQuery(name = "PerfilPwa.findByEdad", query = "SELECT p FROM PerfilPwa p WHERE p.edad = :edad"),
+    @NamedQuery(name = "PerfilPwa.findByTieneProgramaEjercicio", query = "SELECT p FROM PerfilPwa p WHERE p.tieneProgramaEjercicio = :tieneProgramaEjercicio")})
 public class PerfilPwa implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,24 +70,29 @@ public class PerfilPwa implements Serializable {
     private String profesion;
     @Basic(optional = false)
     @Column(name = "edad")
-    private BigDecimal edad;
-    @ManyToMany(mappedBy = "perfilPwaList")
+    private BigInteger edad;
+    @Basic(optional = false)
+    @Column(name = "tiene_programa_ejercicio")
+    private boolean tieneProgramaEjercicio;
+    @ManyToMany(mappedBy = "perfilPwaList", fetch = FetchType.EAGER)
     private List<Familiar> familiarList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilPwa")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilPwa", fetch = FetchType.EAGER)
     private PerfilPreferencia perfilPreferencia;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilPwa")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfilPwa", fetch = FetchType.EAGER)
     private List<RegistroActividad> registroActividadList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilPwa")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilPwa", fetch = FetchType.EAGER)
     private PerfilMedico perfilMedico;
     @JoinColumn(name = "cuidador_nombre_usuario", referencedColumnName = "nombre_usuario")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Cuidador cuidadorNombreUsuario;
     @JoinColumn(name = "estado_civil_tipo_ec", referencedColumnName = "tipo_ec")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private EstadoCivil estadoCivilTipoEc;
     @JoinColumn(name = "nivel_educativo_tipo_ne", referencedColumnName = "tipo_ne")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private NivelEducativo nivelEducativoTipoNe;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "perfilPwa", fetch = FetchType.EAGER)
+    private PerfilEjercicio perfilEjercicio;
 
     public PerfilPwa() {
     }
@@ -94,7 +101,7 @@ public class PerfilPwa implements Serializable {
         this.cedula = cedula;
     }
 
-    public PerfilPwa(String cedula, String nombre, String apellido, Date fechaNacimiento, String paisNacimiento, String profesion, BigDecimal edad) {
+    public PerfilPwa(String cedula, String nombre, String apellido, Date fechaNacimiento, String paisNacimiento, String profesion, BigInteger edad, boolean tieneProgramaEjercicio) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -102,6 +109,7 @@ public class PerfilPwa implements Serializable {
         this.paisNacimiento = paisNacimiento;
         this.profesion = profesion;
         this.edad = edad;
+        this.tieneProgramaEjercicio = tieneProgramaEjercicio;
     }
 
     public String getCedula() {
@@ -152,12 +160,20 @@ public class PerfilPwa implements Serializable {
         this.profesion = profesion;
     }
 
-    public BigDecimal getEdad() {
+    public BigInteger getEdad() {
         return edad;
     }
 
-    public void setEdad(BigDecimal edad) {
+    public void setEdad(BigInteger edad) {
         this.edad = edad;
+    }
+
+    public boolean getTieneProgramaEjercicio() {
+        return tieneProgramaEjercicio;
+    }
+
+    public void setTieneProgramaEjercicio(boolean tieneProgramaEjercicio) {
+        this.tieneProgramaEjercicio = tieneProgramaEjercicio;
     }
 
     @XmlTransient
@@ -216,6 +232,14 @@ public class PerfilPwa implements Serializable {
 
     public void setNivelEducativoTipoNe(NivelEducativo nivelEducativoTipoNe) {
         this.nivelEducativoTipoNe = nivelEducativoTipoNe;
+    }
+
+    public PerfilEjercicio getPerfilEjercicio() {
+        return perfilEjercicio;
+    }
+
+    public void setPerfilEjercicio(PerfilEjercicio perfilEjercicio) {
+        this.perfilEjercicio = perfilEjercicio;
     }
 
     @Override

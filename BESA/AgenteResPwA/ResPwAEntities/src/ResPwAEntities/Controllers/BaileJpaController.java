@@ -16,7 +16,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import ResPwAEntities.Genero;
 import ResPwAEntities.PreferenciaXBaile;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -24,7 +23,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author USER
+ * @author tesispepper
  */
 public class BaileJpaController implements Serializable {
 
@@ -140,7 +139,7 @@ public class BaileJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                BigDecimal id = baile.getId();
+                Integer id = baile.getId();
                 if (findBaile(id) == null) {
                     throw new NonexistentEntityException("The baile with id " + id + " no longer exists.");
                 }
@@ -153,7 +152,7 @@ public class BaileJpaController implements Serializable {
         }
     }
 
-    public void destroy(BigDecimal id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -214,7 +213,7 @@ public class BaileJpaController implements Serializable {
         }
     }
 
-    public Baile findBaile(BigDecimal id) {
+    public Baile findBaile(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Baile.class, id);
